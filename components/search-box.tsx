@@ -19,9 +19,9 @@ const typeIcon = {
 };
 
 const typeLabel = {
-  note: '笔记',
-  project: '项目',
-  essay: '随笔',
+  notes: '笔记',
+  projects: '项目',
+  essays: '随笔',
 };
 
 /**
