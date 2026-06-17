@@ -7,19 +7,19 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: '个人综合知识库 & 求职作品集',
-    template: '%s | 个人综合知识库',
+    default: '零光一站',
+    template: '%s | 零光一站',
   },
   description:
     '面向电子信息/嵌入式工程师的个人网站，涵盖学习笔记、项目作品、生活随笔与在线简历。',
   keywords: ['嵌入式', '电子信息', '硬件设计', '作品集', '个人网站'],
-  authors: [{ name: '个人作者' }],
-  creator: '个人作者',
+  authors: [{ name: '零光' }],
+  creator: '零光',
   metadataBase: new URL('https://example.com'),
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
-    siteName: '个人综合知识库 & 求职作品集',
+    siteName: '零光一站',
   },
 };
 
@@ -56,8 +56,8 @@ export default function RootLayout({
           header={{
             logo: (
               <span className="tracking-tight">
-                <span className="text-primary">EIE</span>
-                <span className="text-text">Portfolio</span>
+                <span className="text-primary">零光</span>
+                <span className="text-text">一站</span>
               </span>
             ),
             items: navItems,
@@ -78,7 +78,7 @@ export default function RootLayout({
                 最后更新：{new Date().toLocaleDateString('zh-CN')}
               </span>
             ),
-            copyright: `© ${new Date().getFullYear()} 个人作品集`,
+            copyright: `© ${new Date().getFullYear()} 零光 版权所有`,
             disclaimer: '本站所有内容仅供学习交流，转载请注明出处。',
           }}
         >
