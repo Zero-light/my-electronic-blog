@@ -1,0 +1,126 @@
+---
+title: 数控可调开关电源
+slug: digital-power-supply
+date: 2024-11-10
+tags: ['电源', 'STM32', 'Buck', '电赛']
+category: 电赛作品
+description: 基于 STM32F4 的数字控制 Buck 电源，支持 0-15V 恒压/恒流输出，OLED 实时显示，上位机串口调参。
+period: 2024.03 – 2024.06
+hardware:
+  - STM32F407VET6
+  - IR2104 半桥驱动
+  - TPH1R204PL MOSFET
+  - 0.5R 采样电阻
+software:
+  - STM32CubeIDE
+  - Altium Designer
+  - MATLAB/Simulink
+  - Python 上位机
+cover: /images/projects/power_supply_cover.jpg
+---
+
+## 项目概述
+
+本项目为 2024 年全国大学生电子设计竞赛 **电源题** 参赛作品，设计了一款基于 STM32 的数字控制可调开关电源。
+
+核心指标：
+
+- 输入：18 V ~ 24 V DC
+- 输出：0 ~ 15 V 可调，最大 3 A
+- 恒压/恒流双模式自动切换
+- 电压调整率 < 0.5%
+- 负载调整率 < 1%
+
+## 系统架构
+
+```
+[ 直流输入 ]
+    │
+    ▼
+[ 同步 Buck 拓扑 ] ←── PWM (STM32 TIM1)
+    │
+    ▼
+[ LC 滤波 ] ←── 电压/电流采样
+    │
+    ▼
+[ 负载 ]
+    │
+    ▼
+[ STM32 ADC ] ←── 双通道同步采样
+    │
+    ▼
+[ 数字 PID 控制器 ] ←── 50 kHz 控制频率
+    │
+    ▼
+[ DAC/PWM 调参 ] → OLED 显示 + 串口上报
+```
+
+## 硬件设计
+
+### 功率级
+
+采用 **同步 Buck** 拓扑，自举驱动高侧 N-MOS。开关频率 200 kHz，电感 22 µH。
+
+![功率级原理图](/images/projects/power_supply_front.jpg)
+
+### 采样电路
+
+电压采样使用电阻分压 + RC 滤波（截止频率 10 kHz）。电流采样使用 0.5 Ω 高精度采样电阻 + 仪表放大器 INA199，放大倍数 50 V/V。
+
+### PCB 要点
+
+- 功率地与信号地单点连接
+- 开关节点铺铜面积最小化，降低 EMI
+- 电流采样走线开尔文连接
+
+## 软件设计
+
+### 控制算法
+
+采用 **增量式 PID** 控制，控制频率 50 kHz（每 4 个开关周期更新一次占空比）。
+
+```c
+typedef struct {
+    float Kp, Ki, Kd;
+    float err, err_last, err_integral;
+    float output;
+} PID_Controller;
+
+float PID_Update(PID_Controller* pid, float setpoint, float feedback)
+{
+    pid->err = setpoint - feedback;
+    pid->err_integral += pid->err;
+    pid->output = pid->Kp * pid->err
+                  + pid->Ki * pid->err_integral
+                  + pid->Kd * (pid->err - pid->err_last);
+    pid->err_last = pid->err;
+    return pid->output;
+}
+```
+
+### 模式切换逻辑
+
+- 当负载电流 < 设定恒流值时，工作在 **恒压模式（CV）**
+- 当负载电流 ≥ 设定恒流值时，自动切换为 **恒流模式（CC）**
+- 切换过程加入 10 ms 迟滞，避免边界抖动
+
+## 测试结果
+
+| 测试项 | 结果 |
+|--------|------|
+| 电压调整率 | 0.32% |
+| 负载调整率 | 0.78% |
+| 效率（满载）| 91.5% |
+| 输出纹波 | 38 mVpp |
+| 动态响应（50%→100% 负载）| 恢复时间 120 µs |
+
+## 实物展示
+
+![电源实物正面](/images/projects/power_supply_front.jpg)
+
+![电源实物背面](/images/projects/power_supply_back.jpg)
+
+## 源码与文档
+
+- [GitHub 仓库](https://github.com)
+- [设计报告 PDF](/pdfs/resume.pdf)

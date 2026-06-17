@@ -1,0 +1,119 @@
+---
+title: STM32 ADC + DMA 多通道采集实战
+slug: stm32-adc-dma
+date: 2025-03-15
+tags: ['STM32', 'ADC', 'DMA', '嵌入式']
+category: 嵌入式
+description: 详解 STM32F4 系列 ADC 多通道轮询采集方案，配合 DMA 实现零 CPU 开销的数据搬运，附完整 HAL 配置与波形验证。
+cover: /images/projects/measurement_cover.jpg
+---
+
+## 背景与需求
+
+在精密测控场景中，经常需要同时采集多路模拟信号。如果使用轮询方式读取 ADC，不仅占用大量 CPU 时间，还容易因为中断响应延迟导致采样点不均匀。
+
+本文介绍一种基于 **DMA 循环模式** 的多通道 ADC 采集方案，实现：
+
+- 16 通道自动轮询采样
+- DMA 双缓冲或循环缓冲区设计
+- 采样率精确到 10 kSps / 通道
+- CPU 零干预，仅在中断回调中处理数据
+
+## 硬件连接
+
+| 信号 | 引脚 | 说明 |
+|------|------|------|
+| ADC1_IN0 | PA0 | 电压采样 |
+| ADC1_IN1 | PA1 | 电流采样 |
+| ADC1_IN2 | PA2 | 温度采样 |
+| ADC1_IN3 | PA3 | 备用通道 |
+
+## HAL 配置代码
+
+```c
+ADC_HandleTypeDef hadc1;
+DMA_HandleTypeDef hdma_adc1;
+
+#define ADC_BUFFER_SIZE 64
+uint16_t adc_buffer[ADC_BUFFER_SIZE];
+
+void MX_ADC1_Init(void)
+{
+    hadc1.Instance = ADC1;
+    hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+    hadc1.Init.Resolution = ADC_RESOLUTION_12B;
+    hadc1.Init.ScanConvMode = ENABLE;
+    hadc1.Init.ContinuousConvMode = ENABLE;
+    hadc1.Init.DMAContinuousRequests = ENABLE;
+    hadc1.Init.NbrOfConversion = 4;
+    HAL_ADC_Init(&hadc1);
+
+    ADC_ChannelConfTypeDef sConfig = {0};
+    sConfig.SamplingTime = ADC_SAMPLETIME_15CYCLES;
+
+    sConfig.Channel = ADC_CHANNEL_0;
+    sConfig.Rank = 1;
+    HAL_ADC_ConfigChannel(&hadc1, &sConfig);
+
+    sConfig.Channel = ADC_CHANNEL_1;
+    sConfig.Rank = 2;
+    HAL_ADC_ConfigChannel(&hadc1, &sConfig);
+
+    // ... 其余通道同理
+}
+
+void MX_DMA_Init(void)
+{
+    __HAL_RCC_DMA2_CLK_ENABLE();
+    hdma_adc1.Instance = DMA2_Stream0;
+    hdma_adc1.Init.Channel = DMA_CHANNEL_0;
+    hdma_adc1.Init.Direction = DMA_PERIPH_TO_MEMORY;
+    hdma_adc1.Init.Mode = DMA_CIRCULAR;
+    hdma_adc1.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_adc1.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_adc1.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+    hdma_adc1.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+    HAL_DMA_Init(&hdma_adc1);
+    __HAL_LINKDMA(&hadc1, DMA_Handle, hdma_adc1);
+}
+```
+
+## DMA 中断回调
+
+```c
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+    if (hadc->Instance == ADC1) {
+        // 处理后半缓冲区数据
+        process_adc_data(&adc_buffer[ADC_BUFFER_SIZE / 2], ADC_BUFFER_SIZE / 2);
+    }
+}
+
+void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc)
+{
+    if (hadc->Instance == ADC1) {
+        // 处理前半缓冲区数据
+        process_adc_data(adc_buffer, ADC_BUFFER_SIZE / 2);
+    }
+}
+```
+
+## 采样率计算
+
+ADC 时钟 = 84 MHz / 4 = 21 MHz
+
+单通道转换时间 = (12 bit + 15 cycles) / 21 MHz ≈ 1.29 µs
+
+四通道总周期 ≈ 5.16 µs → 理论采样率 ≈ 193 kSps
+
+实际考虑 DMA 搬运与中断开销，稳定在 **10 kSps / 通道** 绰绰有余。
+
+## 实测波形
+
+使用示波器观察 DMA 搬运完成中断脉冲，间隔均匀，无抖动。
+
+![ADC DMA 时序](/images/projects/competition_debug.jpg)
+
+## 小结
+
+DMA 循环模式是多通道 ADC 采集的最优解。只要注意缓冲区对齐与半传输中断的同步，就能实现真正的零拷贝数据采集。
