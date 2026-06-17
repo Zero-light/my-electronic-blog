@@ -5,7 +5,7 @@ import { Copy, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface CodeBlockProps {
-  children: ReactNode;
+  children?: ReactNode;
   className?: string;
 }
 
