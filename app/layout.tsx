@@ -7,8 +7,8 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: '零光一站',
-    template: '%s | 零光一站',
+    default: '零光驿站',
+    template: '%s | 零光驿站',
   },
   description:
     '面向电子信息/嵌入式工程师的个人网站，涵盖学习笔记、项目作品、生活随笔与在线简历。',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
-    siteName: '零光一站',
+    siteName: '零光驿站',
   },
 };
 
@@ -57,7 +57,7 @@ export default function RootLayout({
             logo: (
               <span className="tracking-tight">
                 <span className="text-primary">零光</span>
-                <span className="text-text">一站</span>
+                <span className="text-text">驿站</span>
               </span>
             ),
             items: navItems,
