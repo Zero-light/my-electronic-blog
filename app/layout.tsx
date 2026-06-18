@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Layout } from '@/components/ui/layout';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { ReadingProgress } from '@/components/reading-progress';
 import { SearchBox } from '@/components/search-box';
 import { buildSearchIndex } from '@/lib/search-index';
 import './globals.css';
@@ -26,7 +27,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0f172a' },
+    { media: '(prefers-color-scheme: dark)', color: '#0d1117' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -52,6 +53,7 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
+        <ReadingProgress />
         <Layout
           header={{
             logo: (

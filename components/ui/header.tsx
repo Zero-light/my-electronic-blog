@@ -36,6 +36,8 @@ export function Header({ logo, items, right, className }: HeaderProps) {
       className={cn(
         'sticky top-0 z-50 border-b border-border backdrop-blur-md',
         'bg-[var(--bg)]/80 transition-colors',
+        // 底部微光条：与 "zerolight" 光主题呼应
+        'shadow-[0_1px_0_0_rgba(123,155,255,0.12)]',
         className
       )}
     >

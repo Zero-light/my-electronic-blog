@@ -34,6 +34,8 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
             <img
               src={project.cover}
               alt={project.title}
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
           </div>
@@ -57,9 +59,16 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
               </span>
             )}
             {project.tags.length > 0 && (
-              <span className="flex items-center gap-1 truncate">
-                <Tag className="h-3 w-3 shrink-0" />
-                <span className="truncate">{project.tags.join(' · ')}</span>
+              <span className="flex flex-wrap items-center gap-1.5">
+                <Tag className="h-3 w-3 shrink-0 text-text-muted" />
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-[0.78rem] text-text-muted backdrop-blur-sm transition-colors hover:border-primary/30 hover:text-primary"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </span>
             )}
           </div>

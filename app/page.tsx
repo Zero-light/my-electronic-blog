@@ -4,6 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { HeroGlow } from '@/components/hero-glow';
 import { SkillBar } from '@/components/skill-bar';
 import { getAllNotes, getAllProjects, sortByDate } from '@/lib/mdx';
 import { formatDate } from '@/lib/utils';
@@ -33,7 +34,7 @@ export default function HomePage() {
       {/* ----------------------------------------------------------
          Banner 区域
          ---------------------------------------------------------- */}
-      <section className="flex flex-col items-center gap-6 text-center md:flex-row md:text-left">
+      <HeroGlow className="flex flex-col items-center gap-6 rounded-2xl py-8 text-center md:flex-row md:text-left md:py-10">
         {/* 头像占位（CSS 首字母） */}
         <div
           className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full text-3xl font-bold text-white"
@@ -42,14 +43,17 @@ export default function HomePage() {
           任
         </div>
 
-        <div className="space-y-3">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            你好，我是 <span className="text-primary">任炳宇</span>
+        <div className="space-y-5 md:space-y-6">
+          <h1 className="text-[2.5rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
+            你好，我是{' '}
+            <span className="bg-gradient-to-r from-[#5b8def] to-[#d4a373] bg-clip-text text-transparent">
+              任炳宇
+            </span>
           </h1>
-          <p className="text-sm font-medium text-sky-600 dark:text-sky-400">
+          <p className="text-sm font-medium text-sky-600 dark:text-[#7c9bff]">
             电子信息工程 · 嵌入式系统与电源设计方向
           </p>
-          <p className="max-w-2xl leading-relaxed text-slate-600 dark:text-slate-400">
+          <p className="max-w-xl text-[0.92rem] leading-relaxed text-slate-600 dark:text-[#8b949e]">
             具备软硬件一体化开发能力的嵌入式工程师，专注于 STM32 嵌入式固件、高效电源闭环控制与精密信号链设计。
             这里是我在学习与工程实践中的知识沉淀、项目复盘与生活记录。
           </p>
@@ -63,7 +67,7 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-      </section>
+      </HeroGlow>
 
       {/* ----------------------------------------------------------
          三大功能快捷入口
@@ -80,6 +84,7 @@ export default function HomePage() {
                   <BookOpen className="h-5 w-5" />
                 </div>
                 <CardTitle>知识库</CardTitle>
+                <div className="my-2 h-px w-10 bg-border" />
                 <CardDescription>
                   嵌入式笔记、电源设计复盘、模电数电与工具教程
                 </CardDescription>
@@ -94,6 +99,7 @@ export default function HomePage() {
                   <Wrench className="h-5 w-5" />
                 </div>
                 <CardTitle>作品集</CardTitle>
+                <div className="my-2 h-px w-10 bg-border" />
                 <CardDescription>
                   硬件项目全流程展示：需求 → 架构 → PCB → 固件 → 测试
                 </CardDescription>
@@ -108,6 +114,7 @@ export default function HomePage() {
                   <Coffee className="h-5 w-5" />
                 </div>
                 <CardTitle>生活记录</CardTitle>
+                <div className="my-2 h-px w-10 bg-border" />
                 <CardDescription>
                   随笔日记、相册图库与爱好分享
                 </CardDescription>

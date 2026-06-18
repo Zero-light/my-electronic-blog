@@ -11,8 +11,10 @@
   :root {
     --bg: #ffffff;
     --bg-soft: #f8fafc;
+    --bg-elevated: #f1f5f9;
     --text: #0f172a;
     --text-muted: #64748b;
+    --text-subtle: #cbd5e1;
     --primary: #0ea5e9;
     --primary-dark: #0284c7;
     --accent: #06b6d4;
@@ -22,16 +24,18 @@
   }
 
   .dark {
-    --bg: #0f172a;
-    --bg-soft: #1e293b;
-    --text: #f1f5f9;
-    --text-muted: #94a3b8;
-    --primary: #38bdf8;
-    --primary-dark: #0ea5e9;
-    --accent: #22d3ee;
-    --card: #1e293b;
-    --border: #334155;
-    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
+    --bg: #0d1117;
+    --bg-soft: #161b22;
+    --bg-elevated: #1c2333;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-subtle: #484f58;
+    --primary: #7c9bff;
+    --primary-dark: #5b8def;
+    --accent: #d4a373;
+    --card: #161b22;
+    --border: rgba(255, 255, 255, 0.06);
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   }
 
   html {
@@ -42,6 +46,11 @@
     background-color: var(--bg);
     color: var(--text);
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background-color: rgba(91, 141, 239, 0.3);
+    color: #e6edf3;
   }
 }
 
@@ -66,8 +75,8 @@
 
   .dark .card-hover:hover {
     box-shadow:
-      0 10px 25px -5px rgb(0 0 0 / 0.5),
-      0 8px 10px -6px rgb(0 0 0 / 0.4);
+      0 12px 32px -4px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(123, 155, 255, 0.08);
   }
 
   /* ----------------------------------------------------------
