@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import { LifeMoment } from '@/content/data/life-moments';
-import { formatDate } from '@/lib/utils';
+import { formatDate, cn } from '@/lib/utils';
 import { MapPin, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 export interface MomentCardProps {
   moment: LifeMoment;
@@ -74,7 +73,7 @@ export function MomentCard({ moment }: MomentCardProps) {
                 >
                   <img
                     src={src}
-                    alt={`${moment.category} ${idx + 1}`}
+                    alt={`${moment.subCategory} ${idx + 1}`}
                     className="aspect-square w-full object-cover transition-transform hover:scale-105"
                     loading="lazy"
                   />

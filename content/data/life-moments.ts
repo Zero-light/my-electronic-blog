@@ -1,17 +1,17 @@
 /**
  * 生活动态数据
- * 模拟微信朋友圈形式，分为旅游与爱好两大板块
+ * 一级分类：游戏 / 音乐 / 旅游
+ * 每个一级分类下有自己的子分类
  */
 
-export type MomentType = 'travel' | 'hobby';
+export type TopCategory = 'game' | 'music' | 'travel';
 
 export interface LifeMoment {
   id: string;
-  type: MomentType;
-  /** 主分类（旅游地点 / 爱好大类） */
-  category: string;
-  /** 子分类（如游戏名下的具体游戏） */
-  subCategory?: string;
+  /** 一级分类 */
+  topCategory: TopCategory;
+  /** 子分类（游戏名 / 音乐类型 / 旅游地点） */
+  subCategory: string;
   /** 发布时间 */
   date: string;
   /** 动态文字内容 */
@@ -23,107 +23,42 @@ export interface LifeMoment {
 }
 
 export const lifeMoments: LifeMoment[] = [
-  // ========== 旅游 ==========
+  // ========== 游戏 — 云顶之弈 ==========
   {
-    id: 't1',
-    type: 'travel',
-    category: '云南',
-    date: '2025-07-15',
+    id: 'g1',
+    topCategory: 'game',
+    subCategory: '云顶之弈',
+    date: '2025-06-15',
     content:
-      '大理的洱海真的太治愈了，骑了一天自行车，风吹在脸上特别舒服。傍晚在古城吃了碗过桥米线，满足了。',
+      '福星赛季回归，六福星真的太好玩了。虽然前期被血入，但三阶段D到三星卡特直接锁血，最后追出三星瑟提出乎意料地吃鸡。',
     images: [
-      'https://picsum.photos/seed/yunnan1/800/600',
-      'https://picsum.photos/seed/yunnan2/800/600',
-      'https://picsum.photos/seed/yunnan3/800/600',
+      'https://picsum.photos/seed/tft1/800/600',
+      'https://picsum.photos/seed/tft2/800/600',
     ],
-    location: '大理 · 洱海',
   },
   {
-    id: 't2',
-    type: 'travel',
-    category: '云南',
-    date: '2025-07-16',
-    content:
-      '丽江古城的夜景果然名不虚传，四方街的热闹和酒吧街的慵懒形成鲜明对比。明天去玉龙雪山！',
-    images: ['https://picsum.photos/seed/yunnan4/800/600'],
-    location: '丽江 · 古城',
-  },
-  {
-    id: 't3',
-    type: 'travel',
-    category: '北京',
-    date: '2024-10-01',
-    content:
-      '国庆来北京凑个热闹，故宫的人流量确实惊人，但红墙黄瓦的庄严感还是让人肃然起敬。',
-    images: [
-      'https://picsum.photos/seed/beijing1/800/600',
-      'https://picsum.photos/seed/beijing2/800/600',
-    ],
-    location: '北京 · 故宫',
-  },
-  {
-    id: 't4',
-    type: 'travel',
-    category: '北京',
-    date: '2024-10-02',
-    content:
-      '长城当好汉的一天，北八楼的风景确实值得。腿废了，但照片拍得很满意。',
-    images: [
-      'https://picsum.photos/seed/beijing3/800/600',
-      'https://picsum.photos/seed/beijing4/800/600',
-      'https://picsum.photos/seed/beijing5/800/600',
-    ],
-    location: '北京 · 八达岭长城',
-  },
-  {
-    id: 't5',
-    type: 'travel',
-    category: '上海',
-    date: '2024-05-20',
-    content:
-      '外滩的夜景永远不会让人失望，陆家嘴的摩天大楼群像是未来城市。',
-    images: ['https://picsum.photos/seed/shanghai1/800/600'],
-    location: '上海 · 外滩',
-  },
-  {
-    id: 't6',
-    type: 'travel',
-    category: '西藏',
-    date: '2023-08-10',
-    content:
-      '布达拉宫比想象中更加震撼，高原反应也比我预想中温和。这里是离天空最近的地方。',
-    images: [
-      'https://picsum.photos/seed/tibet1/800/600',
-      'https://picsum.photos/seed/tibet2/800/600',
-    ],
-    location: '拉萨 · 布达拉宫',
-  },
-
-  // ========== 爱好 — 钢琴 ==========
-  {
-    id: 'h1',
-    type: 'hobby',
-    category: '钢琴',
+    id: 'g2',
+    topCategory: 'game',
+    subCategory: '云顶之弈',
     date: '2025-06-10',
     content:
-      '终于把《梦中的婚礼》完整弹下来了，虽然还有些磕磕绊绊，但算是今年的一个小成就。',
-    images: ['https://picsum.photos/seed/piano1/800/600'],
-  },
-  {
-    id: 'h2',
-    type: 'hobby',
-    category: '钢琴',
-    date: '2025-01-15',
-    content:
-      '寒假在家练了两周音阶，手指灵活度明显提升了。新的一年希望能挑战更有难度的曲子。',
+      '尝试了套冷门阵容——重秘狐狸，全员两星居然能吃分。现在排位环境太卷了，反其道而行之反而有奇效。',
     images: [],
   },
-
-  // ========== 爱好 — 游戏（植物大战僵尸） ==========
   {
-    id: 'h3',
-    type: 'hobby',
-    category: '游戏',
+    id: 'g3',
+    topCategory: 'game',
+    subCategory: '云顶之弈',
+    date: '2025-05-28',
+    content:
+      '第一次上大师！从钻石到大师卡了快两周，心态崩了无数次。总结下来关键是前期运营，血量健康才有容错。',
+    images: ['https://picsum.photos/seed/tft3/800/600'],
+  },
+
+  // ========== 游戏 — 植物大战僵尸 ==========
+  {
+    id: 'g4',
+    topCategory: 'game',
     subCategory: '植物大战僵尸',
     date: '2025-05-01',
     content:
@@ -131,92 +66,262 @@ export const lifeMoments: LifeMoment[] = [
     images: ['https://picsum.photos/seed/pvz1/800/600'],
   },
   {
-    id: 'h4',
-    type: 'hobby',
-    category: '游戏',
+    id: 'g5',
+    topCategory: 'game',
     subCategory: '植物大战僵尸',
     date: '2025-05-03',
     content:
       '解锁了全部金盏花，花园快种不下了。这游戏的收集要素做得真不错。',
     images: [],
   },
-
-  // ========== 爱好 — 游戏（GTA5） ==========
   {
-    id: 'h5',
-    type: 'hobby',
-    category: '游戏',
-    subCategory: 'GTA5',
-    date: '2025-03-20',
+    id: 'g6',
+    topCategory: 'game',
+    subCategory: '植物大战僵尸',
+    date: '2025-04-20',
     content:
-      '第一次线上模式抢银行，队里有个大哥带飞，分红拿了 120 万。洛圣都的夜景是真的棒。',
+      '迷你游戏全部通关，雪橇区那关真的恶心。接下来挑战禅境花园全植物。',
+    images: ['https://picsum.photos/seed/pvz2/800/600'],
+  },
+
+  // ========== 音乐 — 歌曲 ==========
+  {
+    id: 'm1',
+    topCategory: 'music',
+    subCategory: '歌曲',
+    date: '2025-06-12',
+    content:
+      '最近单曲循环《如愿》，王菲的声音太有穿透力了。"而我将爱你所爱的人间"这句词每次听都有新的感触。',
+    images: [],
+  },
+  {
+    id: 'm2',
+    topCategory: 'music',
+    subCategory: '歌曲',
+    date: '2025-05-20',
+    content:
+      '发现一个宝藏乐队——告五人。从《爱人错过》入坑，到《披星戴月的想你》，每首都戳中。',
+    images: ['https://picsum.photos/seed/music1/800/600'],
+  },
+  {
+    id: 'm3',
+    topCategory: 'music',
+    subCategory: '歌曲',
+    date: '2025-04-08',
+    content:
+      '周杰伦的新专辑循环了一周，还是熟悉的味道。虽然有人说江郎才尽，但我觉得能保持这个水准已经很不容易了。',
+    images: [],
+  },
+
+  // ========== 音乐 — 乐器 ==========
+  {
+    id: 'm4',
+    topCategory: 'music',
+    subCategory: '乐器',
+    date: '2025-06-10',
+    content:
+      '终于把《梦中的婚礼》完整弹下来了，虽然还有些磕磕绊绊，但算是今年的一个小成就。',
+    images: ['https://picsum.photos/seed/piano1/800/600'],
+  },
+  {
+    id: 'm5',
+    topCategory: 'music',
+    subCategory: '乐器',
+    date: '2025-01-15',
+    content:
+      '寒假在家练了两周音阶，手指灵活度明显提升了。新的一年希望能挑战更有难度的曲子，比如《月光奏鸣曲》第三乐章。',
+    images: [],
+  },
+  {
+    id: 'm6',
+    topCategory: 'music',
+    subCategory: '乐器',
+    date: '2024-12-01',
+    content:
+      '入手了一把尤克里里，比钢琴便携多了。先从《小星星》练起，和弦按得手疼但很有趣。',
+    images: ['https://picsum.photos/seed/ukulele1/800/600'],
+  },
+
+  // ========== 旅游 — 苏州 ==========
+  {
+    id: 't-sz',
+    topCategory: 'travel',
+    subCategory: '苏州',
+    date: '2024-04-15',
+    content:
+      '平江路的午后太惬意了，沿河的茶馆坐了一下午。拙政园的假山和池塘设计精妙，移步换景名不虚传。',
     images: [
-      'https://picsum.photos/seed/gta1/800/600',
-      'https://picsum.photos/seed/gta2/800/600',
+      'https://picsum.photos/seed/suzhou1/800/600',
+      'https://picsum.photos/seed/suzhou2/800/600',
     ],
-  },
-  {
-    id: 'h6',
-    type: 'hobby',
-    category: '游戏',
-    subCategory: 'GTA5',
-    date: '2025-04-05',
-    content:
-      '买了架喷气式飞机，在洛圣都上空瞎飞，结果撞了写字楼。这游戏的物理引擎太真实了。',
-    images: ['https://picsum.photos/seed/gta3/800/600'],
+    location: '苏州 · 平江路',
   },
 
-  // ========== 爱好 — 游戏（其他） ==========
+  // ========== 旅游 — 南京 ==========
   {
-    id: 'h7',
-    type: 'hobby',
-    category: '游戏',
-    subCategory: '塞尔达传说',
-    date: '2024-12-25',
+    id: 't-nj',
+    topCategory: 'travel',
+    subCategory: '南京',
+    date: '2024-03-20',
     content:
-      '塞尔达传说王国之泪通关了，神庙解谜和空岛探索的设计真的天花板级别。年度最佳实至名归。',
-    images: ['https://picsum.photos/seed/zelda1/800/600'],
+      '鸡鸣寺的樱花正值盛放，粉白色的花瓣落了一地。中山陵的台阶比想象中陡，登顶后的视野很开阔。',
+    images: ['https://picsum.photos/seed/nanjing1/800/600'],
+    location: '南京 · 鸡鸣寺',
   },
 
-  // ========== 爱好 — 摄影 ==========
+  // ========== 旅游 — 成都 ==========
   {
-    id: 'h8',
-    type: 'hobby',
-    category: '摄影',
-    date: '2025-02-14',
+    id: 't-cd',
+    topCategory: 'travel',
+    subCategory: '成都',
+    date: '2024-06-01',
     content:
-      '入手了一颗 50mm 定焦头，大光圈虚化效果太香了。周末去公园试拍了几张人像，锐度很惊喜。',
+      '成都的节奏真的慢，人民公园的茶馆里坐满了打牌喝茶的人。火锅太辣了，微辣就已经超出我的承受范围。',
     images: [
-      'https://picsum.photos/seed/photo1/800/600',
-      'https://picsum.photos/seed/photo2/800/600',
+      'https://picsum.photos/seed/chengdu1/800/600',
+      'https://picsum.photos/seed/chengdu2/800/600',
     ],
+    location: '成都 · 宽窄巷子',
+  },
+
+  // ========== 旅游 — 川西 ==========
+  {
+    id: 't-cx',
+    topCategory: 'travel',
+    subCategory: '川西',
+    date: '2023-10-05',
+    content:
+      '新都桥的秋叶美得不像话，稻城亚丁的牛奶海虽然爬得腿软但完全值得。高原反应比想象中轻，可能因为提前喝了红景天。',
+    images: [
+      'https://picsum.photos/seed/chuanxi1/800/600',
+      'https://picsum.photos/seed/chuanxi2/800/600',
+      'https://picsum.photos/seed/chuanxi3/800/600',
+    ],
+    location: '甘孜 · 稻城亚丁',
+  },
+
+  // ========== 旅游 — 重庆 ==========
+  {
+    id: 't-cq',
+    topCategory: 'travel',
+    subCategory: '重庆',
+    date: '2024-08-12',
+    content:
+      '8D魔幻城市名不虚传，导航显示步行10分钟实际爬了半小时楼梯。洪崖洞的夜景确实惊艳，但人也是真的多。',
+    images: ['https://picsum.photos/seed/chongqing1/800/600'],
+    location: '重庆 · 洪崖洞',
+  },
+
+  // ========== 旅游 — 合肥 ==========
+  {
+    id: 't-hf',
+    topCategory: 'travel',
+    subCategory: '合肥',
+    date: '2024-09-01',
+    content:
+      '来合肥参加电赛培训，顺便逛了逍遥津公园和淮河路步行街。中科大校园很安静，图书馆的氛围让人想好好学习。',
+    images: ['https://picsum.photos/seed/hefei1/800/600'],
+    location: '合肥 · 中科大',
+  },
+
+  // ========== 旅游 — 厦门 ==========
+  {
+    id: 't-xm',
+    topCategory: 'travel',
+    subCategory: '厦门',
+    date: '2024-07-20',
+    content:
+      '鼓浪屿的万国建筑值得慢慢逛，海边的日落很美。沙茶面味道独特，但姜母鸭才是最爱。',
+    images: [
+      'https://picsum.photos/seed/xiamen1/800/600',
+      'https://picsum.photos/seed/xiamen2/800/600',
+    ],
+    location: '厦门 · 鼓浪屿',
+  },
+
+  // ========== 旅游 — 广州 ==========
+  {
+    id: 't-gz',
+    topCategory: 'travel',
+    subCategory: '广州',
+    date: '2024-02-18',
+    content:
+      '早茶吃了虾饺、叉烧包、凤爪，撑到走不动路。广州塔的夜景不错，但更喜欢沙面的老建筑。',
+    images: ['https://picsum.photos/seed/guangzhou1/800/600'],
+    location: '广州 · 沙面',
+  },
+
+  // ========== 旅游 — 景德镇 ==========
+  {
+    id: 't-jdz',
+    topCategory: 'travel',
+    subCategory: '景德镇',
+    date: '2023-12-10',
+    content:
+      '在陶溪川市集淘到几个手工杯子，每个都不重样。陶瓷博物馆里的青花真的太精美了，古人审美在线。',
+    images: [
+      'https://picsum.photos/seed/jdz1/800/600',
+      'https://picsum.photos/seed/jdz2/800/600',
+    ],
+    location: '景德镇 · 陶溪川',
+  },
+
+  // ========== 旅游 — 武汉 ==========
+  {
+    id: 't-wh',
+    topCategory: 'travel',
+    subCategory: '武汉',
+    date: '2024-05-01',
+    content:
+      '过早文化名不虚传，热干面、豆皮、面窝连吃三天不重样。东湖绿道骑车很舒服，樱花季应该更美。',
+    images: ['https://picsum.photos/seed/wuhan1/800/600'],
+    location: '武汉 · 东湖',
+  },
+
+  // ========== 旅游 — 青岛 ==========
+  {
+    id: 't-qd',
+    topCategory: 'travel',
+    subCategory: '青岛',
+    date: '2024-08-01',
+    content:
+      '青岛的夏天太舒服了，海风凉凉的。啤酒博物馆值得去，原浆啤酒口感和国内常见的完全不同。',
+    images: [
+      'https://picsum.photos/seed/qingdao1/800/600',
+      'https://picsum.photos/seed/qingdao2/800/600',
+    ],
+    location: '青岛 · 栈桥',
+  },
+
+  // ========== 旅游 — 温州 ==========
+  {
+    id: 't-wz',
+    topCategory: 'travel',
+    subCategory: '温州',
+    date: '2023-11-05',
+    content:
+      '雁荡山的灵峰夜景很神奇，白天和晚上看完全是两座山。温州小吃糯米饭和灯盏糕都很好吃。',
+    images: ['https://picsum.photos/seed/wenzhou1/800/600'],
+    location: '温州 · 雁荡山',
   },
 ];
 
-/** 旅游地点列表 */
-export const travelCategories = [
-  ...new Set(
-    lifeMoments
-      .filter((m) => m.type === 'travel')
-      .map((m) => m.category)
-  ),
-];
-
-/** 爱好大类列表 */
-export const hobbyCategories = [
-  ...new Set(
-    lifeMoments
-      .filter((m) => m.type === 'hobby')
-      .map((m) => m.category)
-  ),
-];
-
-/** 游戏子分类列表 */
-export const gameSubCategories = [
-  ...new Set(
-    lifeMoments
-      .filter((m) => m.type === 'hobby' && m.category === '游戏')
-      .map((m) => m.subCategory)
-      .filter(Boolean)
-  ),
-] as string[];
+/** 各一级分类下的子分类 */
+export const subCategoryMap: Record<TopCategory, string[]> = {
+  game: ['云顶之弈', '植物大战僵尸'],
+  music: ['歌曲', '乐器'],
+  travel: [
+    '苏州',
+    '南京',
+    '成都',
+    '川西',
+    '重庆',
+    '合肥',
+    '厦门',
+    '广州',
+    '景德镇',
+    '武汉',
+    '青岛',
+    '温州',
+  ],
+};
