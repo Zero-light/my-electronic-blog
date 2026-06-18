@@ -1,1 +1,14 @@
-{}
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/life/essays/page": "app/life/essays/page.js",
+  "/about/page": "app/about/page.js",
+  "/life/page": "app/life/page.js",
+  "/page": "app/page.js",
+  "/life/gallery/page": "app/life/gallery/page.js",
+  "/notes/page": "app/notes/page.js",
+  "/projects/page": "app/projects/page.js",
+  "/resume/page": "app/resume/page.js",
+  "/life/essays/[slug]/page": "app/life/essays/[slug]/page.js",
+  "/notes/[slug]/page": "app/notes/[slug]/page.js",
+  "/projects/[slug]/page": "app/projects/[slug]/page.js"
+}

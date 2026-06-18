@@ -1,4 +1,4 @@
-import { Mail, Github, MapPin, GraduationCap, Briefcase, Target } from 'lucide-react';
+import { Mail, Github, MapPin, GraduationCap, Briefcase, Target, Phone } from 'lucide-react';
 import { Timeline } from '@/components/timeline';
 import { SkillBar } from '@/components/skill-bar';
 import { profile } from '@/content/data/profile';
@@ -9,6 +9,7 @@ export default function AboutPage() {
     date: edu.period,
     title: `${edu.school} · ${edu.major}`,
     subtitle: edu.degree,
+    description: edu.description,
   }));
 
   const experienceItems = profile.experience.map((exp) => ({
@@ -37,15 +38,21 @@ export default function AboutPage() {
             <Mail className="h-4 w-4" />
             {profile.email}
           </a>
-          <a
-            href={profile.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 transition-colors hover:text-primary"
-          >
-            <Github className="h-4 w-4" />
-            GitHub
-          </a>
+          <span className="inline-flex items-center gap-1">
+            <Phone className="h-4 w-4" />
+            {profile.phone}
+          </span>
+          {profile.github && (
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 transition-colors hover:text-primary"
+            >
+              <Github className="h-4 w-4" />
+              GitHub
+            </a>
+          )}
           <span className="inline-flex items-center gap-1">
             <MapPin className="h-4 w-4" />
             {profile.location}
@@ -73,11 +80,11 @@ export default function AboutPage() {
         <Timeline items={educationItems} />
       </section>
 
-      {/* 实习经历 */}
+      {/* 项目经历 */}
       <section className="space-y-4">
         <div className="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-slate-100">
           <Briefcase className="h-5 w-5 text-primary" />
-          实习经历
+          项目经历
         </div>
         <Timeline items={experienceItems} />
       </section>
@@ -88,6 +95,24 @@ export default function AboutPage() {
           专业技能
         </div>
         <SkillBar categories={skillCategories} />
+      </section>
+
+      {/* 荣誉证书 */}
+      <section className="space-y-4">
+        <div className="flex items-center gap-2 text-xl font-bold text-slate-900 dark:text-slate-100">
+          荣誉证书
+        </div>
+        <ul className="grid gap-2 sm:grid-cols-2">
+          {profile.honors.map((honor) => (
+            <li
+              key={honor}
+              className="flex items-center gap-2 rounded-lg border border-border bg-bg-soft px-4 py-2 text-sm text-slate-700 dark:text-slate-300"
+            >
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+              {honor}
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   );

@@ -47,7 +47,7 @@ export function Timeline({ items, className }: TimelineProps) {
                 <p className="text-sm text-text-muted">{item.subtitle}</p>
               )}
               {item.description && (
-                <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                   {item.description}
                 </p>
               )}

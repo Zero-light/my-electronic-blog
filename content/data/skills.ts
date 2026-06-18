@@ -16,39 +16,39 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
   {
-    title: '硬件设计',
+    title: '嵌入式软件开发',
     items: [
-      { name: 'Altium Designer / PCB Layout', level: 85 },
-      { name: '电源拓扑（Buck / Boost / LDO）', level: 80 },
-      { name: '信号完整性分析与仿真', level: 70 },
-      { name: '示波器 / 频谱仪 / 逻辑分析仪', level: 90 },
+      { name: 'STM32 HAL / 标准库开发', level: 90 },
+      { name: 'FreeRTOS 任务调度与同步机制', level: 85 },
+      { name: 'ADC / DAC / PWM / DMA / 串口外设配置', level: 88 },
+      { name: '嵌入式 C 语言与模块化编程', level: 92 },
     ],
   },
   {
-    title: '嵌入式软件',
+    title: '硬件设计与电源闭环',
     items: [
-      { name: 'STM32 HAL / LL 库开发', level: 88 },
-      { name: 'ARM Cortex-M 裸机 / RTOS', level: 82 },
-      { name: '通信协议（SPI / I2C / UART / CAN）', level: 85 },
-      { name: '嵌入式 Linux 驱动', level: 60 },
+      { name: 'Altium Designer / 双层 PCB 设计', level: 85 },
+      { name: '运放负反馈闭环 / CV/CC 恒压恒流环路', level: 82 },
+      { name: '差分采样 / 密勒补偿 / 信号调理', level: 80 },
+      { name: '地平面分割 / EMI 抑制 / 防自激设计', level: 78 },
     ],
   },
   {
-    title: '软件开发与工具',
+    title: '通信协议与外设驱动',
     items: [
-      { name: 'C / C++', level: 90 },
-      { name: 'Python（自动化测试 / 数据分析）', level: 78 },
-      { name: 'Git / CI-CD', level: 75 },
-      { name: 'MATLAB / Simulink', level: 65 },
+      { name: 'UART / I2C / SPI 基础通信', level: 90 },
+      { name: 'RS485 Modbus RTU / W5500 TCP 客户端', level: 75 },
+      { name: '串口屏 / 语音 / 超声波 / NTC / 编码器', level: 82 },
+      { name: '串口协议帧解析 / 空闲超时断帧', level: 78 },
     ],
   },
   {
-    title: '辅助工具与技能',
+    title: '电机控制与调试工具',
     items: [
-      { name: 'LTspice / PSpice 电路仿真', level: 80 },
-      { name: 'LaTeX 技术文档排版', level: 70 },
-      { name: 'FPGA Verilog / VHDL', level: 55 },
-      { name: '3D 建模（SolidWorks / Fusion）', level: 50 },
+      { name: '串级 PID / 积分分离 / 平滑调速', level: 85 },
+      { name: 'L298N / TB6612 驱动与编码器测速', level: 82 },
+      { name: 'Keil MDK / Proteus / MATLAB', level: 80 },
+      { name: '示波器 / 万用表 / 硬件故障排查', level: 88 },
     ],
   },
 ];

@@ -1,0 +1,190 @@
+---
+title: 基于 FreeRTOS 的自主导航车
+slug: freertos-nav-car
+date: 2026-04-15
+tags: ['STM32', 'FreeRTOS', 'PID', '电机控制', '超声波', '语音交互']
+category: 嵌入式小车
+description: 基于 STM32 与 FreeRTOS 的多任务自主导航小车，集成循迹、避障、离线语音交互与电机闭环控制，采用串级 PID + 积分分离算法实现稳定巡迹。
+period: 2026.02 – 2026.04
+hardware:
+  - STM32F103C8T6
+  - L298N / TB6612 电机驱动
+  - HC-SR04 超声波模块 × 3
+  - 红外循迹传感器阵列
+  - 离线语音模块
+  - 编码器测速
+software:
+  - Keil MDK
+  - FreeRTOS
+  - 标准库开发
+  - 串级 PID 控制器
+cover: /images/projects/nav_car_cover.jpg
+---
+
+## 项目概述
+
+本项目为校级嵌入式设计竞赛参赛作品，设计了一款基于 **STM32 + FreeRTOS** 的自主导航小车。系统集成了循迹、多方位超声波避障、离线语音交互与电机闭环控制功能，通过合理的 RTOS 任务划分与串级 PID 控制，实现了复杂场景下的稳定运行。
+
+核心指标：
+
+- 控制周期：10 ms（100 Hz）
+- 循迹精度：中心线偏差 < 5 mm
+- 避障响应：检测距离 2 cm ~ 400 cm
+- 语音指令识别率：> 90%（安静环境）
+
+## 系统架构
+
+```
+┌─────────────────────────────────────────────┐
+│              FreeRTOS 内核                    │
+│  ┌─────────┐ ┌─────────┐ ┌──────────────┐  │
+│  │ 循迹任务 │ │ 避障任务 │ │  语音交互任务 │  │
+│  │ 高优先级 │ │ 中优先级 │ │   中优先级    │  │
+│  └────┬────┘ └────┬────┘ └──────┬───────┘  │
+│       │           │             │           │
+│  ┌────┴────┐ ┌────┴────┐ ┌──────┴───────┐  │
+│  │ 电机控制 │ │ 状态机  │ │   指令解析    │  │
+│  │ 任务    │ │ 管理    │ │              │  │
+│  └────┬────┘ └────┬────┘ └──────┬───────┘  │
+│       └───────────┴─────────────┘           │
+│              消息队列 + 事件组               │
+└─────────────────────────────────────────────┘
+```
+
+## FreeRTOS 多任务设计
+
+### 任务划分
+
+| 任务 | 优先级 | 周期 | 职责 |
+|------|--------|------|------|
+| 循迹任务 | 3（高） | 10 ms | 读取红外阵列，计算偏差 |
+| 避障任务 | 2（中） | 50 ms | 超声波测距，决策避障策略 |
+| 语音交互任务 | 2（中） | 100 ms | 解析语音指令，发布控制事件 |
+| 电机控制任务 | 3（高） | 10 ms | 串级 PID 更新，输出 PWM |
+| 状态显示任务 | 1（低） | 200 ms | OLED 刷新、LED 指示 |
+
+### 消息队列与阻塞唤醒
+
+采用 **消息队列** 替代传统轮询，传感器数据通过队列投递至控制任务：
+
+```c
+/* 传感器数据队列 */
+QueueHandle_t xSensorQueue;
+xSensorQueue = xQueueCreate(10, sizeof(SensorData_t));
+
+/* 循迹任务：采样后入队 */
+void TrackTask(void *pvParameters) {
+    SensorData_t data;
+    while (1) {
+        data.error = ReadTrackSensor();
+        xQueueSend(xSensorQueue, &data, portMAX_DELAY);
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+}
+
+/* 电机控制任务：阻塞等待队列数据 */
+void MotorControlTask(void *pvParameters) {
+    SensorData_t data;
+    while (1) {
+        if (xQueueReceive(xSensorQueue, &data, portMAX_DELAY)) {
+            PID_Update(&pid, data.error);
+            SetMotorPWM(pid.output);
+        }
+    }
+}
+```
+
+## 串级 PID 控制器
+
+### 双环结构
+
+- **外环（位置环）**：以循迹偏差为输入，输出目标速度
+- **内环（速度环）**：以编码器测速为反馈，输出 PWM 占空比
+
+```c
+typedef struct {
+    float Kp, Ki, Kd;
+    float err, err_last;
+    float integral;
+    float output_max;
+    uint8_t integral_separate;  /* 积分分离标志 */
+} PID_Controller;
+
+float PID_Update(PID_Controller *pid, float setpoint, float feedback)
+{
+    float err = setpoint - feedback;
+
+    /* 积分分离：大偏差时不积分，消除超调 */
+    if (fabs(err) < INTEGRAL_THRESHOLD) {
+        pid->integral += err;
+    } else {
+        pid->integral = 0;
+    }
+
+    float output = pid->Kp * err
+                 + pid->Ki * pid->integral
+                 + pid->Kd * (err - pid->err_last);
+
+    pid->err_last = err;
+    return constrain(output, -pid->output_max, pid->output_max);
+}
+```
+
+### 积分分离效果
+
+| 工况 | 无积分分离 | 有积分分离 |
+|------|-----------|-----------|
+| 直道起步 | 超调 15% | 超调 3% |
+| 低速弯道 | 等幅振荡 | 稳定跟踪 |
+| 急弯切换 | 脱线率 20% | 脱线率 5% |
+
+## 避障与多指令冲突处理
+
+### 平滑调速策略
+
+避障时不是直接关断 PWM，而是采用 **渐进减速 + 转向绕行**：
+
+```c
+void ObstacleAvoidance(float distance) {
+    if (distance < 10.0f) {
+        target_speed *= 0.3f;   /* 急刹减速 */
+        steering = EMERGENCY_TURN;
+    } else if (distance < 30.0f) {
+        target_speed *= 0.6f;   /* 平滑减速 */
+        steering = GENTLE_TURN;
+    }
+}
+```
+
+### 新指令覆盖策略
+
+语音指令与自动循迹/避障可能产生冲突，采用 **有限状态机（FSM）** 管理模式优先级：
+
+```
+        ┌─────────┐
+   ┌───▶│  待机   │◀───┐
+   │    └────┬────┘    │
+   │         │ 语音启动 │
+   │         ▼         │
+   │    ┌─────────┐    │
+   └────│  循迹   │────┘
+        └────┬────┘
+             │ 检测到障碍
+             ▼
+        ┌─────────┐
+   ┌───▶│  避障   │────┐
+   │    └─────────┘    │
+   │         │         │
+   └─────────┴─────────┘
+```
+
+- 语音指令具有最高优先级，可强制切换状态
+- 避障完成后自动恢复循迹
+- 新指令覆盖旧指令，避免队列堆积
+
+## 项目成果
+
+- 小车支持离线语音控制（前进/后退/左转/右转/停止）
+- 三方位超声波实现多角度避障，无盲区
+- 循迹稳定，直道与弯道切换流畅
+- **获校级嵌入式设计竞赛一等奖**

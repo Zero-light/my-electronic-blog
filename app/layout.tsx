@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   description:
     '面向电子信息/嵌入式工程师的个人网站，涵盖学习笔记、项目作品、生活随笔与在线简历。',
   keywords: ['嵌入式', '电子信息', '硬件设计', '作品集', '个人网站'],
-  authors: [{ name: '零光' }],
-  creator: '零光',
+  authors: [{ name: '任炳宇' }],
+  creator: '任炳宇',
   metadataBase: new URL('https://example.com'),
   openGraph: {
     type: 'website',
@@ -70,15 +70,15 @@ export default function RootLayout({
           }}
           footer={{
             links: [
-              { label: 'GitHub', href: 'https://github.com' },
-              { label: '邮箱', href: 'mailto:example@example.com' },
+              { label: 'GitHub', href: 'https://github.com/Zero-light/my-electronic-blog' },
+              { label: '邮箱', href: 'mailto:16696536769@163.com' },
             ],
             center: (
               <span>
                 最后更新：{new Date().toLocaleDateString('zh-CN')}
               </span>
             ),
-            copyright: `© ${new Date().getFullYear()} 零光 版权所有`,
+            copyright: `© ${new Date().getFullYear()} 任炳宇 版权所有`,
             disclaimer: '本站所有内容仅供学习交流，转载请注明出处。',
           }}
         >

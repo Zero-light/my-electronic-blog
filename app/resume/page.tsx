@@ -1,4 +1,4 @@
-import { Mail, Github, MapPin, GraduationCap, Briefcase, Target } from 'lucide-react';
+import { Mail, Github, MapPin, GraduationCap, Briefcase, Target, Phone, Award } from 'lucide-react';
 import { Timeline } from '@/components/timeline';
 import { SkillBar } from '@/components/skill-bar';
 import { ResumeActions } from '@/components/resume-actions';
@@ -10,6 +10,7 @@ export default function ResumePage() {
     date: edu.period,
     title: `${edu.school} · ${edu.major}`,
     subtitle: edu.degree,
+    description: edu.description,
   }));
 
   const experienceItems = profile.experience.map((exp) => ({
@@ -34,13 +35,19 @@ export default function ResumePage() {
           <p className="text-primary font-medium">{profile.title}</p>
           <div className="flex flex-wrap gap-4 text-sm text-text-muted print:text-gray-600">
             <span className="inline-flex items-center gap-1">
+              <Phone className="h-4 w-4" />
+              {profile.phone}
+            </span>
+            <span className="inline-flex items-center gap-1">
               <Mail className="h-4 w-4" />
               {profile.email}
             </span>
-            <span className="inline-flex items-center gap-1">
-              <Github className="h-4 w-4" />
-              {profile.github.replace('https://', '')}
-            </span>
+            {profile.github && (
+              <span className="inline-flex items-center gap-1">
+                <Github className="h-4 w-4" />
+                {profile.github.replace('https://', '')}
+              </span>
+            )}
             <span className="inline-flex items-center gap-1">
               <MapPin className="h-4 w-4" />
               {profile.location}
@@ -68,11 +75,11 @@ export default function ResumePage() {
           <Timeline items={educationItems} />
         </section>
 
-        {/* 实习经历 */}
+        {/* 项目经历 */}
         <section className="space-y-3">
           <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100 print:text-black">
             <Briefcase className="h-4 w-4 text-primary" />
-            实习经历
+            项目经历
           </h2>
           <Timeline items={experienceItems} />
         </section>
@@ -83,6 +90,25 @@ export default function ResumePage() {
             专业技能
           </h2>
           <SkillBar categories={skillCategories} />
+        </section>
+
+        {/* 荣誉证书 */}
+        <section className="space-y-3">
+          <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100 print:text-black">
+            <Award className="h-4 w-4 text-primary" />
+            荣誉证书
+          </h2>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {profile.honors.map((honor) => (
+              <div
+                key={honor}
+                className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 print:text-gray-800"
+              >
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                {honor}
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* 自我评价 */}

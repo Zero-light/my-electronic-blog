@@ -39,18 +39,18 @@ export default function HomePage() {
           className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full text-3xl font-bold text-white"
           style={{ backgroundColor: 'var(--primary)' }}
         >
-          E
+          任
         </div>
 
         <div className="space-y-3">
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            你好，我是 <span className="text-primary">EIE 工程师</span>
+            你好，我是 <span className="text-primary">任炳宇</span>
           </h1>
           <p className="text-sm font-medium text-sky-600 dark:text-sky-400">
             电子信息工程 · 嵌入式系统与电源设计方向
           </p>
           <p className="max-w-2xl leading-relaxed text-slate-600 dark:text-slate-400">
-            热爱从晶体管到系统的全栈硬件开发，专注于高效开关电源、精密信号链与嵌入式固件设计。
+            具备软硬件一体化开发能力的嵌入式工程师，专注于 STM32 嵌入式固件、高效电源闭环控制与精密信号链设计。
             这里是我在学习与工程实践中的知识沉淀、项目复盘与生活记录。
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">

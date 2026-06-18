@@ -8,6 +8,7 @@ export interface Education {
   major: string;
   degree: string;
   period: string;
+  description?: string;
 }
 
 export interface Experience {
@@ -21,46 +22,67 @@ export interface Profile {
   name: string;
   title: string;
   email: string;
+  phone: string;
   github: string;
   location: string;
   education: Education[];
   experience: Experience[];
   summary: string;
   objective: string;
+  honors: string[];
 }
 
 export const profile: Profile = {
-  name: 'EIE 工程师',
-  title: '电子信息工程 · 嵌入式系统与电源设计',
-  email: 'example@example.com',
-  github: 'https://github.com',
-  location: '中国',
+  name: '任炳宇',
+  title: '嵌入式开发工程师 · 电子信息工程',
+  email: '16696536769@163.com',
+  phone: '16696536769',
+  github: 'https://github.com/Zero-light/my-electronic-blog',
+  location: '中国 · 河南',
   summary:
-    '热爱从晶体管到系统的全栈硬件开发，专注于高效开关电源、精密信号链与嵌入式固件设计。具备完整的硬件项目经验：从需求分析、方案论证、PCB Layout 到固件开发、调试验证。熟悉 STM32 生态、多种电源拓扑与常见通信协议。',
+    '具备软硬件一体化开发能力的嵌入式工程师，熟练掌握 STM32 全系列 MCU 开发与 FreeRTOS 实时调度，精通模拟电源闭环控制、差分采样与双层 PCB 设计。拥有从需求分析、原理图设计、器件选型、PCB Layout、固件开发到整机调试的完整项目闭环经验。擅长电源测控、电机控制与多传感器数据融合，代码风格注重分层模块化，硬件设计注重信号完整性与环路稳定性。工作严谨，学习适应能力强，具备良好的团队协作意识。',
   objective:
-    '寻求嵌入式硬件 / 电源工程师岗位，期待在高效能电源、精密测控或工业自动化领域深耕发展。',
+    '寻求嵌入式开发 / 硬件测控相关岗位，期待在电源管理、电机控制或工业自动化领域深耕，持续发挥软硬件协同设计优势。',
   education: [
     {
-      school: '某某大学',
+      school: '信阳师范大学',
       major: '电子信息工程',
       degree: '本科',
-      period: '2022.09 – 2026.06',
+      period: '2023.09 – 2027.06',
+      description:
+        'GPA：3.41 / 4.0（专业前 15%）\n主修课程：电路原理、模拟电子技术、数字电子技术、C 语言程序设计、单片机原理及应用、微机原理、PCB 设计基础',
     },
   ],
   experience: [
     {
-      company: '某电子科技公司',
-      role: '硬件研发实习生',
-      period: '2025.03 – 2025.08',
+      company: '个人项目',
+      role: '基于 FreeRTOS 的自主导航车',
+      period: '2026.02 – 2026.04',
       description:
-        '参与数控电源模块研发，负责 Buck 变换器环路补偿设计、PCB Layout 与 STM32 数字控制固件开发。完成电源效率优化与动态负载测试。',
+        '基于 FreeRTOS 完成多任务优先级划分，拆分循迹、避障、语音交互、电机控制 5 个任务，采用消息队列+阻塞唤醒替代轮询，显著降低系统延迟；设计外环位置环+内环速度环串级 PID，引入积分分离算法消除低速等幅振荡；多传感器数据融合，避障时平滑调速，有限状态机管理多模式切换。获校级嵌入式设计竞赛一等奖。',
     },
     {
-      company: '某智能硬件实验室',
-      role: '嵌入式开发实习生',
-      period: '2024.07 – 2024.12',
+      company: '独立项目',
+      role: '数控 CV/CC 线性稳压电源 + 线性电子负载测控平台',
+      period: '2025.11 – 2026.02',
       description:
-        '负责传感器采集系统的嵌入式软件开发，实现多通道 ADC 采样、数字滤波算法与 SPI/I2C 外设驱动。完成硬件-软件联调与可靠性测试。',
+        '独立完成 0~12V/2A 数控电源与 0~2A/40W 线性电子负载全套原理图设计、器件选型、双层 PCB 绘制与 BOM 整理；设计 CV/CC 双运放闭环反馈与 47pF 密勒相位补偿，实现自动恒压/恒流无缝切换；电子负载采用 N-MOS 线性架构，15 倍差分放大采样提升 0.1Ω 小电阻分辨率；完整的地平面分层与多重硬件保护（防反接、过流、TVS、NTC 温控）。嵌入式软件基于 FreeRTOS 多任务调度，实现采样、交互、显示、保护分层，软硬件协同完成多重保护一体化平台。',
     },
+    {
+      company: '全国大学生电子设计竞赛',
+      role: '基于单目视觉的目标物测量装置 · 硬件负责人',
+      period: '2025.07 – 2025.08',
+      description:
+        '负责整机硬件方案设计，包括多路稳压电源、图像传感器供电、信号采样与串口外设接口；独立绘制双层 PCB 并完成贴片焊接，使用示波器排查电源纹波与信号干扰；开发串口屏 UI 实时展示测距与尺寸测量数据，配合软件团队完成软硬件联调校准。获全国大学生电子设计竞赛河南省三等奖。',
+    },
+  ],
+  honors: [
+    '2026 校级嵌入式设计竞赛一等奖',
+    '2026 校级科研创新项目顺利结项',
+    '2025 全国大学生电子设计竞赛河南省三等奖',
+    '2025 校级嵌入式开发竞赛二等奖',
+    '2025 校级三等奖学金',
+    '2025 全国计算机二级（MS Office）',
+    '普通话二级乙等',
   ],
 };
