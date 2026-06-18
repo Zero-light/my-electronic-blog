@@ -2,8 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Layout } from '@/components/ui/layout';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { ReadingProgress } from '@/components/reading-progress';
-import { SearchBox } from '@/components/search-box';
-import { buildSearchIndex } from '@/lib/search-index';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -48,8 +46,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const searchIndex = buildSearchIndex();
-
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
@@ -65,7 +61,6 @@ export default function RootLayout({
             items: navItems,
             right: (
               <div className="flex items-center gap-2">
-                <SearchBox index={searchIndex} />
                 <ThemeToggle />
               </div>
             ),
