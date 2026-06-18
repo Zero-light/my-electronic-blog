@@ -10,10 +10,12 @@ import {
 } from '@/content/data/life-moments';
 import { MomentCard } from '@/components/moment-card';
 import { cn } from '@/lib/utils';
-import { Plane, Gamepad2 } from 'lucide-react';
+import { Plane, Gamepad2, BookOpen } from 'lucide-react';
+import { books } from '@/content/data/books';
+import { BookCard } from '@/components/book-card';
 
 export default function LifePage() {
-  const [activeTab, setActiveTab] = useState<MomentType>('travel');
+  const [activeTab, setActiveTab] = useState<MomentType | 'reading'>('travel');
   const [activeCategory, setActiveCategory] = useState<string>('全部');
   const [activeSubCategory, setActiveSubCategory] = useState<string>('全部');
 
@@ -41,7 +43,7 @@ export default function LifePage() {
   }, [activeTab, activeCategory, activeSubCategory]);
 
   // 切换 tab 时重置分类
-  const handleTabChange = (tab: MomentType) => {
+  const handleTabChange = (tab: MomentType | 'reading') => {
     setActiveTab(tab);
     setActiveCategory('全部');
     setActiveSubCategory('全部');
@@ -68,7 +70,7 @@ export default function LifePage() {
           <div className="text-white">
             <h1 className="text-xl font-bold drop-shadow-md sm:text-2xl">生活记录</h1>
             <p className="mt-0.5 text-xs text-white/90 drop-shadow">
-              旅游、爱好与日常点滴
+              旅游、爱好、阅读与日常点滴
             </p>
           </div>
           <div className="flex h-14 w-14 items-center justify-center rounded-xl border-2 border-white bg-primary text-lg font-bold text-white shadow-lg sm:h-16 sm:w-16 sm:text-xl">
@@ -105,84 +107,112 @@ export default function LifePage() {
           <Gamepad2 className="h-4 w-4" />
           爱好
         </button>
-      </div>
-
-      {/* 主分类筛选 */}
-      <div className="mb-3 flex flex-wrap gap-2">
         <button
           type="button"
-          onClick={() => handleCategoryChange('全部')}
+          onClick={() => handleTabChange('reading')}
           className={cn(
-            'rounded-full px-3 py-1 text-sm font-medium transition-colors',
-            activeCategory === '全部'
-              ? 'bg-primary text-white'
-              : 'bg-bg-soft text-text-muted hover:bg-border hover:text-text'
+            'flex items-center gap-1.5 border-b-2 px-3 py-2 text-sm font-medium transition-colors',
+            activeTab === 'reading'
+              ? 'border-primary text-primary'
+              : 'border-transparent text-text-muted hover:text-text'
           )}
         >
-          全部
+          <BookOpen className="h-4 w-4" />
+          阅读
         </button>
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            type="button"
-            onClick={() => handleCategoryChange(cat)}
-            className={cn(
-              'rounded-full px-3 py-1 text-sm font-medium transition-colors',
-              activeCategory === cat
-                ? 'bg-primary text-white'
-                : 'bg-bg-soft text-text-muted hover:bg-border hover:text-text'
-            )}
-          >
-            {cat}
-          </button>
-        ))}
       </div>
 
-      {/* 游戏子分类筛选（仅在爱好-游戏下显示） */}
-      {activeTab === 'hobby' && activeCategory === '游戏' && (
-        <div className="mb-4 flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setActiveSubCategory('全部')}
-            className={cn(
-              'rounded-full px-3 py-1 text-xs font-medium transition-colors',
-              activeSubCategory === '全部'
-                ? 'bg-accent text-white'
-                : 'bg-bg-soft text-text-muted hover:bg-border hover:text-text'
-            )}
-          >
-            全部
-          </button>
-          {gameSubCategories.map((sub) => (
+      {/* 主分类筛选（仅旅游/爱好） */}
+      {activeTab !== 'reading' && (
+        <>
+          <div className="mb-3 flex flex-wrap gap-2">
             <button
-              key={sub}
               type="button"
-              onClick={() => setActiveSubCategory(sub)}
+              onClick={() => handleCategoryChange('全部')}
               className={cn(
-                'rounded-full px-3 py-1 text-xs font-medium transition-colors',
-                activeSubCategory === sub
-                  ? 'bg-accent text-white'
+                'rounded-full px-3 py-1 text-sm font-medium transition-colors',
+                activeCategory === '全部'
+                  ? 'bg-primary text-white'
                   : 'bg-bg-soft text-text-muted hover:bg-border hover:text-text'
               )}
             >
-              {sub}
+              全部
             </button>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => handleCategoryChange(cat)}
+                className={cn(
+                  'rounded-full px-3 py-1 text-sm font-medium transition-colors',
+                  activeCategory === cat
+                    ? 'bg-primary text-white'
+                    : 'bg-bg-soft text-text-muted hover:bg-border hover:text-text'
+                )}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* 游戏子分类筛选（仅在爱好-游戏下显示） */}
+          {activeTab === 'hobby' && activeCategory === '游戏' && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => setActiveSubCategory('全部')}
+                className={cn(
+                  'rounded-full px-3 py-1 text-xs font-medium transition-colors',
+                  activeSubCategory === '全部'
+                    ? 'bg-accent text-white'
+                    : 'bg-bg-soft text-text-muted hover:bg-border hover:text-text'
+                )}
+              >
+                全部
+              </button>
+              {gameSubCategories.map((sub) => (
+                <button
+                  key={sub}
+                  type="button"
+                  onClick={() => setActiveSubCategory(sub)}
+                  className={cn(
+                    'rounded-full px-3 py-1 text-xs font-medium transition-colors',
+                    activeSubCategory === sub
+                      ? 'bg-accent text-white'
+                      : 'bg-bg-soft text-text-muted hover:bg-border hover:text-text'
+                  )}
+                >
+                  {sub}
+                </button>
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* 阅读板块 */}
+      {activeTab === 'reading' && (
+        <div className="flex flex-col gap-4">
+          {books.map((book) => (
+            <BookCard key={book.slug} book={book} />
           ))}
         </div>
       )}
 
-      {/* 动态列表 */}
-      <div className="divide-y divide-border">
-        {filteredMoments.length > 0 ? (
-          filteredMoments.map((moment) => (
-            <MomentCard key={moment.id} moment={moment} />
-          ))
-        ) : (
-          <div className="py-16 text-center text-text-muted">
-            该分类下暂无动态
-          </div>
-        )}
-      </div>
+      {/* 动态列表（旅游/爱好） */}
+      {activeTab !== 'reading' && (
+        <div className="divide-y divide-border">
+          {filteredMoments.length > 0 ? (
+            filteredMoments.map((moment) => (
+              <MomentCard key={moment.id} moment={moment} />
+            ))
+          ) : (
+            <div className="py-16 text-center text-text-muted">
+              该分类下暂无动态
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
