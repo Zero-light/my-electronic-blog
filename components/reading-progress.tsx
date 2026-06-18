@@ -27,7 +27,7 @@ export function ReadingProgress() {
 
   return (
     <div
-      className="fixed left-0 top-0 z-[60] h-[2px] w-full origin-left will-change-transform"
+      className="fixed left-0 bottom-0 z-[60] h-[2px] w-full origin-left will-change-transform"
       style={{
         background: 'linear-gradient(90deg, var(--primary), var(--accent))',
         transform: `scaleX(${progress / 100})`,

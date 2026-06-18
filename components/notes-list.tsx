@@ -20,10 +20,10 @@ export interface NotesListProps {
 }
 
 /**
- * 笔记列表客户端组件
+ * 笔记列表客户端组件（列排列）
  * - 标签多选筛选
  * - 加载更多（前端分页）
- * - 切换标签时重置可见数量
+ * - 单列纵向列表布局
  */
 export function NotesList({
   notes,
@@ -56,7 +56,7 @@ export function NotesList({
   };
 
   return (
-    <div className={cn('space-y-8', className)}>
+    <div className={cn('space-y-6', className)}>
       <TagFilter
         tags={allTags}
         selected={selectedTags}
@@ -65,7 +65,8 @@ export function NotesList({
 
       {visible.length > 0 ? (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* 单列列表布局 */}
+          <div className="flex flex-col gap-3">
             {visible.map((note) => (
               <NoteCard key={note.slug} note={note} />
             ))}

@@ -1,14 +1,7 @@
 import Link from 'next/link';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { formatDate } from '@/lib/utils';
 import { NoteMeta } from '@/lib/mdx';
-import { Calendar, Tag } from 'lucide-react';
+import { Calendar, Tag, ArrowRight } from 'lucide-react';
 
 export interface NoteCardProps {
   note: NoteMeta;
@@ -16,11 +9,11 @@ export interface NoteCardProps {
 }
 
 /**
- * 笔记卡片组件
- * - 展示封面图、标题、日期、标签、简介
- * - 复用现有 Card 组件，启用 hover 上浮动效
- * - 封面图在 hover 时轻微放大
- * - 全卡片可点击，链接到笔记详情页
+ * 笔记列表项组件（列排列）
+ * - 横向布局，单列展开
+ * - 左侧日期突出展示
+ * - 中间标题 + 描述
+ * - 右侧箭头
  */
 export function NoteCard({ note, className }: NoteCardProps) {
   return (
@@ -28,42 +21,52 @@ export function NoteCard({ note, className }: NoteCardProps) {
       href={`/notes/${note.slug}/`}
       className={className}
     >
-      <Card hover className="group h-full flex flex-col">
-        {/* 封面图 */}
-        {note.cover && (
-          <div className="relative aspect-video overflow-hidden rounded-t-xl">
-            <img
-              src={note.cover}
-              alt={note.title}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
-          </div>
-        )}
-
-        <CardHeader className="flex-1">
-          <CardTitle className="line-clamp-2 text-base">
-            {note.title}
-          </CardTitle>
-          <CardDescription className="line-clamp-2">
-            {note.description || '暂无描述'}
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent className="pt-0">
-          <div className="flex flex-wrap items-center gap-3 text-xs text-text-muted">
-            <span className="flex items-center gap-1">
-              <Calendar className="h-3 w-3" />
-              {formatDate(note.date)}
+      <article className="group flex flex-col gap-3 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-sm sm:flex-row sm:items-start sm:gap-5">
+        {/* 左侧日期区 */}
+        <div className="flex shrink-0 flex-row items-center gap-2 sm:w-32 sm:flex-col sm:items-start sm:gap-1">
+          <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
+            <Calendar className="h-3.5 w-3.5" />
+            {formatDate(note.date)}
+          </span>
+          {note.category && (
+            <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[0.7rem] text-primary">
+              {note.category}
             </span>
-            {note.tags.length > 0 && (
-              <span className="flex items-center gap-1 truncate">
-                <Tag className="h-3 w-3 shrink-0" />
-                <span className="truncate">{note.tags.join(' · ')}</span>
-              </span>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+          )}
+        </div>
+
+        {/* 中间内容区 */}
+        <div className="min-w-0 flex-1">
+          <h3 className="text-base font-semibold text-slate-900 transition-colors group-hover:text-primary dark:text-slate-100">
+            {note.title}
+          </h3>
+          {note.description && (
+            <p className="mt-1 line-clamp-2 text-sm text-slate-600 dark:text-slate-400">
+              {note.description}
+            </p>
+          )}
+
+          {/* 标签 */}
+          {note.tags.length > 0 && (
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
+              <Tag className="h-3 w-3 text-text-muted" />
+              {note.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="inline-flex items-center rounded-full border border-border bg-bg-soft px-2 py-0.5 text-[0.7rem] text-text-muted"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 右侧箭头 */}
+        <div className="hidden shrink-0 items-center self-center text-text-muted transition-colors group-hover:text-primary sm:flex">
+          <ArrowRight className="h-4 w-4" />
+        </div>
+      </article>
     </Link>
   );
 }

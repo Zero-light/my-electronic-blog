@@ -16,27 +16,27 @@ export interface GalleryImage {
 
 export const galleryImages: GalleryImage[] = [
   {
-    src: '/images/gallery/lab_bench.jpg',
+    src: 'https://picsum.photos/seed/electronics1/800/600',
     alt: '实验室工作台',
     category: '实验室作品',
   },
   {
-    src: '/images/gallery/competition_scene.jpg',
+    src: 'https://picsum.photos/seed/teamwork1/800/600',
     alt: '电赛现场',
     category: '赛事实拍',
   },
   {
-    src: '/images/gallery/pcb_layout.jpg',
+    src: 'https://picsum.photos/seed/circuit1/800/600',
     alt: 'PCB 版图',
     category: '实验室作品',
   },
   {
-    src: '/images/gallery/sunset_campus.jpg',
+    src: 'https://picsum.photos/seed/sunset1/800/600',
     alt: '校园夕阳',
     category: '风景',
   },
   {
-    src: '/images/gallery/daily_coffee.jpg',
+    src: 'https://picsum.photos/seed/coffee1/800/600',
     alt: '日常咖啡',
     category: '生活随拍',
   },
