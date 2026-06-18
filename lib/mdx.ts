@@ -25,7 +25,12 @@ export interface BaseMeta {
 }
 
 /** 学习笔记元数据 */
-export interface NoteMeta extends BaseMeta {}
+export interface NoteMeta extends BaseMeta {
+  /** 主分类：软件 / 硬件 / 测试题 */
+  mainCategory?: string;
+  /** 子分类 */
+  subCategory?: string;
+}
 
 /** 项目作品元数据（额外支持项目周期） */
 export interface ProjectMeta extends BaseMeta {
@@ -133,7 +138,14 @@ export function getAllNotes(): NoteMeta[] {
   const dir = path.join(CONTENT_DIR, 'notes');
   return getMdxFilenames(dir).map((file) => {
     const slug = slugFromFilename(file);
-    const { meta } = parseMdxFile<NoteMeta>(path.join(dir, file), slug);
+    const { meta } = parseMdxFile<NoteMeta>(
+      path.join(dir, file),
+      slug,
+      (record, meta) => {
+        meta.mainCategory = optionalStr(record, 'mainCategory');
+        meta.subCategory = optionalStr(record, 'subCategory');
+      }
+    );
     return meta;
   });
 }

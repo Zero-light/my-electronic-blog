@@ -28,9 +28,10 @@ export function NoteCard({ note, className }: NoteCardProps) {
             <Calendar className="h-3.5 w-3.5" />
             {formatDate(note.date)}
           </span>
-          {note.category && (
+          {note.mainCategory && (
             <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[0.7rem] text-primary">
-              {note.category}
+              {note.mainCategory}
+              {note.subCategory ? ` · ${note.subCategory}` : ''}
             </span>
           )}
         </div>

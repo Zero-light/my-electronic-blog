@@ -3,7 +3,6 @@ import { NotesList } from '@/components/notes-list';
 
 export default function NotesPage() {
   const notes = sortByDate(getAllNotes());
-  const allTags = [...new Set(notes.flatMap((n) => n.tags))];
 
   return (
     <div className="animate-fade-in space-y-8">
@@ -15,7 +14,7 @@ export default function NotesPage() {
           嵌入式开发、电源设计、模电数电与工具教程的知识沉淀。
         </p>
       </div>
-      <NotesList notes={notes} allTags={allTags} />
+      <NotesList notes={notes} />
     </div>
   );
 }
