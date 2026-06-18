@@ -304,6 +304,60 @@ export const lifeMoments: LifeMoment[] = [
     images: ['https://picsum.photos/seed/wenzhou1/800/600'],
     location: '温州 · 雁荡山',
   },
+
+  // ========== 旅游 — 洛阳 ==========
+  {
+    id: 't-ly',
+    topCategory: 'travel',
+    subCategory: '洛阳',
+    date: '2024-04-05',
+    content:
+      '龙门石窟的卢舍那大佛太震撼了，站在下面仰望的时候真的能感受到历史的厚重。晚上丽景门的灯光秀也不错，老街的牛肉汤很好喝。',
+    images: [
+      'https://picsum.photos/seed/luoyang1/800/600',
+      'https://picsum.photos/seed/luoyang2/800/600',
+    ],
+    location: '洛阳 · 龙门石窟',
+  },
+
+  // ========== 旅游 — 开封 ==========
+  {
+    id: 't-kf',
+    topCategory: 'travel',
+    subCategory: '开封',
+    date: '2024-04-06',
+    content:
+      '清明上河园的沉浸式演出让人一秒穿越回北宋， NPC 都在角色里。灌汤包要小心烫嘴，第一口就中招了。',
+    images: ['https://picsum.photos/seed/kaifeng1/800/600'],
+    location: '开封 · 清明上河园',
+  },
+
+  // ========== 旅游 — 杭州 ==========
+  {
+    id: 't-hz',
+    topCategory: 'travel',
+    subCategory: '杭州',
+    date: '2023-09-20',
+    content:
+      '西湖十景走了大半，断桥残雪的意境在秋天也别有味道。灵隐寺的素斋意外好吃，龙井村的茶园层层叠叠很出片。',
+    images: [
+      'https://picsum.photos/seed/hangzhou1/800/600',
+      'https://picsum.photos/seed/hangzhou2/800/600',
+    ],
+    location: '杭州 · 西湖',
+  },
+
+  // ========== 旅游 — 徐州 ==========
+  {
+    id: 't-xz',
+    topCategory: 'travel',
+    subCategory: '徐州',
+    date: '2024-01-10',
+    content:
+      '徐州的烧烤真的被低估了，羊肉串配上烙馍一绝。龟山汉墓的工程量让人叹为观止，古人凿山为陵的技术太硬核。',
+    images: ['https://picsum.photos/seed/xuzhou1/800/600'],
+    location: '徐州 · 龟山汉墓',
+  },
 ];
 
 /** 各一级分类下的子分类 */
@@ -323,5 +377,9 @@ export const subCategoryMap: Record<TopCategory, string[]> = {
     '武汉',
     '青岛',
     '温州',
+    '洛阳',
+    '开封',
+    '杭州',
+    '徐州',
   ],
 };
