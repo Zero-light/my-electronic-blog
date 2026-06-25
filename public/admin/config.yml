@@ -1,22 +1,284 @@
+# ============================================================
+#  零光驿站 — Decap CMS 内容管理配置
+#  访问地址：https://你的域名/admin/
+#  本地开发：npm run dev 后访问 http://localhost:3000/admin/
+# ============================================================
+
 backend:
   name: github
   repo: Zero-light/my-electronic-blog
   branch: main
+  base_url: https://www.zerolight.fun/admin
+  client_id: Ov23liSUhTF2kk7BXpzb
 
+# 媒体文件上传路径（相对于项目根目录）
 media_folder: public/images/uploads
 public_folder: /images/uploads
 
+# 站点元信息
 site_url: https://www.zerolight.fun
+display_url: https://www.zerolight.fun
+logo_url: https://picsum.photos/seed/logo/64/64
 locale: zh_Hans
 
+# ============================================================
+#  内容集合定义
+# ============================================================
+
 collections:
+  # ----------------------------------------------------------
+  #  1. 个人档案（单文件）
+  # ----------------------------------------------------------
   - name: profile
     label: 个人档案
+    label_singular: 个人档案
+    description: 关于我 / 简历页面的基础信息
     files:
       - name: profile_data
         label: 个人档案
         file: content/data/profile.json
+        editor:
+          preview: false
         fields:
           - { label: 姓名, name: name, widget: string }
+          - { label: 职位头衔, name: title, widget: string }
           - { label: 邮箱, name: email, widget: string }
+          - { label: 电话, name: phone, widget: string }
+          - { label: GitHub, name: github, widget: string }
+          - { label: 所在地, name: location, widget: string }
           - { label: 个人简介, name: summary, widget: text }
+          - { label: 求职意向, name: objective, widget: text }
+          - label: 教育经历
+            name: education
+            widget: list
+            fields:
+              - { label: 学校, name: school, widget: string }
+              - { label: 专业, name: major, widget: string }
+              - { label: 学位, name: degree, widget: string }
+              - { label: 时间段, name: period, widget: string }
+              - { label: 描述, name: description, widget: text, required: false }
+          - label: 项目经历
+            name: experience
+            widget: list
+            fields:
+              - { label: 所属, name: company, widget: string }
+              - { label: 角色, name: role, widget: string }
+              - { label: 时间段, name: period, widget: string }
+              - { label: 描述, name: description, widget: text }
+          - label: 荣誉证书
+            name: honors
+            widget: list
+
+  # ----------------------------------------------------------
+  #  2. 技能数据（单文件）
+  # ----------------------------------------------------------
+  - name: skills
+    label: 技能数据
+    label_singular: 技能分类
+    description: 首页 / 关于 / 简历页面的技能进度条数据
+    files:
+      - name: skills_data
+        label: 技能列表
+        file: content/data/skills.json
+        editor:
+          preview: false
+        fields:
+          - label: 技能分类
+            name: categories
+            widget: list
+            fields:
+              - { label: 分类名称, name: title, widget: string }
+              - label: 技能项
+                name: items
+                widget: list
+                fields:
+                  - { label: 技能名称, name: name, widget: string }
+                  - { label: 熟练度 (0-100), name: level, widget: number, value_type: int, min: 0, max: 100 }
+
+  # ----------------------------------------------------------
+  #  3. 相册图库（单文件）
+  # ----------------------------------------------------------
+  - name: gallery
+    label: 相册图库
+    label_singular: 相册
+    description: 生活 — 相册页面的图片数据
+    files:
+      - name: gallery_data
+        label: 相册数据
+        file: content/data/gallery.json
+        editor:
+          preview: false
+        fields:
+          - label: 图片列表
+            name: images
+            widget: list
+            fields:
+              - { label: 图片路径/URL, name: src, widget: string }
+              - { label: 图片描述, name: alt, widget: string }
+              - { label: 分类, name: category, widget: select, options: [生活随拍, 实验室作品, 赛事实拍, 风景] }
+          - label: 可用的分类
+            name: categories
+            widget: list
+            field: { label: 分类名, name: category, widget: string }
+
+  # ----------------------------------------------------------
+  #  4. 阅读书籍（单文件）
+  # ----------------------------------------------------------
+  - name: books
+    label: 阅读书单
+    label_singular: 书籍
+    description: 生活 — 阅读板块的书籍数据
+    files:
+      - name: books_data
+        label: 书籍列表
+        file: content/data/books.json
+        editor:
+          preview: false
+        fields:
+          - label: 书籍
+            name: books
+            widget: list
+            fields:
+              - { label: URL标识(slug), name: slug, widget: string, hint: 英文短横线连接，如 signal-power-integrity }
+              - { label: 书名, name: title, widget: string }
+              - { label: 作者, name: author, widget: string }
+              - { label: 出版社, name: publisher, widget: string, required: false }
+              - { label: 封面图URL, name: cover, widget: string }
+              - { label: 内容摘要, name: summary, widget: text }
+              - { label: 标签, name: tags, widget: list, field: { label: 标签, name: tag, widget: string } }
+              - { label: 阅读类型, name: readingType, widget: select, options: [学习, 娱乐] }
+              - label: 目录
+                name: toc
+                widget: list
+                fields:
+                  - { label: 章节标题, name: title, widget: string }
+                  - label: 子章节
+                    name: sections
+                    widget: list
+                    required: false
+                    field: { label: 小节名, name: section, widget: string }
+
+  # ----------------------------------------------------------
+  #  5. 生活动态（单文件）
+  # ----------------------------------------------------------
+  - name: life_moments
+    label: 生活动态
+    label_singular: 动态
+    description: 生活 — 游戏/音乐/旅游板块的朋友圈动态
+    files:
+      - name: life_moments_data
+        label: 生活动态数据
+        file: content/data/life-moments.json
+        editor:
+          preview: false
+        fields:
+          - label: 动态列表
+            name: moments
+            widget: list
+            fields:
+              - { label: 唯一ID, name: id, widget: string, hint: 英文短横线，如 t-luoyang }
+              - { label: 一级分类, name: topCategory, widget: select, options: [game, music, travel], hint: game=游戏 / music=音乐 / travel=旅游 }
+              - { label: 子分类, name: subCategory, widget: string, hint: 游戏名 / 音乐类型 / 旅游地点 }
+              - { label: 日期, name: date, widget: date }
+              - { label: 内容, name: content, widget: text }
+              - label: 配图
+                name: images
+                widget: list
+                required: false
+                field: { label: 图片URL, name: image, widget: string }
+              - { label: 位置信息, name: location, widget: string, required: false }
+          - label: 子分类映射
+            name: subCategoryMap
+            widget: object
+            fields:
+              - label: 游戏子分类
+                name: game
+                widget: list
+                field: { label: 子分类名, name: name, widget: string }
+              - label: 音乐子分类
+                name: music
+                widget: list
+                field: { label: 子分类名, name: name, widget: string }
+              - label: 旅游子分类
+                name: travel
+                widget: list
+                field: { label: 子分类名, name: name, widget: string }
+
+  # ----------------------------------------------------------
+  #  6. 学习笔记（文件夹 MDX）
+  # ----------------------------------------------------------
+  - name: notes
+    label: 学习笔记
+    label_singular: 笔记
+    description: 知识库 — 嵌入式/硬件/软件学习笔记
+    folder: content/notes
+    create: true
+    slug: "{{slug}}"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: 标题, name: title, widget: string }
+      - { label: URL标识(slug), name: slug, widget: string, hint: 英文短横线连接，留空则自动用文件名 }
+      - { label: 发布日期, name: date, widget: date }
+      - { label: 标签, name: tags, widget: list, field: { label: 标签, name: tag, widget: string } }
+      - { label: 分类, name: category, widget: string, required: false }
+      - { label: 简介, name: description, widget: text, required: false }
+      - { label: 封面图URL, name: cover, widget: string, required: false }
+      - { label: 主分类, name: mainCategory, widget: select, options: [软件, 硬件, 测试题], required: false }
+      - { label: 子分类, name: subCategory, widget: string, required: false, hint: 如：嵌入式驱动、电源设计 }
+      - { label: 正文, name: body, widget: markdown }
+
+  # ----------------------------------------------------------
+  #  7. 项目作品（文件夹 MDX）
+  # ----------------------------------------------------------
+  - name: projects
+    label: 项目作品
+    label_singular: 项目
+    description: 作品集 — 硬件/嵌入式项目展示
+    folder: content/projects
+    create: true
+    slug: "{{slug}}"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: 标题, name: title, widget: string }
+      - { label: URL标识(slug), name: slug, widget: string, hint: 英文短横线连接 }
+      - { label: 发布日期, name: date, widget: date }
+      - { label: 标签, name: tags, widget: list, field: { label: 标签, name: tag, widget: string } }
+      - { label: 分类, name: category, widget: string, required: false }
+      - { label: 简介, name: description, widget: text, required: false }
+      - { label: 封面图URL, name: cover, widget: string, required: false }
+      - { label: 项目周期, name: period, widget: string, required: false, hint: 如 2025.11 – 2026.02 }
+      - label: 硬件平台
+        name: hardware
+        widget: list
+        required: false
+        field: { label: 硬件项, name: item, widget: string }
+      - label: 软件工具
+        name: software
+        widget: list
+        required: false
+        field: { label: 软件项, name: item, widget: string }
+      - { label: 正文, name: body, widget: markdown }
+
+  # ----------------------------------------------------------
+  #  8. 随笔日记（文件夹 MDX）
+  # ----------------------------------------------------------
+  - name: essays
+    label: 随笔日记
+    label_singular: 随笔
+    description: 生活 — 随笔日记内容
+    folder: content/essays
+    create: true
+    slug: "{{slug}}"
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { label: 标题, name: title, widget: string }
+      - { label: URL标识(slug), name: slug, widget: string, hint: 英文短横线连接 }
+      - { label: 发布日期, name: date, widget: date }
+      - { label: 标签, name: tags, widget: list, field: { label: 标签, name: tag, widget: string } }
+      - { label: 分类, name: category, widget: string, required: false }
+      - { label: 简介, name: description, widget: text, required: false }
+      - { label: 封面图URL, name: cover, widget: string, required: false }
+      - { label: 正文, name: body, widget: markdown }
