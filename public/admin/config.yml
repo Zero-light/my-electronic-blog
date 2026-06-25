@@ -8,6 +8,9 @@ backend:
   name: github
   repo: Zero-light/my-electronic-blog
   branch: main
+  base_url: https://decapcms.org
+  auth_endpoint: auth
+  client_id: Ov23liSUhTF2kk7BXpzb
 
 # 媒体文件上传路径（相对于项目根目录）
 media_folder: public/images/uploads
