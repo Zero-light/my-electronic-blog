@@ -5,6 +5,8 @@ import { lifeMoments as initialMoments, TopCategory, LifeMoment } from '@/conten
 
 export default function AdminLifePage() {
   const [moments, setMoments] = useState<LifeMoment[]>(JSON.parse(JSON.stringify(initialMoments)));
+  const [saving, setSaving] = useState(false);
+  const [savedMsg, setSavedMsg] = useState('');
 
   const update = (i: number, partial: Partial<LifeMoment>) => {
     const m = [...moments]; m[i] = { ...m[i], ...partial }; setMoments(m);
@@ -24,9 +26,22 @@ export default function AdminLifePage() {
     return "/* life moments */\nexport const lifeMoments = [\n" + items + "\n];\nexport const subCategoryMap = {};\n";
   };
 
-  const download = () => {
-    const blob = new Blob([genCode()], { type: 'text/typescript;charset=utf-8' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'life-moments.ts'; a.click();
+  const saveFile = async () => {
+    setSaving(true);
+    setSavedMsg('');
+    try {
+      const res = await fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: 'life-moments.ts', content: genCode() }),
+      });
+      const data = await res.json();
+      setSavedMsg(data.success ? '保存成功！' : '失败：' + data.error);
+    } catch (e) {
+      setSavedMsg('失败：' + String(e));
+    }
+    setSaving(false);
+    setTimeout(() => setSavedMsg(''), 3000);
   };
 
   return (
@@ -35,7 +50,7 @@ export default function AdminLifePage() {
         <h1 className="text-2xl font-bold">编辑生活动态</h1>
         <div className="flex gap-2">
           <button onClick={add} className="bg-green-600 text-white px-3 py-2 rounded text-sm hover:bg-green-700">+ 新增</button>
-          <button onClick={download} className="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700">导出文件</button>
+          <button onClick={saveFile} disabled={saving} className="bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700">{saving ? '保存中...' : savedMsg || '保存'}</button>
         </div>
       </div>
       <p className="text-text-muted">共 {moments.length} 条动态</p>

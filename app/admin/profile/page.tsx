@@ -32,6 +32,8 @@ function genCode(p: Profile): string {
 
 export default function AdminProfilePage() {
   const [p, setP] = useState<Profile>(JSON.parse(JSON.stringify(initialProfile)));
+  const [saving, setSaving] = useState(false);
+  const [savedMsg, setSavedMsg] = useState('');
   const upd = (partial: any) => setP((prev: Profile) => ({ ...prev, ...partial }));
 
   const updateArr = (key: string, arr: any[], i: number, val: any) => {
