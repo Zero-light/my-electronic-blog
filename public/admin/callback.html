@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"/><title>OAuth</title></head>
+<body>
+<script>
+(async()=>{
+  var p=new URLSearchParams(location.search);
+  var c=p.get('code'),s=p.get('state');
+  if(!c){document.body.innerText='ERR: no code. URL:'+location.href;return;}
+  try{
+    var r=await fetch('https://github.com/login/oauth/access_token',{
+      method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({client_id:'Ov23liSUhTF2kk7BXpzb',client_secret:'993a743826bb8c791b15d6ec0f88fbb84889affa',code:c,state:s})
+    });
+    var d=await r.json();
+    if(d.access_token){
+      window.opener.postMessage(JSON.stringify({token:d.access_token,provider:'github',backendName:'github'}),location.origin);
+      document.body.innerHTML='<h2>OK</h2>';
+      setTimeout(function(){window.close();},1500);
+    }else{document.body.innerText='ERR:'+JSON.stringify(d);}
+  }catch(e){document.body.innerText='ERR:'+e.message;}
+})();
+</script>
+</body>
+</html>

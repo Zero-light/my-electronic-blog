@@ -9,7 +9,7 @@ backend:
   repo: Zero-light/my-electronic-blog
   branch: main
   base_url: https://www.zerolight.fun/admin
-  auth_endpoint: callback/
+  auth_endpoint: callback.html
   client_id: Ov23liSUhTF2kk7BXpzb
 
 # 媒体文件上传路径（相对于项目根目录）
