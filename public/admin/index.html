@@ -4,6 +4,290 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>内容管理 — 零光驿站</title>
+  <style>
+    /* ============================================================
+       零光驿站 CMS 自定义样式
+       优化中文可读性、表单布局、整体美观度
+       ============================================================ */
+
+    /* ---------- 1. 全局字体 & 基础 ---------- */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Microsoft YaHei", "Hiragino Sans GB", "Noto Sans CJK SC",
+        "WenQuanYi Micro Hei", sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ---------- 2. 输入框 & 文本域 ---------- */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="url"],
+    input[type="date"],
+    input[type="number"],
+    textarea,
+    select {
+      font-size: 14px !important;
+      padding: 10px 12px !important;
+      border: 1px solid #d1d5db !important;
+      border-radius: 8px !important;
+      background: #fafafa !important;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s !important;
+      line-height: 1.6 !important;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #3b82f6 !important;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12) !important;
+      background: #fff !important;
+      outline: none !important;
+    }
+
+    textarea {
+      min-height: 120px;
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", "Consolas",
+        "PingFang SC", "Microsoft YaHei", monospace;
+      font-size: 14px !important;
+    }
+
+    /* ---------- 3. 标签文字 ---------- */
+    label {
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: #374151 !important;
+      margin-bottom: 6px !important;
+      display: inline-block;
+      letter-spacing: 0.01em;
+    }
+
+    /* ---------- 4. 按钮 ---------- */
+    button {
+      font-size: 14px !important;
+      border-radius: 8px !important;
+      padding: 8px 20px !important;
+      font-weight: 500 !important;
+      transition: all 0.2s !important;
+      cursor: pointer;
+    }
+
+    /* 主按钮（保存/发布）→ 强调色 */
+    button[class*="primary"],
+    button[class*="Primary"],
+    button[class*="save"],
+    button[class*="Save"],
+    button[class*="publish"],
+    button[class*="Publish"] {
+      background: #2563eb !important;
+      color: #fff !important;
+      border: none !important;
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3) !important;
+    }
+
+    button[class*="primary"]:hover,
+    button[class*="Primary"]:hover,
+    button[class*="save"]:hover,
+    button[class*="Save"]:hover {
+      background: #1d4ed8 !important;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35) !important;
+      transform: translateY(-1px);
+    }
+
+    /* ---------- 5. 卡片 —— 条目列表 ---------- */
+    /* 覆盖 card 容器样式 */
+    [class*="Card"],
+    [class*="card"] {
+      border-radius: 10px !important;
+      border: 1px solid #e5e7eb !important;
+      background: #fff !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+      transition: box-shadow 0.2s, transform 0.15s !important;
+    }
+
+    [class*="Card"]:hover,
+    [class*="card"]:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+      border-color: #d1d5db !important;
+    }
+
+    /* ---------- 6. 侧边栏 ---------- */
+    [class*="Sidebar"],
+    [class*="sidebar"],
+    [class*="Navigation"],
+    [class*="navigation"] {
+      background: #f8fafc !important;
+      border-right: 1px solid #e5e7eb !important;
+    }
+
+    /* 侧边栏条目 */
+    [class*="Sidebar"] a,
+    [class*="sidebar"] a,
+    [class*="Navigation"] a {
+      font-size: 14px !important;
+      padding: 10px 16px !important;
+      border-radius: 8px !important;
+      margin: 2px 8px !important;
+      transition: background 0.15s, color 0.15s !important;
+      color: #4b5563 !important;
+      text-decoration: none !important;
+    }
+
+    [class*="Sidebar"] a:hover,
+    [class*="sidebar"] a:hover,
+    [class*="Navigation"] a:hover {
+      background: #e8f0fe !important;
+      color: #1d4ed8 !important;
+    }
+
+    /* 侧边栏当前选中项 */
+    [class*="Sidebar"] a[class*="active"],
+    [class*="sidebar"] a[class*="active"],
+    [class*="Navigation"] a[class*="active"],
+    [class*="Sidebar"] [class*="Active"],
+    [class*="sidebar"] [class*="Active"] {
+      background: #dbeafe !important;
+      color: #1e40af !important;
+      font-weight: 600 !important;
+    }
+
+    /* ---------- 7. 顶部工具栏 ---------- */
+    [class*="Toolbar"],
+    [class*="toolbar"],
+    [class*="Header"],
+    [class*="header"] {
+      background: #fff !important;
+      border-bottom: 1px solid #e5e7eb !important;
+      padding: 10px 20px !important;
+    }
+
+    /* ---------- 8. Markdown 编辑区 ---------- */
+    [class*="Editor"],
+    [class*="editor"],
+    [class*="markdown"] {
+      font-size: 15px !important;
+      line-height: 1.8 !important;
+    }
+
+    /* 编辑区代码块 */
+    [class*="Editor"] pre,
+    [class*="editor"] pre,
+    pre {
+      background: #1e293b !important;
+      color: #e2e8f0 !important;
+      border-radius: 8px !important;
+      padding: 16px !important;
+      font-size: 13px !important;
+      line-height: 1.6 !important;
+    }
+
+    /* ---------- 9. 预览区 ---------- */
+    [class*="Preview"],
+    [class*="preview"] {
+      font-size: 15px !important;
+      line-height: 1.8 !important;
+      padding: 24px !important;
+      color: #1f2937 !important;
+    }
+
+    [class*="Preview"] h1,
+    [class*="preview"] h1 {
+      font-size: 28px !important;
+      font-weight: 700 !important;
+      margin: 24px 0 12px !important;
+    }
+    [class*="Preview"] h2,
+    [class*="preview"] h2 {
+      font-size: 22px !important;
+      font-weight: 600 !important;
+      margin: 20px 0 10px !important;
+    }
+    [class*="Preview"] h3,
+    [class*="preview"] h3 {
+      font-size: 18px !important;
+      font-weight: 600 !important;
+      margin: 16px 0 8px !important;
+    }
+
+    /* ---------- 10. 列表组件（对象/数组） ---------- */
+    /* 让嵌套的 list widget 更清晰 */
+    [class*="List"],
+    [class*="list"],
+    [class*="Object"],
+    [class*="object"] {
+      border-left: 3px solid #e5e7eb !important;
+      padding-left: 16px !important;
+      margin: 8px 0 !important;
+    }
+
+    /* ---------- 11. 工具提示 & 描述文字 ---------- */
+    [class*="Hint"],
+    [class*="hint"],
+    [class*="Description"],
+    [class*="description"] {
+      font-size: 12px !important;
+      color: #9ca3af !important;
+      margin-top: 4px !important;
+    }
+
+    /* ---------- 12. 弹窗 / 模态框 ---------- */
+    [class*="Modal"],
+    [class*="modal"],
+    [class*="Dialog"],
+    [class*="dialog"] {
+      border-radius: 12px !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    /* ---------- 13. 错误 & 通知 ---------- */
+    [class*="Error"],
+    [class*="error"],
+    [class*="Notification"][class*="error"] {
+      background: #fef2f2 !important;
+      border: 1px solid #fecaca !important;
+      color: #dc2626 !important;
+      border-radius: 8px !important;
+      padding: 12px 16px !important;
+      font-size: 13px !important;
+    }
+
+    [class*="Success"],
+    [class*="success"] {
+      background: #f0fdf4 !important;
+      border: 1px solid #bbf7d0 !important;
+      color: #16a34a !important;
+      border-radius: 8px !important;
+      padding: 12px 16px !important;
+    }
+
+    /* ---------- 14. 滚动条美化 ---------- */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* ---------- 15. 响应式微调 ---------- */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+      input, textarea, select {
+        font-size: 16px !important; /* 防止 iOS 缩放 */
+      }
+    }
+  </style>
 </head>
 <body>
   <script src="dist/decap-cms.js"></script>

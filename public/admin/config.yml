@@ -217,6 +217,8 @@ collections:
     slug: "{{slug}}"
     extension: mdx
     format: frontmatter
+    editor:
+      preview: true
     fields:
       - { label: 标题, name: title, widget: string }
       - { label: URL标识(slug), name: slug, widget: string, hint: 英文短横线连接，留空则自动用文件名 }
@@ -241,6 +243,8 @@ collections:
     slug: "{{slug}}"
     extension: mdx
     format: frontmatter
+    editor:
+      preview: true
     fields:
       - { label: 标题, name: title, widget: string }
       - { label: URL标识(slug), name: slug, widget: string, hint: 英文短横线连接 }
@@ -274,6 +278,8 @@ collections:
     slug: "{{slug}}"
     extension: mdx
     format: frontmatter
+    editor:
+      preview: true
     fields:
       - { label: 标题, name: title, widget: string }
       - { label: URL标识(slug), name: slug, widget: string, hint: 英文短横线连接 }
