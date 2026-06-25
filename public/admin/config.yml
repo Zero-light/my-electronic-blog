@@ -17,8 +17,8 @@ media_folder: public/images/uploads
 public_folder: /images/uploads
 
 # 站点元信息
-site_url: https://my-electronic-blog-zero-light-portfolio.vercel.app
-display_url: https://my-electronic-blog-zero-light-portfolio.vercel.app
+site_url: https://www.zerolight.fun
+display_url: https://www.zerolight.fun
 logo_url: https://picsum.photos/seed/logo/64/64
 locale: zh_Hans
 
