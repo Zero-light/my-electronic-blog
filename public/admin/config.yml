@@ -8,10 +8,9 @@ backend:
   name: github
   repo: Zero-light/my-electronic-blog
   branch: main
-  # 如果部署在 Vercel 的自定义域名上，将下方改为你的域名
   base_url: https://decapcms.org
-  # 提示：首次使用需在 GitHub 创建 OAuth App
-  # 详见下方的「OAuth 配置说明」
+  auth_endpoint: auth
+  client_id: Ov23liSUhTF2kk7BXpzb
 
 # 媒体文件上传路径（相对于项目根目录）
 media_folder: public/images/uploads
