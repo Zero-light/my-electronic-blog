@@ -27,3 +27,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Admin generator scripts
+_gen_admin*.py
+gen_admin*.py
+
