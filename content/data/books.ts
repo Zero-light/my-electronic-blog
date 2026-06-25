@@ -2,7 +2,10 @@
  * 阅读书籍数据
  * 生活-阅读板块使用
  * 分为：学习 / 娱乐 两大类
+ * 数据源：books.json（可由 Decap CMS 在线编辑）
  */
+
+import booksData from './books.json';
 
 export type ReadingType = '学习' | '娱乐';
 
@@ -24,145 +27,7 @@ export interface Book {
   readingType: ReadingType;
 }
 
-export const books: Book[] = [
-  // ========== 学习 ==========
-  {
-    slug: 'signal-power-integrity',
-    title: '信号完整性与电源完整性分析',
-    author: 'Eric Bogatin',
-    publisher: '电子工业出版社',
-    cover: 'https://picsum.photos/seed/book-si/400/560',
-    summary:
-      '本书系统讲解高速数字电路中的信号完整性（SI）与电源完整性（PI）问题。核心内容包括传输线理论、反射与端接、串扰机理、差分信号设计、同步开关噪声（SSN）、去耦电容策略及高速PCB层叠与布线实践。对理解高速信号在PCB中的行为、解决EMC与电源噪声问题具有直接工程指导意义。',
-    tags: ['信号完整性', '电源完整性', '高速PCB', '传输线'],
-    readingType: '学习',
-    toc: [
-      { title: '第1章 信号完整性概论' },
-      { title: '第2章 传输线理论基础', sections: ['传输线方程', '特性阻抗', '时延与介电常数'] },
-      { title: '第3章 反射与端接技术', sections: ['反射机理', '源端端接', '终端端接', '拓扑结构'] },
-      { title: '第4章 串扰与耦合', sections: ['容性耦合', '感性耦合', '近端串扰与远端串扰', '减小串扰的方法'] },
-      { title: '第5章 差分对与差分阻抗', sections: ['差分信号优势', '差分阻抗计算', '共模抑制'] },
-      { title: '第6章 电源完整性基础', sections: ['目标阻抗', '电源分配网络（PDN）', '平面谐振'] },
-      { title: '第7章 同步开关噪声与去耦设计', sections: ['SSN机理', '去耦电容选型', '平面电容'] },
-      { title: '第8章 高速PCB设计实践', sections: ['层叠设计', '布线规则', '仿真验证'] },
-    ],
-  },
-  {
-    slug: 'pcb-design-practice',
-    title: '印制电路板PCB设计技术与实践',
-    author: '王卫平',
-    publisher: '机械工业出版社',
-    cover: 'https://picsum.photos/seed/book-pcb/400/560',
-    summary:
-      '从PCB设计的基本概念出发，深入讲解元器件封装建库、布局策略、布线规则、电源与地平面设计、高速信号处理及设计文件输出全流程。书中结合Altium Designer等EDA工具，提供大量实际工程案例，是从原理图到可制造PCB的实用指南。',
-    tags: ['PCB设计', 'EDA工具', '封装', 'Layout'],
-    readingType: '学习',
-    toc: [
-      { title: '第1章 PCB设计基础', sections: ['PCB分类与材料', '设计流程', 'EDA工具简介'] },
-      { title: '第2章 元器件封装与建库', sections: ['封装类型', '焊盘设计', '库管理规范'] },
-      { title: '第3章 布局策略与技巧', sections: ['布局原则', '热设计', 'EMC预布局'] },
-      { title: '第4章 布线规则与方法', sections: ['线宽线距', '过孔设计', '蛇形线与等长'] },
-      { title: '第5章 电源与地平面设计', sections: ['分割与 reunification', '去耦布局', '电流回路'] },
-      { title: '第6章 高速信号布线', sections: ['阻抗控制', '差分对布线', 'DDR布线要点'] },
-      { title: '第7章 DRC检查与仿真验证', sections: ['电气规则检查', 'SI/PI仿真', '热仿真'] },
-      { title: '第8章 制造文件输出与可制造性', sections: ['Gerber输出', 'BOM整理', 'DFM检查'] },
-    ],
-  },
-  {
-    slug: 'semiconductor-devices',
-    title: '电子电路分析与设计——半导体器件及其基本应用',
-    author: 'Donald A. Neamen',
-    publisher: '清华大学出版社',
-    cover: 'https://picsum.photos/seed/book-semi/400/560',
-    summary:
-      '模电入门的经典教材，从半导体物理基础讲起，系统介绍二极管、BJT双极型晶体管、FET场效应管的工作原理与特性曲线。重点讲解各类放大电路的静态工作点设置、小信号等效模型、增益计算与频率响应分析，为后续模拟电路设计奠定器件级基础。',
-    tags: ['半导体', '二极管', 'BJT', 'FET', '放大电路'],
-    readingType: '学习',
-    toc: [
-      { title: '第1章 半导体物理基础', sections: ['本征半导体', '掺杂与PN结', '载流子运动'] },
-      { title: '第2章 二极管及其应用', sections: ['伏安特性', '整流电路', '限幅与箝位', '稳压二极管'] },
-      { title: '第3章 双极型晶体管（BJT）', sections: ['结构与工作原理', '放大模式', '特性曲线', 'Ebers-Moll模型'] },
-      { title: '第4章 BJT放大电路', sections: ['共射放大', '共基与共集', '偏置电路设计', '小信号分析'] },
-      { title: '第5章 场效应管（FET）', sections: ['JFET原理', 'MOSFET结构与特性', '阈值电压', '亚阈值区'] },
-      { title: '第6章 FET放大电路', sections: ['共源放大', '共漏与共栅', 'CMOS反相器'] },
-      { title: '第7章 频率响应分析', sections: ['低频响应', '高频响应', '密勒效应', '增益带宽积'] },
-      { title: '第8章 运算放大器基础', sections: ['理想运放', '虚短虚断', '基本运放电路'] },
-    ],
-  },
-  {
-    slug: 'analog-electronics',
-    title: '电子电路分析与设计——模拟电子技术',
-    author: 'Donald A. Neamen',
-    publisher: '清华大学出版社',
-    cover: 'https://picsum.photos/seed/book-analog/400/560',
-    summary:
-      '半导体器件教材的续篇，聚焦于模拟系统级电路设计。涵盖反馈理论、差分与多级放大、功率放大、有源滤波器、振荡器、稳压电源等核心模块。书中大量运放应用实例对嵌入式系统中的信号调理、传感器前端、电源管理等实际工程问题有直接参考价值。',
-    tags: ['模拟电路', '运放', '反馈', '滤波器', '振荡器', '稳压电源'],
-    readingType: '学习',
-    toc: [
-      { title: '第1章 放大器模型与频率响应', sections: ['增益与带宽', '波特图', '极点与零点'] },
-      { title: '第2章 反馈放大电路', sections: ['反馈类型', '深度负反馈', '稳定性判据', '相位补偿'] },
-      { title: '第3章 差分放大与多级放大', sections: ['差分对原理', '共模抑制比', '有源负载', '级联结构'] },
-      { title: '第4章 功率放大电路', sections: ['A类/B类/AB类', '交越失真', '热设计', '集成功放'] },
-      { title: '第5章 滤波器与调谐电路', sections: ['有源低通/高通', '带通与带阻', '状态变量滤波器'] },
-      { title: '第6章 振荡器', sections: ['巴克豪森准则', 'RC振荡器', 'LC振荡器', '晶体振荡器'] },
-      { title: '第7章 稳压电源与基准源', sections: ['线性稳压', 'LDO设计', '基准电压源', '开关电源简介'] },
-      { title: '第8章 模拟集成电路应用', sections: ['仪表放大器', '模拟乘法器', 'PLL基础'] },
-    ],
-  },
-
-  // ========== 娱乐 ==========
-  {
-    slug: 'three-body',
-    title: '三体',
-    author: '刘慈欣',
-    publisher: '重庆出版社',
-    cover: 'https://picsum.photos/seed/book-threebody/400/560',
-    summary:
-      '中国科幻文学的里程碑之作。从文革时期的红岸基地到三体文明的星际入侵，再到黑暗森林法则的揭示，宏大的叙事跨越数百年。对技术细节、物理学概念的硬核描写与深刻的人文思考交织，读后让人对宇宙和文明产生全新的敬畏。',
-    tags: ['科幻', '硬科幻', '宇宙', '文明'],
-    readingType: '娱乐',
-    toc: [
-      { title: '第一部 地球往事' },
-      { title: '第二部 三体文明' },
-      { title: '第三部 古筝行动' },
-      { title: '第四部 黑暗森林法则' },
-    ],
-  },
-  {
-    slug: 'dune',
-    title: '沙丘',
-    author: 'Frank Herbert',
-    publisher: '江苏凤凰文艺出版社',
-    cover: 'https://picsum.photos/seed/book-dune/400/560',
-    summary:
-      '科幻史诗的巅峰之作。在荒芜的沙漠星球厄拉科斯上，香料、政治、宗教与生态交织成宏大的权力斗争。保罗·厄崔迪从贵族之子到先知的蜕变，映射出命运、自由意志与生态保护的永恒主题。世界观之完整堪称科幻界的《指环王》。',
-    tags: ['科幻', '史诗', '政治', '生态'],
-    readingType: '娱乐',
-    toc: [
-      { title: '第一部 沙丘' },
-      { title: '第二部 穆阿迪布' },
-      { title: '第三部 先知' },
-    ],
-  },
-  {
-    slug: 'mars-rescue',
-    title: '火星救援',
-    author: 'Andy Weir',
-    publisher: '译林出版社',
-    cover: 'https://picsum.photos/seed/book-mars/400/560',
-    summary:
-      '一名宇航员被遗留在火星，靠种植土豆、改造探测车和惊人的工程知识独自求生。全书充满了硬核的化学、物理和工程计算，但叙事节奏紧凑、幽默感十足。对嵌入式工程师来说，主人公就地取材解决问题的思路很有共鸣。',
-    tags: ['科幻', '工程', '求生', '幽默'],
-    readingType: '娱乐',
-    toc: [
-      { title: '第一部分 被困火星' },
-      { title: '第二部分 与地面通信' },
-      { title: '第三部分 长途跋涉' },
-      { title: '第四部分 救援计划' },
-    ],
-  },
-];
+export const books: Book[] = booksData.books as Book[];
 
 /** 获取单本书 */
 export function getBookBySlug(slug: string): Book | undefined {
