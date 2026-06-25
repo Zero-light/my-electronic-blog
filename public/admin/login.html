@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"/><title>登录 — 零光驿站 CMS</title></head>
+<body style="font-family:sans-serif;max-width:400px;margin:80px auto;padding:20px">
+<h2>登录 CMS</h2>
+<p>粘贴 GitHub Personal Access Token：</p>
+<input id="t" type="password" placeholder="github_pat_..." style="width:100%;padding:8px;font-size:14px"/>
+<br/><br/>
+<button onclick="go()" style="padding:8px 24px;font-size:14px;cursor:pointer">登录</button>
+<p id="msg" style="color:red;font-size:13px"></p>
+<script>
+function go(){
+  var token=document.getElementById('t').value.trim();
+  if(!token){document.getElementById('msg').innerText='请输入 Token';return;}
+  if(!token.startsWith('github_pat_')){
+    document.getElementById('msg').innerText='Token 格式不对，应以 github_pat_ 开头';return;
+  }
+  // Store auth for Decap CMS
+  var user={token:token,provider:'github',backendName:'github',name:'Zero-light',login:'Zero-light',email:'3474722902@qq.com'};
+  localStorage.setItem('decap-cms-user',JSON.stringify(user));
+  document.getElementById('msg').style.color='green';
+  document.getElementById('msg').innerText='✅ 登录成功，正在跳转...';
+  setTimeout(function(){location.href='/admin/';},800);
+}
+</script>
+</body>
+</html>
