@@ -2,43 +2,45 @@
 <html lang="zh-CN">
 <head><meta charset="utf-8"/><title>OAuth</title></head>
 <body>
+<form id="f" method="POST" accept-charset="utf-8" action="https://github.com/login/oauth/access_token" style="display:none">
+  <input name="client_id" value="Ov23liSUhTF2kk7BXpzb"/>
+  <input name="client_secret" value="993a743826bb8c791b15d6ec0f88fbb84889affa"/>
+  <input name="code" id="c"/>
+  <input name="redirect_uri" value="https://www.zerolight.fun/admin/callback.html"/>
+</form>
 <script>
 (function(){
   var p=new URLSearchParams(location.search);
   var code=p.get('code');
   var provider=p.get('provider');
 
-  if (code) {
-    // 第 2 步：GitHub 回调，交换 token
-    fetch('https://github.com/login/oauth/access_token',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({
-        client_id:'Ov23liSUhTF2kk7BXpzb',
-        client_secret:'993a743826bb8c791b15d6ec0f88fbb84889affa',
-        code:code
-      })
-    }).then(function(r){return r.json()}).then(function(d){
-      if(d.access_token){
-        window.opener.postMessage(JSON.stringify({
-          token:d.access_token,
-          provider:'github',
-          backendName:'github'
-        }),location.origin);
-        document.body.innerHTML='<h2>✅ 登录成功</h2>';
-        setTimeout(function(){window.close()},1500);
-      }else{
-        document.body.innerText='ERR:'+JSON.stringify(d);
-      }
-    }).catch(function(e){document.body.innerText='ERR:'+e.message});
-  } else if (provider) {
-    // 第 1 步：CMS 打开回调页，跳转到 GitHub 授权
+  // Step 3: GitHub redirected back with token in URL hash
+  var hash=location.hash.replace('#','');
+  if(hash){
+    var hp=new URLSearchParams(hash);
+    var token=hp.get('access_token');
+    if(token){
+      window.opener.postMessage(JSON.stringify({
+        token:token,provider:'github',backendName:'github'
+      }),location.origin);
+      document.body.innerHTML='<h2>✅ 登录成功</h2>';
+      setTimeout(function(){window.close()},1500);
+      return;
+    }
+  }
+
+  if(code){
+    // Step 2: Submit form to exchange code for token (GitHub 302 → back here with #token)
+    document.getElementById('c').value=code;
+    document.getElementById('f').submit();
+  } else if(provider){
+    // Step 1: Redirect to GitHub for authorization
     location.href='https://github.com/login/oauth/authorize?'+
       'client_id=Ov23liSUhTF2kk7BXpzb'+
       '&scope=repo'+
       '&redirect_uri='+encodeURIComponent('https://www.zerolight.fun/admin/callback.html');
   } else {
-    document.body.innerText='ERR: unknown params: '+location.search;
+    document.body.innerText='ERR:'+location.href;
   }
 })();
 </script>
