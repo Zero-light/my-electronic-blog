@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev-admin": "start http://localhost:3000/admin && next dev",
-    "build": "node -e \"const f=require('fs');f.cpSync('node_modules/decap-cms/dist','public/admin/dist',{recursive:true,force:true})\" && next build && node -e \"const f=require('fs');f.cpSync('public/admin/dist','out/admin/dist',{recursive:true,force:true});f.cpSync('public/admin/callback.html','out/admin/callback.html');f.cpSync('public/admin/config.yml','out/admin/config.yml')\"",
+    "build": "node -e \"const f=require('fs');f.cpSync('node_modules/decap-cms/dist','public/admin/dist',{recursive:true,force:true})\" && next build && node -e \"const f=require('fs');f.cpSync('public/admin/dist','out/admin/dist',{recursive:true,force:true});f.cpSync('public/admin/callback','out/admin/callback',{recursive:true,force:true});f.cpSync('public/admin/config.yml','out/admin/config.yml')\"",
     "start": "next start",
     "lint": "next lint"
   },
