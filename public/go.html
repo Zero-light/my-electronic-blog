@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"/><title>CMS 登录</title></head>
+<body style="font-family:sans-serif;max-width:400px;margin:80px auto;padding:20px">
+<h2>零光驿站 CMS 登录</h2>
+<p>粘贴 GitHub Token：</p>
+<input id="t" type="password" placeholder="github_pat_..." style="width:100%;padding:8px"/>
+<br/><br/>
+<button onclick="go()" style="padding:8px 24px;cursor:pointer">登录</button>
+<p id="m" style="color:red;font-size:13px"></p>
+<script>
+function go(){
+  var t=document.getElementById('t').value.trim();
+  if(!t){document.getElementById('m').innerText='请输入 Token';return;}
+  var u=JSON.stringify({token:t,provider:'github',backendName:'github',name:'Zero-light',login:'Zero-light',email:'3474722902@qq.com'});
+  localStorage.setItem('decap-cms-user',u);
+  document.getElementById('m').style.color='green';
+  document.getElementById('m').innerText='OK, 跳转中...';
+  setTimeout(function(){location.href='/admin/';},600);
+}
+</script>
+</body>
+</html>
