@@ -69,7 +69,6 @@ collections:
           - label: 荣誉证书
             name: honors
             widget: list
-            field: { label: 荣誉, name: honor, widget: string }
 
   # ----------------------------------------------------------
   #  2. 技能数据（单文件）
