@@ -1,0 +1,141 @@
+---
+title: "STM32H723 ADC 引脚始终读 300mV 的根因与排查全过程"
+date: "2026-06-29"
+author: "Newman Dryden"
+tags: ["STM32H723", "ADC", "HAL", "debug", "Rank编码", "SQR1", "CubeIDE"]
+description: "PA6 (ADC1_IN3) 无论外接什么电压都固定读数 ~400 RAW。排查 GPIO 模式、ADC 寄存器、HAL 通道编码，最终定位到 sChan.Rank 未使用 LL_ADC_REG_RANK_x 编码值，致 SQR1 通道位写偏。"
+---
+
+## 现象
+
+STM32H723ZGT6 上，PA6 配置为 ADC1_IN3 输入。无论外接 GND、3.3V 或 DAC 1.6V，ADC 读数始终稳定在 **367~423 RAW**（约 296~341 mV @ 3.3V Vref）。
+
+此问题持续排查约两天（2026-06-28 ~ 2026-06-29）。
+
+---
+
+## 排查过程
+
+### 第一步：怀疑 GPIO 模式未设为模拟
+
+通过 USB CDC 打印 GPIOA MODER 寄存器值：
+
+```text
+[ADC DBG] GPIOA MODER=0xABFFF755 AFR0=0x00000000 CH=1
+```
+
+解码 MODER[13:12] = `11` → PA6 确为 **ANALOG 模式**。GPIO 配置正确，排除。
+
+### 第二步：怀疑 ADC 通道号映射错误
+
+检查 `board_config.h` 宏链：
+
+```c
+#define BSP_ADC_CH0_CHANNEL  ADC_CHANNEL_3  /* PA6 -> ADC1_IN3 */
+```
+
+HAL 内部定义链：
+
+```c
+ADC_CHANNEL_3 → LL_ADC_CHANNEL_3
+→ (ADC_CHANNEL_3_NUMBER | ADC_CHANNEL_3_SMP | ADC_CHANNEL_3_BITFIELD)
+→ ((ADC_CFGR_AWD1CH_1|ADC_CFGR_AWD1CH_0) | SMP_encoded | AWD2CH_3_bit)
+```
+
+HAL 的 `__LL_ADC_CHANNEL_TO_DECIMAL_NB()` 宏能正确解码出通道号 3。**通道常量本身无误**，排除。
+
+### 第三步：打印 ADC 硬件寄存器 ← 关键突破口
+
+在 `drv_adc.c` 增加 ADC 寄存器打印：
+
+```c
+[ADC DBG] ADC1 SQR1=0x00000006 CR=0x10000205 ISR=0x0000101F CFGR=0x80003008
+```
+
+**SQR1 = 0x00000006。**
+
+在 STM32H723 上，`SQ1`（Rank 1 的通道选择域）位于 `SQR1` 的 **bits[10:6]**（由 `ADC_REG_RANK_1_SQRX_BITOFFSET_POS = 6` 定义）。
+
+```text
+SQR1 = 0x00000006 → SQ1 = 0 (bits[10:6] = 00000)
+```
+
+**ADC 实际在转换通道 0，而不是通道 3（PA6）！** 通道 0 是 ADC1_IN0（内部通道），无外部引脚 → 浮空电平 ≈ 300mV。
+
+### 第四步：追踪通道号为何从 3 变成 0
+
+通道配置全流程：
+
+```
+drv_adc.c: channels[0] = ADC_CHANNEL_3  (编码值)
+    ↓
+bsp_adc.c: sChan.Channel = cfg->channels[rank]
+    sChan.Rank = rank + 1   ← ❌ 传了裸整数 1！
+    ↓
+HAL_ADC_ConfigChannel → LL_ADC_REG_SetSequencerRanks(ADC1, sConfig->Rank, sConfig->Channel)
+    ↓
+LL_ADC_REG_SetSequencerRanks:
+    bit_shift = Rank & ADC_REG_RANK_ID_SQRX_MASK
+```
+
+其中 `ADC_REG_RANK_ID_SQRX_MASK = 0x1F`（5-bit 掩码）。
+
+- **我们传的** `Rank = 1` → `1 & 0x1F = 1` → 通道值被左移 **1 位**写到 bits[5:1]，而非 bits[10:6]
+- **HAL 期望的** `LL_ADC_REG_RANK_1 = ADC_SQR1_REGOFFSET | 6` → `6 & 0x1F = 6` → 通道值被左移 **6 位**写到正确的 bits[10:6]
+
+**根本原因：`sChan.Rank` 传了裸整数，而非 HAL 编码的 Rank 常量。**
+
+```c
+// ❌ 错误
+sChan.Rank = rank + 1;  // rank=0 → Rank=1 (裸整数)
+
+// ✅ 正确
+sChan.Rank = LL_ADC_REG_RANK_1 + (rank * 6);
+```
+
+因为 rank=1 时左移量是 1 而非 6，通道值 3 (0b0011) 左移 1 位 → 写入 bits[5:1]。而 SQ1 在 bits[10:6] 读到 0，ADC 转换通道 0。
+
+---
+
+## 修复
+
+文件：`firmware/boards/h723zg_v1/bsp/src/bsp_adc.c`
+
+```c
+// 新增 Rank 编码表
+static const uint32_t s_rankTable[] = {
+    LL_ADC_REG_RANK_1, LL_ADC_REG_RANK_2, LL_ADC_REG_RANK_3, LL_ADC_REG_RANK_4,
+    LL_ADC_REG_RANK_5, LL_ADC_REG_RANK_6, LL_ADC_REG_RANK_7, LL_ADC_REG_RANK_8,
+};
+
+// 修改前 ❌
+sChan.Rank = rank + 1;
+
+// 修改后 ✅
+sChan.Rank = s_rankTable[rank];
+```
+
+## 验证
+
+修复后 `SQR1 = 0x000000C0` → SQ1 = 3（ADC1_IN3 / PA6）✓
+
+PA6 外接 3.3V：RAW = 4094~4095，电压显示 3.299V~3.300V ✓
+
+---
+
+## 经验总结
+
+1. **STM32H7 HAL 的 `Rank` 参数不是简单的 1,2,3 整数**，而是包含寄存器偏移量和位偏移的编码值（`LL_ADC_REG_RANK_1` = `SQR1_offset | bit_position`）。必须使用 HAL 宏，不能用裸数字。
+2. 当外设寄存器值与预期不符时，**直接打印硬件寄存器**是最有效的排查手段。本轮排查中 `SQR1` 寄存器直接暴露了真实问题。
+3. `assert_param(IS_ADC_REGULAR_RANK(sConfig->Rank))` 可以提前拦截此类错误，但 Release 配置被编译剔除，不会报警。
+
+## 涉及文件
+
+| 文件 | 修改 |
+|------|------|
+| `firmware/boards/h723zg_v1/bsp/src/bsp_adc.c` | Rank 编码表 + 修复 `sChan.Rank` |
+| `firmware/common/drivers/src/drv_adc.c` | 增加 ADC 寄存器调试打印 |
+| `firmware/common/app/src/app_main.c` | 补 `#include "board_config.h"` |
+| `firmware/boards/h723zg_v1/bsp/src/bsp_error.c` | 补 `Error_Handler()` |
+| `firmware/boards/h723zg_v1/bsp/src/bsp_dma.c` | `hdma_tim2_up` 改为全局变量 |
+| `Core/Inc/board_config.h` | 补 `#include "stm32h7xx_hal.h"` |
