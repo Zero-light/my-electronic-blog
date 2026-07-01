@@ -133,26 +133,17 @@ content/notes/*.mdx  ──→  lib/mdx.ts (fs + gray-matter 解析 frontmatter)
 
 ---
 
-## 🗺️ 全项目记忆（Claude 记住这些）
+## 🗺️ 项目记忆索引（按需加载，不占上下文）
 
-### GitHub 仓库总览
+以下信息存于 `~/.claude/projects/C--/memory/` 的记忆文件中，需要时我会读取详细内容：
 
-```
-Zero-light/
-├── my-electronic-blog              ← 本网站项目
-├── hardware-knowledge-base         ← 硬件知识库（私有）
-├── H723Waveforms                   ← STM32H723波形发生器
-├── Digital-Power-Supply            ← 数控电源+电子负载
-├── 2025-Research-Project           ← 2025校级科研（智能宠物机器人）
-├── RTOS-Smart-Navigation-Car       ← RTOS多功能智能导航车
-├── RTOS-Industrial-Gateway         ← RTOS工业网关采集器
-├── Voice-PID-Car                   ← 语音避障PID小车
-├── INA226-Current-Monitor          ← INA226电流监测
-├── MPU6050-Kalman-Filter           ← MPU6050卡尔曼滤波
-├── Line-Tracking-Car               ← 巡线小车PID控制
-├── STM32_PWM_Servo_Driver          ← 已有（舵机追踪系统）
-└── Personal-Teach-Portfolio        ← 已有
-```
+| 记忆文件 | 一句话概要 | 什么时候读取 |
+|---|---|---|
+| `project-structure.md` | 全部 12 个项目的本地路径 + GitHub 仓库映射 | 需要操作项目时 |
+| `knowledge-base.md` | 知识库位置 `D:\知识库\` + GitHub 私有仓库 | 需要查/写笔记时 |
+| `github-config.md` | GitHub: `Zero-light`，SSH 方式连接 | 需要操作 GitHub 时 |
+| `skills-config.md` | 44 个已安装技能 + 自动触发规则 | 需要排查技能问题时 |
+| `user-profile.md` | 你的技术栈、偏好、身份 | 了解工作方式时 |
 
 ### 常用命令速查
 ```bash
@@ -160,11 +151,6 @@ Zero-light/
 npm run dev      # 开发服务器
 npm run build    # 构建（推送前必须通过）
 
-# 知识库位于 D:\知识库\（已同步 GitHub 私有仓库）
-# 项目索引详见 D:\知识库\项目总索引.md
+# 知识库位置
+D:\知识库\       （已同步 GitHub 私有仓库）
 ```
-
-### 知识库位置
-- 本地: `D:\知识库\`
-- GitHub: `Zero-light/hardware-knowledge-base`（私有）
-- Obsidian vault 结构，含芯片笔记、电路基础、项目复盘、面试准备等
