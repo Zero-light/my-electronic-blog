@@ -2,6 +2,33 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Skills — 自动触发规则（无需手动调用）
+
+我已安装以下技能，它们会根据对话上下文 **自动匹配触发**，不需要我输入 `/xxx` 命令：
+
+### 🧠 行为准则（始终生效）
+- **karpathy-guidelines** — 编码前先思考、保持简洁、只做精确修改。每次对话自动激活
+
+### 🔍 代码质量（遇到问题自动触发）
+- **addy-code-review-and-quality** — 审查代码时自动启用多维审查
+- **addy-code-simplification** — 检测到复杂代码时自动建议简化
+- **addy-performance-optimization** — 涉及性能优化时自动触发
+- **addy-security-and-hardening** — 处理用户输入/认证/存储时自动启用
+- **addy-debugging-and-error-recovery** — 测试失败/构建错误时自动进入系统排查
+
+### 📋 开发流程（场景触发）
+- **addy-test-driven-development** / **tdd** — 写测试时自动应用 TDD 流程
+- **addy-incremental-implementation** — 大功能拆小步实现
+- **addy-documentation-and-adrs** — 做架构决策时自动记录
+- **addy-planning-and-task-breakdown** — 大任务拆解时自动启用
+
+### 🎨 前端专项
+- **addy-frontend-ui-engineering** — 构建 UI 组件时自动激活
+- **addy-browser-testing-with-devtools** — 浏览器调试时自动启用
+
+### 应用规则
+以上所有技能应当 **根据上下文自动激活**，无需用户指定技能名称。当对话中出现相关场景（代码审查、调试、性能、安全、写测试、架构设计、任务拆解等），自动选择匹配的技能来处理。技能的完整内容对用户透明，不必每次汇报哪个技能被激活了。
+
 ## Commands
 
 ```bash
@@ -103,3 +130,40 @@ content/notes/*.mdx  ──→  lib/mdx.ts (fs + gray-matter 解析 frontmatter)
 ### Project update log convention
 
 修改项目代码后，必须在 `../更新日志/` 目录创建 `YYYY-MM-DD-简短描述.md`，遵循 `探访标记.md` 中的模板。该目录与源码目录平级，不在 `my-portfolio/` 内。
+
+---
+
+## 🗺️ 全项目记忆（Claude 记住这些）
+
+### GitHub 仓库总览
+
+```
+Zero-light/
+├── my-electronic-blog              ← 本网站项目
+├── hardware-knowledge-base         ← 硬件知识库（私有）
+├── Digital-Power-Supply            ← 数控电源+电子负载
+├── 2025-Research-Project           ← 2025校级科研（智能宠物机器人）
+├── RTOS-Smart-Navigation-Car       ← RTOS多功能智能导航车
+├── RTOS-Industrial-Gateway         ← RTOS工业网关采集器
+├── Voice-PID-Car                   ← 语音避障PID小车
+├── INA226-Current-Monitor          ← INA226电流监测
+├── MPU6050-Kalman-Filter           ← MPU6050卡尔曼滤波
+├── Line-Tracking-Car               ← 巡线小车PID控制
+├── STM32_PWM_Servo_Driver          ← 已有（舵机追踪系统）
+└── Personal-Teach-Portfolio        ← 已有
+```
+
+### 常用命令速查
+```bash
+# 本网站
+npm run dev      # 开发服务器
+npm run build    # 构建（推送前必须通过）
+
+# 知识库位于 D:\知识库\（已同步 GitHub 私有仓库）
+# 项目索引详见 D:\知识库\项目总索引.md
+```
+
+### 知识库位置
+- 本地: `D:\知识库\`
+- GitHub: `Zero-light/hardware-knowledge-base`（私有）
+- Obsidian vault 结构，含芯片笔记、电路基础、项目复盘、面试准备等
