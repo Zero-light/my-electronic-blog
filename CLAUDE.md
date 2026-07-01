@@ -141,6 +141,7 @@ content/notes/*.mdx  ──→  lib/mdx.ts (fs + gray-matter 解析 frontmatter)
 Zero-light/
 ├── my-electronic-blog              ← 本网站项目
 ├── hardware-knowledge-base         ← 硬件知识库（私有）
+├── H723Waveforms                   ← STM32H723波形发生器
 ├── Digital-Power-Supply            ← 数控电源+电子负载
 ├── 2025-Research-Project           ← 2025校级科研（智能宠物机器人）
 ├── RTOS-Smart-Navigation-Car       ← RTOS多功能智能导航车
