@@ -3,12 +3,17 @@ import { BootScene, HomeScene, WardrobeScene } from './scenes/HomeScene';
 import { StudyScene } from './scenes/StudyScene';
 
 const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
+  type: Phaser.WEBGL,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 960,
-    height: 540,
+    width: 1280,
+    height: 720,
+  },
+  render: {
+    antialias: true,
+    roundPixels: true,
+    pixelArt: false,
   },
   backgroundColor: '#E8F0FF',
   parent: 'game',

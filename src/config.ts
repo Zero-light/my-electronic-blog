@@ -1,7 +1,7 @@
 // WordPal Global Configuration
 
-export const GAME_WIDTH = 960;
-export const GAME_HEIGHT = 540;
+export const GAME_WIDTH = 1280;
+export const GAME_HEIGHT = 720;
 
 export const COLORS = {
   bg:        0xE8F0FF,
