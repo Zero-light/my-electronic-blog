@@ -22,7 +22,7 @@ export function addToWordbook(data: SaveData, wordId: string): boolean {
   saveData(data); return true;
 }
 
-export function updateWordProgress(save: SaveData, wordId: string, grade: number) {
+export function updateWordProgress(data: SaveData, wordId: string, grade: number) {
   const w = save.wordbook.find(e => e.wordId === wordId);
   if (!w) return;
   w.reviewCount++;
@@ -40,7 +40,7 @@ export function updateWordProgress(save: SaveData, wordId: string, grade: number
   saveData(data);
 }
 
-export function getDueWords(save: SaveData): WordbookEntry[] {
+export function getDueWords(data: SaveData): WordbookEntry[] {
   const today = new Date(); today.setHours(0,0,0,0);
   return save.wordbook.filter(w => {
     if (!w.lastReview) return true;
@@ -49,12 +49,12 @@ export function getDueWords(save: SaveData): WordbookEntry[] {
   });
 }
 
-export function getWordbookStats(save: SaveData) {
+export function getWordbookStats(data: SaveData) {
   return { total: save.wordbook.length, new: save.wordbook.filter(w=>w.status==='new').length, learning: save.wordbook.filter(w=>w.status==='learning').length, mastered: save.wordbook.filter(w=>w.status==='mastered').length, due: getDueWords(save).length };
 }
 
 // Challenge
-export function saveChallengeRecord(save: SaveData, score: number, timeUsed: number, correct: number, total: number) {
+export function saveChallengeRecord(data: SaveData, score: number, timeUsed: number, correct: number, total: number) {
   save.challengeRecords.push({ date: new Date().toISOString().slice(0,10), score, time: timeUsed, correct, total });
   if (save.challengeRecords.length > 50) save.challengeRecords.shift();
   const diamonds = getChallengeDiamonds(correct, total);
@@ -73,12 +73,12 @@ export function getChallengeTier(acc: number): string {
   if (acc >= 1) return '💎 +100'; if (acc >= 0.85) return '💎 +40'; if (acc >= 0.75) return '💎 +20'; if (acc >= 0.6) return '💎 +10'; return '再试试!';
 }
 
-export function getHighScore(save: SaveData): number {
+export function getHighScore(data: SaveData): number {
   return save.challengeRecords.reduce((max, r) => Math.max(max, r.score), 0);
 }
 
 // Streak
-export function refreshDaily(save: SaveData): SaveData {
+export function refreshDaily(data: SaveData): SaveData {
   const today = new Date().toISOString().slice(0,10);
   if (save.lastDailyRefresh !== today) {
     save.lastDailyRefresh = today;
