@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, BookmarkPlus, BookOpen, Brain, RotateCcw } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
+import { WordDetail } from './WordDetail';
 
 const sr: any[] = []; let srDone = false;
 async function loadBank(): Promise<any[]> {
@@ -16,6 +17,7 @@ export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ on
   const [results, setResults] = useState<any[]>([]);
   const [bank, setBank] = useState<any[]>([]);
   const [added, setAdded] = useState<Set<string>>(new Set());
+  const [detailWord, setDetailWord] = useState<any>(null);
 
   useEffect(() => { loadBank().then(setBank); }, []);
   useEffect(() => { setAdded(new Set(save.wordbook.map(w => w.wordId))); }, [save.wordbook]);
@@ -50,7 +52,8 @@ export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ on
         {results.map(w => {
           const inBook = added.has(w.id);
           return (
-            <div key={w.id} className="glass-panel p-4 hover:bg-white/10 transition-all">
+            <div key={w.id} className="glass-panel p-4 hover:bg-white/10 transition-all cursor-pointer"
+              onClick={() => setDetailWord(w)}>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
@@ -99,6 +102,7 @@ export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ on
           }词)
         </button>
       </div>
+      {detailWord && <WordDetail word={detailWord} onClose={() => setDetailWord(null)} />}
     </div>
   );
 };
