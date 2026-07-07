@@ -13,13 +13,13 @@ export function load(): SaveData {
   try { const r = localStorage.getItem(KEY); if (r) return JSON.parse(r); } catch {}
   return def();
 }
-export function save(d: SaveData) { localStorage.setItem(KEY, JSON.stringify(d)); }
+export function saveData(d: SaveData) { localStorage.setItem(KEY, JSON.stringify(d)); }
 
 // Wordbook
-export function addToWordbook(save: SaveData, wordId: string): boolean {
-  if (save.wordbook.find(w => w.wordId === wordId)) return false;
-  save.wordbook.push({ wordId, addedAt: Date.now(), status: 'new', easeFactor: 2.5, intervalDays: 0, lastReview: '', reviewCount: 0 });
-  save(save); return true;
+export function addToWordbook(data: SaveData, wordId: string): boolean {
+  if (data.wordbook.find(w => w.wordId === wordId)) return false;
+  data.wordbook.push({ wordId, addedAt: Date.now(), status: 'new', easeFactor: 2.5, intervalDays: 0, lastReview: '', reviewCount: 0 });
+  saveData(data); return true;
 }
 
 export function updateWordProgress(save: SaveData, wordId: string, grade: number) {
@@ -37,7 +37,7 @@ export function updateWordProgress(save: SaveData, wordId: string, grade: number
     w.intervalDays = 0; w.reviewCount = 0;
     w.easeFactor = Math.max(1.3, w.easeFactor - 0.2);
   }
-  save(save);
+  saveData(data);
 }
 
 export function getDueWords(save: SaveData): WordbookEntry[] {
@@ -59,7 +59,7 @@ export function saveChallengeRecord(save: SaveData, score: number, timeUsed: num
   if (save.challengeRecords.length > 50) save.challengeRecords.shift();
   const diamonds = getChallengeDiamonds(correct, total);
   save.diamonds += diamonds;
-  save(save);
+  saveData(data);
   return diamonds;
 }
 
@@ -85,7 +85,7 @@ export function refreshDaily(save: SaveData): SaveData {
     const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10);
     save.dailyStreak = save.lastCheckin === yesterday ? save.dailyStreak + 1 : save.lastCheckin !== today ? 1 : save.dailyStreak;
     save.lastCheckin = today;
-    save(save);
+    saveData(data);
   }
   return save;
 }

@@ -7,7 +7,7 @@ async function loadBank(): Promise<any[]> {
   if (wordBankCache) return wordBankCache;
   const r = await fetch('/assets/words/wordbank.json');
   const d = await r.json();
-  wordBankCache = d.words;
+  wordBankCache = d.words || [];
   return wordBankCache;
 }
 
@@ -15,7 +15,7 @@ export const SearchTab: React.FC = () => {
   const { save, search, addWord } = useGameStore();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
-  const [bank, setBank] = useState<any[]>([]);
+  const [bank, setBank] = useState<any[] | null>(null);
   const [added, setAdded] = useState<Set<string>>(new Set());
 
   useEffect(() => { loadBank().then(setBank); }, []);
@@ -24,7 +24,7 @@ export const SearchTab: React.FC = () => {
   const handleSearch = (q: string) => {
     setQuery(q);
     if (q.length < 2) { setResults([]); return; }
-    setResults(search(q, bank));
+    setResults(bank ? search(q, bank) : []);
   };
 
   return (

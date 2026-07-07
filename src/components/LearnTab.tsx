@@ -9,7 +9,8 @@ let bankCache: any[] | null = null;
 async function loadBank(): Promise<any[]> {
   if (bankCache) return bankCache;
   const r = await fetch('/assets/words/wordbank.json');
-  bankCache = (await r.json()).words;
+  const d = await r.json();
+  bankCache = d.words || [];
   return bankCache;
 }
 
@@ -18,7 +19,7 @@ type LearnPhase = 'question' | 'reveal' | 'done';
 export const LearnTab: React.FC = () => {
   const { save, startLearn, answerLearn, nextLearn, currentLearnWord, learnChoices, learnAnswered } = useGameStore();
   const [phase, setPhase] = useState<LearnPhase>('question');
-  const [bank, setBank] = useState<any[]>([]);
+  const [bank, setBank] = useState<any[] | null>(null);
   const [selectedIdx, setSelectedIdx] = useState(-1);
   const [wasCorrect, setWasCorrect] = useState(false);
   const [dueCount, setDueCount] = useState(0);
@@ -30,7 +31,7 @@ export const LearnTab: React.FC = () => {
   }, [save.wordbook]);
 
   const handleStart = () => {
-    if (bank.length) { startLearn(save.wordbook, bank); setPhase('question'); setSelectedIdx(-1); }
+    if (bank && bank.length) { startLearn(save.wordbook, bank); setPhase('question'); setSelectedIdx(-1); }
   };
 
   const handleChoice = (idx: number) => {

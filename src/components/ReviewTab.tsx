@@ -9,13 +9,14 @@ let bankCache: any[] | null = null;
 async function loadBank(): Promise<any[]> {
   if (bankCache) return bankCache;
   const r = await fetch('/assets/words/wordbank.json');
-  bankCache = (await r.json()).words;
+  const d = await r.json();
+  bankCache = d.words || [];
   return bankCache;
 }
 
 export const ReviewTab: React.FC = () => {
   const { save, getDueWords, updateReview } = useGameStore();
-  const [bank, setBank] = useState<any[]>([]);
+  const [bank, setBank] = useState<any[] | null>(null);
   const [due, setDue] = useState<any[]>([]);
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
@@ -24,11 +25,11 @@ export const ReviewTab: React.FC = () => {
   useEffect(() => { loadBank().then(setBank); }, []);
   useEffect(() => {
     const dueIds = getDueWords();
-    const full = dueIds.map(d => bank.find(w => w && w.id === d.wordId)).filter(Boolean);
+    const full = dueIds.map(d => (bank || []).find(w => w && w.id === d.wordId)).filter(Boolean);
     setDue(full);
   }, [bank, save.wordbook]);
 
-  if (!bank.length) return <div className="flex items-center justify-center h-full text-white/40 text-sm">加载中...</div>;
+  if (!bank) return <div className="flex items-center justify-center h-full text-white/40 text-sm">加载中...</div>;
   if (due.length === 0 || index >= due.length) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">
