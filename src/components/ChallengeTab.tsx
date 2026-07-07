@@ -1,21 +1,15 @@
-/**
- * ChallengeTab — Timed Quiz + Spelling + Boss modes
- * Words come from previously learned vocabulary
- */
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { Timer, Zap, Swords, Pencil } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { Timer, Zap, Swords } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
-import { loadWordPack } from '../data/wordBank';
-import type { WordEntry } from '../data/types';
-import { shuffle } from '../utils/helpers';
-import { getHighScore, getChallengeTier } from '../data/saveManager';
+import { getChallengeTier } from '../data/saveManager';
 
-type Mode = 'menu' | 'timed' | 'spelling' | 'boss' | 'result';
+type Mode = 'menu' | 'timed' | 'result';
+let bankCache: any[] | null = null;
 
 export const ChallengeTab: React.FC = () => {
-  const { save, saveChallenge, saveBoss, canBoss } = useGameStore();
+  const { save, saveChallenge } = useGameStore();
   const [mode, setMode] = useState<Mode>('menu');
-  const [words, setWords] = useState<WordEntry[]>([]);
+  const [words, setWords] = useState<any[]>([]);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
@@ -24,338 +18,111 @@ export const ChallengeTab: React.FC = () => {
   const [answered, setAnswered] = useState(false);
   const [choices, setChoices] = useState<string[]>([]);
   const [correctAns, setCorrectAns] = useState(0);
-  const [spellingInput, setSpellingInput] = useState('');
-  const [spellingResult, setSpellingResult] = useState('');
   const [lastDiamonds, setLastDiamonds] = useState(0);
-  const [lastAccuracy, setLastAccuracy] = useState(0);
+  const [lastAcc, setLastAcc] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval>>();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [loading, setLoading] = useState(true);
-
-  const total = 20;
-  const highScore = getHighScore(save);
 
   useEffect(() => {
-    loadWordPack('kaoyan_2').then(all => {
-      const batch = shuffle(all).slice(0, total);
-      setWords(batch);
-      setLoading(false);
+    fetch('/assets/words/wordbank.json').then(r => r.json()).then(d => {
+      bankCache = d.words;
     });
   }, []);
 
-  // Timer
   useEffect(() => {
-    if (mode === 'timed' && timeLeft > 0) {
-      timerRef.current = setInterval(() => setTimeLeft(t => t - 1), 1000);
-    }
-    if (timeLeft <= 0 && mode === 'timed') finishChallenge();
+    if (mode === 'timed' && timeLeft > 0) timerRef.current = setInterval(() => setTimeLeft(t => t - 1), 1000);
+    if (timeLeft <= 0 && mode === 'timed') finish();
     return () => clearInterval(timerRef.current);
   }, [mode, timeLeft]);
 
-  // Choices for timed mode
-  const loadQuestion = useCallback(() => {
-    if (index >= total || !words.length) return;
-    const w = words[index];
-    const others = words.filter(o => o.id !== w.id).sort(() => Math.random() - 0.5).slice(0, 3);
-    const opts = shuffle([w.meaning, ...others.map(o => o.meaning)]);
-    setChoices(opts);
-    setCorrectAns(opts.indexOf(w.meaning));
-    setAnswered(false);
-  }, [index, words]);
+  const startTimed = () => {
+    if (!bankCache) return;
+    const batch = bankCache.sort(() => Math.random() - 0.5).slice(0, 50);
+    setWords(batch); setIndex(0); setScore(0); setCorrect(0); setStreak(0); setTimeLeft(60); setMode('timed');
+  };
 
-  useEffect(() => { if ((mode === 'timed' || mode === 'boss') && words.length) loadQuestion(); }, [index, mode, loadQuestion]);
-
-  // Spelling mode
   useEffect(() => {
-    if (mode === 'spelling' && words.length) {
-      setSpellingInput(''); setSpellingResult(''); setAnswered(false);
-      setTimeout(() => inputRef.current?.focus(), 100);
+    if (mode === 'timed' && words.length && index < 50) {
+      const w = words[index];
+      const others = words.filter(o => o.id !== w.id).sort(() => Math.random() - 0.5).slice(0, 3);
+      const opts = [w.meaning, ...others.map(o => o.meaning)].sort(() => Math.random() - 0.5);
+      setChoices(opts); setCorrectAns(opts.indexOf(w.meaning)); setAnswered(false);
     }
-  }, [index, mode]);
+  }, [index, mode, words]);
 
-  const handleTimedChoice = (i: number) => {
-    if (answered) return;
-    setAnswered(true);
-    const correct_ = i === correctAns;
-    if (correct_) {
-      setScore(s => s + 100 + streak * 20);
-      setCorrect(c => c + 1);
-      setStreak(s => s + 1);
-    } else {
-      setStreak(0);
-      setScore(s => Math.max(0, s - 30)); // deduct score on wrong
-      setTimeLeft(t => Math.max(t - 5, 0));
-    }
+  const handleChoice = (i: number) => {
+    if (answered) return; setAnswered(true);
+    if (i === correctAns) { setScore(s => s + 100 + streak * 20); setCorrect(c => c + 1); setStreak(s => s + 1); }
+    else { setStreak(0); setScore(s => Math.max(0, s - 30)); setTimeLeft(t => Math.max(t - 5, 0)); }
     setTimeout(() => setIndex(i => i + 1), 400);
   };
 
-  const handleSpelling = () => {
-    if (answered || index >= total) return;
-    setAnswered(true);
-    const w = words[index];
-    if (spellingInput.trim().toLowerCase() === w.word.toLowerCase()) {
-      setSpellingResult('✓ 正确!');
-      setScore(s => s + 150);
-      setCorrect(c => c + 1);
-      setStreak(s => s + 1);
-    } else {
-      setSpellingResult(`✗ 正确答案: ${w.word}`);
-      setStreak(0);
-    }
-    setTimeout(() => { setIndex(i => i + 1); }, 1200);
-  };
-
-  const finishChallenge = () => {
+  const finish = () => {
     clearInterval(timerRef.current);
-    const timeUsed = mode === 'timed' ? 60 - timeLeft : 0;
-    const totalQuestions = Math.max(index, 1);
-    const acc = correct / totalQuestions;
-    if (mode === 'timed') {
-      const diamonds = saveChallenge(score, timeUsed, correct, totalQuestions);
-      setLastDiamonds(diamonds);
-      setLastAccuracy(Math.round(acc * 100));
-      setMode('result');
-    } else if (mode === 'boss') {
-      saveBoss(score);
-      setLastAccuracy(Math.round(acc * 100));
-      setMode('result');
-    } else {
-      setMode('menu');
-    }
+    const total = Math.max(index, 1);
+    const diamonds = saveChallenge(score, 60 - timeLeft, correct, total);
+    setLastDiamonds(diamonds); setLastAcc(Math.round(correct / total * 100)); setMode('result');
   };
 
-  const startTimed = () => { setMode('timed'); setScore(0); setIndex(0); setCorrect(0); setStreak(0); setTimeLeft(60); };
-  const startSpelling = () => { setMode('spelling'); setScore(0); setIndex(0); setCorrect(0); setStreak(0); };
-  const startBoss = () => { setMode('boss'); setScore(0); setIndex(0); setCorrect(0); setStreak(0); setTimeLeft(90); };
-
-  // Boss mode — 10 questions, 90 seconds, diamond rewards
-  const bossTotal = 10;
-  if (mode === 'boss') {
-    if (index >= bossTotal) { finishChallenge(); return null; }
-    if (!words.length) return <div className="flex items-center justify-center h-full text-white/50">加载中...</div>;
-    const w = words[index];
-    return (
-      <div className="flex flex-col items-center w-full h-full pt-4 px-4">
-        <div className="flex items-center gap-3 mb-3">
-          <div className={`glass-chip ${timeLeft <= 15 ? 'text-red-300 animate-breathe' : 'text-yellow-200'}`}>
-            <Timer size={14} /> {timeLeft}s
-          </div>
-          <div className="glass-chip text-yellow-300"><Swords size={14} /> BOSS {index + 1}/{bossTotal}</div>
-          <div className="glass-chip">{score} 分</div>
-          <div className="glass-chip">🔥 {streak}x</div>
-        </div>
-
-        <div className="text-xs text-white/30 mb-3 text-center">
-          ⚡ 综合挑战 · 答对+100~180分 · 答错-30分 · 通关得💎
-        </div>
-
-        <div className="glass-panel w-full max-w-md p-6 mb-4 text-center">
-          <h2 className="text-4xl font-extrabold text-white mb-1">{w.word}</h2>
-          <p className="text-white/40 text-sm font-mono">{w.phonetic}</p>
-          {w.example && <p className="text-white/20 text-xs italic mt-2">"{w.example}"</p>}
-        </div>
-        <div className="w-full max-w-md grid gap-2.5">
-          {choices.map((c, i) => (
-            <button key={i}
-              className={`glass-panel px-5 py-3.5 text-left text-sm font-medium text-white/85 transition-all ${
-                answered ? 'cursor-default' : 'hover:bg-white/18 cursor-pointer'
-              } ${
-                answered && i === correctAns ? 'bg-green-400/25 border-green-400/40' : ''
-              } ${
-                answered && i !== correctAns ? 'bg-white/5' : ''
-              }`}
-              onClick={() => handleTimedChoice(i)} disabled={answered}
-            >
-              {String.fromCharCode(65 + i)}. {c}
-            </button>
-          ))}
-        </div>
-        {streak >= 3 && <div className="glass-chip text-yellow-300 mt-3"><Zap size={12} /> {streak}x combo!</div>}
-      </div>
-    );
-  }
-
-  if (mode === 'timed' && words.length > 0 && index < total) {
-    const w = words[index];
-    return (
-      <div className="flex flex-col items-center w-full h-full pt-4 px-4">
-        <div className="flex items-center gap-3 mb-3">
-          <div className={`glass-chip ${timeLeft <= 10 ? 'text-red-300 animate-breathe' : 'text-white/70'}`}>
-            <Timer size={14} /> {timeLeft}s
-          </div>
-          <div className="glass-chip">{score} 分</div>
-          <div className="glass-chip">{index + 1}/{total}</div>
-          <div className="glass-chip">🔥 {streak}x</div>
-        </div>
-
-        <div className="text-xs text-white/30 mb-3 text-center">
-          ✅ 答对 +{100 + streak * 20}分 · ❌ 答错 -30分 -5秒
-        </div>
-
-        <div className="glass-panel w-full max-w-md p-6 mb-4 text-center">
-          <h2 className="text-4xl font-extrabold text-white mb-1">{w.word}</h2>
-          <p className="text-white/40 text-sm font-mono">{w.phonetic}</p>
-        </div>
-        <div className="w-full max-w-md grid gap-2.5">
-          {choices.map((c, i) => (
-            <button key={i}
-              className={`glass-panel px-5 py-3.5 text-left text-sm font-medium text-white/85 transition-all ${
-                answered ? 'cursor-default' : 'hover:bg-white/18 cursor-pointer'
-              } ${
-                answered && i === correctAns ? 'bg-green-400/25 border-green-400/40' : ''
-              }`}
-              onClick={() => handleTimedChoice(i)} disabled={answered}
-            >
-              {String.fromCharCode(65 + i)}. {c}
-            </button>
-          ))}
-        </div>
-        {streak >= 5 && <div className="glass-chip text-yellow-300 mt-3"><Zap size={12} /> {streak}x combo!</div>}
-      </div>
-    );
-  }
-
-  if (mode === 'spelling' && words.length > 0 && index < total) {
-    const w = words[index];
-    return (
-      <div className="flex flex-col items-center w-full h-full pt-4 px-4">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="glass-chip">{score} 分</div>
-          <div className="glass-chip">{index + 1}/{total}</div>
-          <div className="glass-chip">🔥 {streak}x</div>
-        </div>
-        <div className="glass-panel w-full max-w-md p-8 mb-4 text-center">
-          <h2 className="text-lg text-white/70 mb-2">听发音，拼写单词</h2>
-          <p className="text-3xl font-extrabold text-white mb-1">{w.word}</p>
-          <p className="text-white/40 text-sm font-mono mb-4">{w.phonetic}</p>
-
-          {!answered ? (
-            <div className="flex gap-3 justify-center">
-              <input
-                ref={inputRef}
-                className="glass-panel px-4 py-3 text-lg text-white bg-transparent outline-none w-48 text-center"
-                value={spellingInput}
-                onChange={e => setSpellingInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleSpelling()}
-                placeholder="输入单词..."
-                autoFocus
-              />
-              <button className="glass-btn" onClick={handleSpelling}>确认</button>
-            </div>
-          ) : (
-            <p className={`text-lg font-semibold ${spellingResult.startsWith('✓') ? 'text-green-300' : 'text-red-300'}`}>
-              {spellingResult}
-            </p>
-          )}
-        </div>
-        <p className="text-xs text-white/30 mt-2">你可以先看到单词→记忆→输入→验证</p>
-      </div>
-    );
-  }
-
-  // ── Result Screen ───────────────────────────────────
   if (mode === 'result') {
-    const tier = getChallengeTier(lastAccuracy / 100);
     return (
       <div className="flex flex-col items-center w-full h-full pt-10 px-4">
         <div className="glass-panel w-full max-w-sm p-8 text-center">
-          <span className="text-5xl block mb-4">
-            {lastAccuracy >= 100 ? '🏆' : lastAccuracy >= 85 ? '🌟' : lastAccuracy >= 75 ? '✨' : lastAccuracy >= 60 ? '👍' : '💪'}
-          </span>
+          <span className="text-5xl block mb-4">{lastAcc >= 100 ? '🏆' : lastAcc >= 85 ? '🌟' : lastAcc >= 75 ? '✨' : '👍'}</span>
           <h2 className="text-2xl font-bold text-white mb-2">挑战结束!</h2>
-          <div className="text-white/70 text-lg mb-1">正确率 {lastAccuracy}%</div>
-          <div className="glass-chip text-lg mb-4">{tier}</div>
-
-          <div className="text-xs text-white/40 mb-6">
-            <p>60%+ → 💎10 · 75%+ → 💎20 · 85%+ → 💎40 · 100% → 💎100</p>
-          </div>
-
-          <button className="glass-btn w-full" onClick={() => setMode('menu')}>
-            返回菜单
-          </button>
+          <p className="text-white/70 text-lg mb-1">正确率 {lastAcc}% · {score} 分</p>
+          <div className="glass-chip text-lg mb-4">{getChallengeTier(lastAcc / 100)}</div>
+          <div className="text-xs text-white/30 mb-6">60%→💎10 · 75%→💎20 · 85%→💎40 · 100%→💎100</div>
+          <button className="glass-btn w-full" onClick={() => setMode('menu')}>返回</button>
         </div>
       </div>
     );
   }
 
-  // ── Menu ─────────────────────────────────────────────
-  if (loading) return <div className="flex items-center justify-center h-full text-white/50">加载中...</div>;
-
-  const todayRecords = save.challengeRecords.filter(r => r.date === new Date().toISOString().slice(0, 10));
-  const todayBest = todayRecords.reduce((max, r) => Math.max(max, r.score), 0);
+  if (mode === 'timed' && words[index]) {
+    const w = words[index];
+    return (
+      <div className="flex flex-col items-center w-full h-full pt-4 px-4">
+        <div className="flex items-center gap-3 mb-3">
+          <div className={`glass-chip ${timeLeft <= 10 ? 'text-red-300 animate-breathe' : ''}`}><Timer size={14} />{timeLeft}s</div>
+          <div className="glass-chip">{score}分</div>
+          <div className="glass-chip">{index + 1}/50</div>
+          <div className="glass-chip">🔥{streak}x</div>
+        </div>
+        <div className="glass-panel w-full max-w-md p-6 mb-3 text-center">
+          <h2 className="text-4xl font-extrabold text-white mb-1">{w.word}</h2>
+          <p className="text-white/40 text-sm font-mono">{w.phonetic}</p>
+        </div>
+        <div className="w-full max-w-md grid gap-2">
+          {choices.map((c, i) => (
+            <button key={i} className={`glass-panel px-4 py-3 text-left text-sm text-white/85 ${answered ? 'cursor-default' : 'hover:bg-white/15 cursor-pointer'} ${answered && i === correctAns ? 'bg-green-400/20' : ''}`}
+              onClick={() => handleChoice(i)} disabled={answered}>
+              {String.fromCharCode(65 + i)}. {c}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col items-center w-full h-full pt-4 px-4 overflow-y-auto">
+    <div className="flex flex-col items-center w-full h-full pt-4 px-4">
       <h2 className="text-lg font-bold text-white mb-4">⚡ 挑战模式</h2>
-
-      {/* Stats */}
       <div className="flex gap-3 mb-4">
-        <div className="glass-chip">🏆 最高 {highScore} 分</div>
-        <div className="glass-chip">📊 今日 {todayBest} 分</div>
         <div className="glass-chip">💎 {save.diamonds}</div>
+        <div className="glass-chip">🏆 {save.challengeRecords.length}场</div>
       </div>
-
-      {/* Accuracy reward tiers */}
-      <div className="glass-panel w-full max-w-md p-4 mb-4">
-        <p className="text-xs text-white/50 mb-3 text-center">钻石奖励阶梯 (按正确率)</p>
-        <div className="grid grid-cols-4 gap-2 text-center">
-          <div className="text-xs text-white/30">60%+<br /><span className="text-white/60 font-bold">💎10</span></div>
-          <div className="text-xs text-white/30">75%+<br /><span className="text-white/60 font-bold">💎20</span></div>
-          <div className="text-xs text-white/30">85%+<br /><span className="text-white/60 font-bold">💎40</span></div>
-          <div className="text-xs text-white/30">100%<br /><span className="text-yellow-300 font-bold">💎100</span></div>
-        </div>
+      <div className="glass-panel w-full max-w-sm p-4 mb-3 text-center text-xs text-white/35">
+        60%→💎10 · 75%→💎20 · 85%→💎40 · 100%→💎100
       </div>
-
-      {/* Mode cards */}
-      <div className="grid gap-4 w-full max-w-md">
-        {/* Timed */}
-        <div className="glass-panel p-5 hover:bg-white/15 cursor-pointer transition-all" onClick={startTimed}>
+      <div className="grid gap-4 w-full max-w-sm">
+        <div className="glass-panel p-5 hover:bg-white/15 cursor-pointer" onClick={startTimed}>
           <div className="flex items-center gap-3 mb-2">
-            <Timer size={24} className="text-ice-300" />
-            <span className="text-white font-bold text-lg">限时闯关</span>
+            <Timer size={22} className="text-ice-300" />
+            <span className="text-white font-bold">限时闯关</span>
             <span className="glass-chip text-xs ml-auto">60秒</span>
           </div>
-          <p className="text-white/50 text-sm">限时答题，连击加分。答错扣 5 秒。从已学词汇中出题。</p>
+          <p className="text-white/40 text-xs">答对+分·连击翻倍·答错扣分·获得💎</p>
         </div>
-
-        {/* Spelling */}
-        <div className="glass-panel p-5 hover:bg-white/15 cursor-pointer transition-all" onClick={startSpelling}>
-          <div className="flex items-center gap-3 mb-2">
-            <Pencil size={24} className="text-peach-300" />
-            <span className="text-white font-bold text-lg">拼写模式</span>
-            <span className="glass-chip text-xs ml-auto">无时限</span>
-          </div>
-          <p className="text-white/50 text-sm">先看单词→记住→输入拼写。考验真实记忆，每题 150 分。</p>
-        </div>
-
-        {/* Boss */}
-        <div className={`glass-panel p-5 transition-all ${
-          canBoss() ? 'hover:bg-white/15 cursor-pointer border-yellow-400/20' : 'opacity-50'
-        }`}
-          onClick={() => canBoss() && startBoss()}
-        >
-          <div className="flex items-center gap-3 mb-2">
-            <Swords size={24} className="text-yellow-300" />
-            <span className="text-white font-bold text-lg">每日 BOSS 战</span>
-            <span className="glass-chip text-xs ml-auto text-yellow-300">💎 奖励</span>
-          </div>
-          <p className="text-white/50 text-sm">每天 1 次，综合 10 题，90 秒。通关获得钻石。最高: {save.bossHighScore} 分</p>
-          {!canBoss() && <p className="text-red-300/60 text-xs mt-1">今日已完成，明天再来!</p>}
-        </div>
-
-        {/* Today's records */}
-        {todayRecords.length > 0 && (
-          <div className="mt-2">
-            <p className="text-xs text-white/40 mb-2">今日记录</p>
-            {todayRecords.slice(-5).map((r, i) => (
-              <div key={i} className="flex justify-between text-xs text-white/50 mb-1">
-                <span>得分 {r.score}</span>
-                <span>{r.correct}/{r.total} 正确</span>
-                <span>{r.time}s</span>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

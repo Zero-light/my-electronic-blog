@@ -109,68 +109,6 @@ html, body, #root {
 @keyframes slideRight { 0% { transform: translateX(100%); } 100% { transform: translateX(0); } }
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 @keyframes breathe { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
-@keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
-@keyframes bounce-sm { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-16px); } 60% { transform: translateY(-6px); } }
-@keyframes eating { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.85) scaleX(1.08); } }
-@keyframes sleep { 0%,100% { transform: scale(1); } 50% { transform: scale(0.96); opacity: 0.8; } }
-
-/* ═══════ CSS Pet ═══════ */
-.pet-body {
-  position: relative; width: 160px; height: 180px;
-  margin: 0 auto;
-  transition: transform 0.3s ease;
-}
-.pet-body.happy { animation: bounce-sm 0.6s ease infinite; }
-.pet-body.eating { animation: eating 0.35s ease infinite; }
-.pet-body.sleeping { animation: sleep 3s ease-in-out infinite; }
-.pet-body.idle { animation: float 3.5s ease-in-out infinite; }
-
-/* Pet base shape — round blob with highlight */
-.pet-shape {
-  width: 130px; height: 130px; border-radius: 50%;
-  position: absolute; left: 50%; top: 20px; transform: translateX(-50%);
-  transition: background 0.4s ease, box-shadow 0.4s ease;
-}
-.pet-shape::after {
-  content: ''; position: absolute;
-  width: 55%; height: 28%; border-radius: 50%;
-  background: rgba(255,255,255,0.3);
-  top: 15%; left: 22%;
-}
-/* Eyes */
-.pet-eyes { position: absolute; top: 58px; left: 50%; transform: translateX(-50%); display: flex; gap: 32px; }
-.pet-eye {
-  width: 12px; height: 14px; background: #3D3D5C; border-radius: 50%; position: relative;
-  transition: all 0.3s ease;
-}
-.pet-eye::after { content: ''; position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; top: 3px; left: 6px; }
-.pet-eye.closed { height: 2px; border-radius: 2px; margin-top: 6px; }
-/* Blush */
-.pet-blush { position: absolute; top: 68px; display: flex; gap: 80px; left: 50%; transform: translateX(-50%); }
-.pet-blush-dot { width: 14px; height: 8px; background: rgba(255,181,197,0.55); border-radius: 50%; }
-/* Mouth */
-.pet-mouth { position: absolute; top: 82px; left: 50%; transform: translateX(-50%); }
-.pet-mouth-line {
-  width: 20px; height: 2px; background: #3D3D5C; border-radius: 1px; margin: 0 auto;
-  transition: all 0.3s ease;
-}
-.pet-mouth-line.smile { width: 24px; height: 3px; border-radius: 0 0 12px 12px; height: 8px; background: transparent; border: 2px solid #3D3D5C; border-top: none; }
-.pet-mouth-line.sad { width: 20px; height: 3px; border-radius: 12px 12px 0 0; height: 7px; background: transparent; border: 2px solid #3D3D5C; border-bottom: none; }
-
-/* Ears / Decorations */
-.pet-ear {
-  width: 28px; height: 28px; border-radius: 50%; position: absolute; top: 10px;
-  transition: background 0.4s ease;
-}
-.pet-ear-left { left: 18px; }
-.pet-ear-right { right: 18px; }
-.pet-hat { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: 22px; }
-
-/* Level star */
-.pet-level-star { position: absolute; top: -4px; right: 24px; font-size: 16px; animation: float 2s ease-in-out infinite; }
-
-/* Food drops */
-.pet-drop { position: absolute; font-size: 16px; animation: fadeIn 0.6s ease-out forwards; }
 
 /* ═══════ Tab Bar ═══════ */
 .tab-bar {

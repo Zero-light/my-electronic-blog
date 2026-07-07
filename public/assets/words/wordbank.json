@@ -1,0 +1,5876 @@
+{
+  "name": "English Word Bank",
+  "version": "1.0",
+  "total": 410,
+  "words": [
+    {
+      "id": "w_00001",
+      "word": "abandon",
+      "phonetic": "/əˈbændən/",
+      "meaning": "v. 放弃；抛弃；遗弃",
+      "examples": [
+        "They had to abandon the sinking ship.",
+        "She abandoned her dream of becoming a dancer."
+      ],
+      "collocations": [
+        "abandon oneself to 沉溺于",
+        "abandon hope 放弃希望"
+      ],
+      "derivatives": [
+        "abandoned (a.被遗弃的)",
+        "abandonment (n.放弃)"
+      ]
+    },
+    {
+      "id": "w_00002",
+      "word": "ability",
+      "phonetic": "/əˈbɪləti/",
+      "meaning": "n. 能力；才能",
+      "examples": [
+        "She has the ability to solve complex problems.",
+        "The test measures your language ability."
+      ],
+      "collocations": [
+        "ability to do sth 做某事的能力",
+        "to the best of one's ability 尽某人所能"
+      ],
+      "derivatives": [
+        "able (a.有能力的)",
+        "inability (n.无能)"
+      ]
+    },
+    {
+      "id": "w_00003",
+      "word": "absorb",
+      "phonetic": "/əbˈzɔːb/",
+      "meaning": "v. 吸收；吸引；理解",
+      "examples": [
+        "Plants absorb nutrients from the soil.",
+        "I was so absorbed in the book that I lost track of time."
+      ],
+      "collocations": [
+        "be absorbed in 全神贯注于",
+        "absorb information 吸收信息"
+      ],
+      "derivatives": [
+        "absorption (n.吸收)",
+        "absorbed (a.专注的)"
+      ]
+    },
+    {
+      "id": "w_00004",
+      "word": "abstract",
+      "phonetic": "/ˈæbstrækt/",
+      "meaning": "adj. 抽象的 n. 摘要 v. 提取",
+      "examples": [
+        "The concept is too abstract for beginners.",
+        "Please write an abstract of your research paper."
+      ],
+      "collocations": [
+        "abstract concept 抽象概念",
+        "in the abstract 抽象地"
+      ],
+      "derivatives": [
+        "abstraction (n.抽象)",
+        "abstractly (adv.抽象地)"
+      ]
+    },
+    {
+      "id": "w_00005",
+      "word": "abuse",
+      "phonetic": "/əˈbjuːz/",
+      "meaning": "v./n. 滥用；虐待；辱骂",
+      "examples": [
+        "The system can be easily abused by dishonest users.",
+        "She suffered years of physical abuse."
+      ],
+      "collocations": [
+        "drug abuse 药物滥用",
+        "abuse of power 滥用权力"
+      ],
+      "derivatives": [
+        "abusive (a.辱骂的)",
+        "abuser (n.施虐者)"
+      ]
+    },
+    {
+      "id": "w_00006",
+      "word": "academic",
+      "phonetic": "/ˌækəˈdemɪk/",
+      "meaning": "adj. 学术的；学院的 n. 学者",
+      "examples": [
+        "Her academic performance has improved significantly.",
+        "The university is a leading academic institution."
+      ],
+      "collocations": [
+        "academic year 学年",
+        "academic research 学术研究"
+      ],
+      "derivatives": [
+        "academy (n.学院)",
+        "academically (adv.学术上)"
+      ]
+    },
+    {
+      "id": "w_00007",
+      "word": "accelerate",
+      "phonetic": "/əkˈseləreɪt/",
+      "meaning": "v. 加速；促进",
+      "examples": [
+        "The government plans to accelerate economic reform.",
+        "The car accelerated rapidly on the highway."
+      ],
+      "collocations": [
+        "accelerate growth 加速增长",
+        "accelerate the process 加速进程"
+      ],
+      "derivatives": [
+        "acceleration (n.加速)",
+        "accelerator (n.加速器)"
+      ]
+    },
+    {
+      "id": "w_00008",
+      "word": "access",
+      "phonetic": "/ˈækses/",
+      "meaning": "n. 通道；使用权 v. 访问；获取",
+      "examples": [
+        "Students need access to the library resources.",
+        "You can access your account online."
+      ],
+      "collocations": [
+        "have access to 有权使用",
+        "Internet access 互联网接入"
+      ],
+      "derivatives": [
+        "accessible (a.可进入的)",
+        "accessibility (n.可访问性)"
+      ]
+    },
+    {
+      "id": "w_00009",
+      "word": "accommodate",
+      "phonetic": "/əˈkɒmədeɪt/",
+      "meaning": "v. 容纳；适应；提供住宿",
+      "examples": [
+        "The hotel can accommodate up to 500 guests.",
+        "We must accommodate our plans to the new situation."
+      ],
+      "collocations": [
+        "accommodate needs 满足需求",
+        "accommodate changes 适应变化"
+      ],
+      "derivatives": [
+        "accommodation (n.住宿)",
+        "accommodating (a.乐于助人的)"
+      ]
+    },
+    {
+      "id": "w_00010",
+      "word": "accompany",
+      "phonetic": "/əˈkʌmpəni/",
+      "meaning": "v. 陪伴；伴随；伴奏",
+      "examples": [
+        "She will accompany me to the conference.",
+        "The rain was accompanied by strong winds."
+      ],
+      "collocations": [
+        "be accompanied by 伴随着",
+        "accompany sb to 陪某人去"
+      ],
+      "derivatives": [
+        "companion (n.同伴)",
+        "accompaniment (n.伴奏)"
+      ]
+    },
+    {
+      "id": "w_00011",
+      "word": "accomplish",
+      "phonetic": "/əˈkʌmplɪʃ/",
+      "meaning": "v. 完成；实现；达到",
+      "examples": [
+        "We managed to accomplish the task ahead of schedule.",
+        "What do you hope to accomplish this year?"
+      ],
+      "collocations": [
+        "accomplish a goal 实现目标",
+        "accomplish a mission 完成任务"
+      ],
+      "derivatives": [
+        "accomplishment (n.成就)",
+        "accomplished (a.熟练的)"
+      ]
+    },
+    {
+      "id": "w_00012",
+      "word": "account",
+      "phonetic": "/əˈkaʊnt/",
+      "meaning": "n. 账户；解释；叙述 v. 说明；占比",
+      "examples": [
+        "You need to account for every expense.",
+        "Online sales account for 30% of total revenue."
+      ],
+      "collocations": [
+        "account for 解释；占比",
+        "take into account 考虑到",
+        "bank account 银行账户"
+      ],
+      "derivatives": [
+        "accountable (a.有责任的)",
+        "accountant (n.会计)"
+      ]
+    },
+    {
+      "id": "w_00013",
+      "word": "accurate",
+      "phonetic": "/ˈækjərət/",
+      "meaning": "adj. 准确的；精确的",
+      "examples": [
+        "We need more accurate data before making a decision.",
+        "Her description of the event was remarkably accurate."
+      ],
+      "collocations": [
+        "accurate measurement 精确测量",
+        "accurate description 准确描述"
+      ],
+      "derivatives": [
+        "accuracy (n.准确性)",
+        "accurately (adv.准确地)",
+        "inaccurate (a.不准确的)"
+      ]
+    },
+    {
+      "id": "w_00014",
+      "word": "achieve",
+      "phonetic": "/əˈtʃiːv/",
+      "meaning": "v. 达到；取得；实现",
+      "examples": [
+        "He worked hard to achieve his career goals.",
+        "What do you want to achieve in the next five years?"
+      ],
+      "collocations": [
+        "achieve success 取得成功",
+        "achieve a goal 实现目标"
+      ],
+      "derivatives": [
+        "achievement (n.成就)",
+        "achievable (a.可实现的)"
+      ]
+    },
+    {
+      "id": "w_00015",
+      "word": "acknowledge",
+      "phonetic": "/əkˈnɒlɪdʒ/",
+      "meaning": "v. 承认；确认；致谢",
+      "examples": [
+        "She refused to acknowledge her mistake.",
+        "We acknowledge the importance of diversity."
+      ],
+      "collocations": [
+        "acknowledge receipt 确认收到",
+        "widely acknowledged 公认的"
+      ],
+      "derivatives": [
+        "acknowledgment (n.承认)",
+        "acknowledged (a.公认的)"
+      ]
+    },
+    {
+      "id": "w_00016",
+      "word": "acquire",
+      "phonetic": "/əˈkwaɪər/",
+      "meaning": "v. 获得；习得；收购",
+      "examples": [
+        "It takes years to acquire a new language fluently.",
+        "The company plans to acquire several startups."
+      ],
+      "collocations": [
+        "acquire knowledge 获取知识",
+        "acquire skills 习得技能"
+      ],
+      "derivatives": [
+        "acquisition (n.获得；收购)",
+        "acquisitive (a.渴求的)"
+      ]
+    },
+    {
+      "id": "w_00017",
+      "word": "adapt",
+      "phonetic": "/əˈdæpt/",
+      "meaning": "v. 适应；改编",
+      "examples": [
+        "Animals must adapt to their changing environment.",
+        "The novel was adapted into a successful film."
+      ],
+      "collocations": [
+        "adapt to 适应",
+        "adapt from 改编自"
+      ],
+      "derivatives": [
+        "adaptation (n.适应；改编)",
+        "adaptable (a.能适应的)"
+      ]
+    },
+    {
+      "id": "w_00018",
+      "word": "adequate",
+      "phonetic": "/ˈædɪkwət/",
+      "meaning": "adj. 足够的；适当的",
+      "examples": [
+        "The current measures are not adequate to solve the crisis.",
+        "Make sure you get adequate sleep every night."
+      ],
+      "collocations": [
+        "adequate supply 充足的供应",
+        "adequate for 适合"
+      ],
+      "derivatives": [
+        "adequately (adv.充分地)",
+        "inadequate (a.不足的)"
+      ]
+    },
+    {
+      "id": "w_00019",
+      "word": "adjust",
+      "phonetic": "/əˈdʒʌst/",
+      "meaning": "v. 调整；适应",
+      "examples": [
+        "You may need to adjust your expectations.",
+        "It takes time to adjust to a new environment."
+      ],
+      "collocations": [
+        "adjust to 适应",
+        "adjust settings 调整设置"
+      ],
+      "derivatives": [
+        "adjustment (n.调整)",
+        "adjustable (a.可调整的)"
+      ]
+    },
+    {
+      "id": "w_00020",
+      "word": "adopt",
+      "phonetic": "/əˈdɒpt/",
+      "meaning": "v. 采纳；收养；采用",
+      "examples": [
+        "The board decided to adopt the new policy.",
+        "They adopted a child from overseas."
+      ],
+      "collocations": [
+        "adopt a method 采用方法",
+        "adopt a resolution 通过决议"
+      ],
+      "derivatives": [
+        "adoption (n.采纳；收养)",
+        "adoptive (a.收养的)"
+      ]
+    },
+    {
+      "id": "w_00021",
+      "word": "advocate",
+      "phonetic": "/ˈædvəkeɪt/",
+      "meaning": "v. 提倡 n. 倡导者",
+      "examples": [
+        "He is a strong advocate of renewable energy.",
+        "We advocate for equal rights for all."
+      ],
+      "collocations": [
+        "advocate for 倡导",
+        "a strong advocate 坚定拥护者"
+      ],
+      "derivatives": [
+        "advocacy (n.倡导)"
+      ]
+    },
+    {
+      "id": "w_00022",
+      "word": "affect",
+      "phonetic": "/əˈfekt/",
+      "meaning": "v. 影响；感动",
+      "examples": [
+        "The new policy will affect millions of workers.",
+        "The story deeply affected everyone present."
+      ],
+      "collocations": [
+        "adversely affect 不利影响",
+        "affect the outcome 影响结果"
+      ],
+      "derivatives": [
+        "effect (n.影响)",
+        "affection (n.感情)"
+      ]
+    },
+    {
+      "id": "w_00023",
+      "word": "allocate",
+      "phonetic": "/ˈæləkeɪt/",
+      "meaning": "v. 分配；拨出",
+      "examples": [
+        "The government will allocate funds to education.",
+        "We need to allocate resources more efficiently."
+      ],
+      "collocations": [
+        "allocate funds 拨款",
+        "allocate time 分配时间"
+      ],
+      "derivatives": [
+        "allocation (n.分配)"
+      ]
+    },
+    {
+      "id": "w_00024",
+      "word": "alternative",
+      "phonetic": "/ɔːlˈtɜːnətɪv/",
+      "meaning": "n. 选择 adj. 替代的",
+      "examples": [
+        "We need to find an alternative solution.",
+        "There is no alternative but to cancel the event."
+      ],
+      "collocations": [
+        "alternative energy 替代能源",
+        "have no alternative 别无选择"
+      ],
+      "derivatives": [
+        "alternatively (adv.或者)"
+      ]
+    },
+    {
+      "id": "w_00025",
+      "word": "ambiguous",
+      "phonetic": "/æmˈbɪɡjuəs/",
+      "meaning": "adj. 模糊的；模棱两可的",
+      "examples": [
+        "The contract language is ambiguous.",
+        "His answer was deliberately ambiguous."
+      ],
+      "collocations": [
+        "ambiguous statement 含糊陈述",
+        "remain ambiguous 仍然模糊"
+      ],
+      "derivatives": [
+        "ambiguity (n.模糊)",
+        "unambiguous (a.明确的)"
+      ]
+    },
+    {
+      "id": "w_00026",
+      "word": "ambitious",
+      "phonetic": "/æmˈbɪʃəs/",
+      "meaning": "adj. 有雄心的；野心勃勃的",
+      "examples": [
+        "She is an ambitious young entrepreneur.",
+        "The company has ambitious expansion plans."
+      ],
+      "collocations": [
+        "ambitious goal 雄心勃勃的目标",
+        "overly ambitious 过于野心"
+      ],
+      "derivatives": [
+        "ambition (n.雄心)"
+      ]
+    },
+    {
+      "id": "w_00027",
+      "word": "analyze",
+      "phonetic": "/ˈænəlaɪz/",
+      "meaning": "v. 分析；解析",
+      "examples": [
+        "Researchers analyzed the data carefully.",
+        "We need to analyze the root cause of the problem."
+      ],
+      "collocations": [
+        "analyze data 分析数据",
+        "analyze the situation 分析情况"
+      ],
+      "derivatives": [
+        "analysis (n.分析)",
+        "analyst (n.分析师)"
+      ]
+    },
+    {
+      "id": "w_00028",
+      "word": "anticipate",
+      "phonetic": "/ænˈtɪsɪpeɪt/",
+      "meaning": "v. 预期；期望；抢先",
+      "examples": [
+        "We anticipate sales growth next quarter.",
+        "I didn't anticipate such a strong reaction."
+      ],
+      "collocations": [
+        "anticipate needs 预判需求",
+        "eagerly anticipate 热切期待"
+      ],
+      "derivatives": [
+        "anticipation (n.预期)",
+        "anticipated (a.预期的)"
+      ]
+    },
+    {
+      "id": "w_00029",
+      "word": "apparent",
+      "phonetic": "/əˈpærənt/",
+      "meaning": "adj. 明显的；表面上的",
+      "examples": [
+        "It became apparent that the project was behind.",
+        "The apparent cause was later found to be wrong."
+      ],
+      "collocations": [
+        "apparent reason 明显原因",
+        "for no apparent reason 无缘无故"
+      ],
+      "derivatives": [
+        "apparently (adv.显然)"
+      ]
+    },
+    {
+      "id": "w_00030",
+      "word": "appeal",
+      "phonetic": "/əˈpiːl/",
+      "meaning": "v./n. 呼吁；吸引；上诉",
+      "examples": [
+        "The charity launched an appeal for donations.",
+        "The idea of working abroad appeals to me."
+      ],
+      "collocations": [
+        "appeal to 吸引；呼吁",
+        "launch an appeal 发起呼吁"
+      ],
+      "derivatives": [
+        "appealing (a.吸引人的)"
+      ]
+    },
+    {
+      "id": "w_00031",
+      "word": "apply",
+      "phonetic": "/əˈplaɪ/",
+      "meaning": "v. 申请；应用；适用",
+      "examples": [
+        "You should apply for the scholarship.",
+        "This rule doesn't apply to everyone."
+      ],
+      "collocations": [
+        "apply for 申请",
+        "apply to 适用于"
+      ],
+      "derivatives": [
+        "application (n.申请；应用)",
+        "applicant (n.申请人)"
+      ]
+    },
+    {
+      "id": "w_00032",
+      "word": "approach",
+      "phonetic": "/əˈprəʊtʃ/",
+      "meaning": "v. 接近 n. 方法；途径",
+      "examples": [
+        "We need a new approach to this problem.",
+        "As we approach the deadline, pressure increases."
+      ],
+      "collocations": [
+        "approach to 方法",
+        "positive approach 积极态度"
+      ],
+      "derivatives": [
+        "approachable (a.可接近的)"
+      ]
+    },
+    {
+      "id": "w_00033",
+      "word": "appropriate",
+      "phonetic": "/əˈprəʊpriət/",
+      "meaning": "adj. 适当的 v. 挪用",
+      "examples": [
+        "Wear appropriate clothing for the interview.",
+        "The funds were appropriated for other purposes."
+      ],
+      "collocations": [
+        "appropriate for 适合",
+        "appropriate measures 适当措施"
+      ],
+      "derivatives": [
+        "appropriately (adv.适当地)",
+        "inappropriate (a.不适当的)"
+      ]
+    },
+    {
+      "id": "w_00034",
+      "word": "approve",
+      "phonetic": "/əˈpruːv/",
+      "meaning": "v. 批准；赞成",
+      "examples": [
+        "The board approved the proposal unanimously.",
+        "I don't approve of his behavior."
+      ],
+      "collocations": [
+        "approve of 赞成",
+        "officially approved 正式批准"
+      ],
+      "derivatives": [
+        "approval (n.批准)",
+        "disapprove (v.反对)"
+      ]
+    },
+    {
+      "id": "w_00035",
+      "word": "arise",
+      "phonetic": "/əˈraɪz/",
+      "meaning": "v. 出现；产生；起身",
+      "examples": [
+        "Unexpected problems may arise.",
+        "A new opportunity has arisen."
+      ],
+      "collocations": [
+        "arise from 由...引起",
+        "should the need arise 如有需要"
+      ],
+      "derivatives": [
+        "arisen (pp.)"
+      ]
+    },
+    {
+      "id": "w_00036",
+      "word": "artificial",
+      "phonetic": "/ˌɑːtɪˈfɪʃl/",
+      "meaning": "adj. 人造的；虚假的",
+      "examples": [
+        "Artificial intelligence is transforming industries.",
+        "Her smile seemed artificial and forced."
+      ],
+      "collocations": [
+        "artificial intelligence 人工智能",
+        "artificial light 人造光"
+      ],
+      "derivatives": [
+        "artificially (adv.人工地)"
+      ]
+    },
+    {
+      "id": "w_00037",
+      "word": "aspect",
+      "phonetic": "/ˈæspekt/",
+      "meaning": "n. 方面；层面；外观",
+      "examples": [
+        "Consider every aspect of the problem.",
+        "The building's southern aspect gets the most sun."
+      ],
+      "collocations": [
+        "key aspect 关键方面",
+        "from every aspect 从各方面"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00038",
+      "word": "assemble",
+      "phonetic": "/əˈsembl/",
+      "meaning": "v. 集合；组装",
+      "examples": [
+        "The team will assemble at 9 AM.",
+        "It took hours to assemble the furniture."
+      ],
+      "collocations": [
+        "assemble a team 组建团队",
+        "assemble parts 组装零件"
+      ],
+      "derivatives": [
+        "assembly (n.集合；组装)"
+      ]
+    },
+    {
+      "id": "w_00039",
+      "word": "assess",
+      "phonetic": "/əˈses/",
+      "meaning": "v. 评估；评定",
+      "examples": [
+        "We need to assess the risks carefully.",
+        "The teacher will assess your progress monthly."
+      ],
+      "collocations": [
+        "assess the situation 评估情况",
+        "assess damage 评估损失"
+      ],
+      "derivatives": [
+        "assessment (n.评估)",
+        "assessor (n.评估人)"
+      ]
+    },
+    {
+      "id": "w_00040",
+      "word": "assign",
+      "phonetic": "/əˈsaɪn/",
+      "meaning": "v. 分配；指派；指定",
+      "examples": [
+        "The manager assigned tasks to each member.",
+        "She was assigned to the Paris office."
+      ],
+      "collocations": [
+        "assign responsibility 分配责任",
+        "assign a task 分配任务"
+      ],
+      "derivatives": [
+        "assignment (n.任务)",
+        "reassign (v.重新分配)"
+      ]
+    },
+    {
+      "id": "w_00041",
+      "word": "assist",
+      "phonetic": "/əˈsɪst/",
+      "meaning": "v. 帮助；协助",
+      "examples": [
+        "Staff will assist you with any questions.",
+        "We assisted in the rescue operation."
+      ],
+      "collocations": [
+        "assist with 帮助",
+        "assist in 协助"
+      ],
+      "derivatives": [
+        "assistance (n.帮助)",
+        "assistant (n.助手)"
+      ]
+    },
+    {
+      "id": "w_00042",
+      "word": "associate",
+      "phonetic": "/əˈsəʊʃieɪt/",
+      "meaning": "v. 联系；关联 n. 同事",
+      "examples": [
+        "People associate success with hard work.",
+        "He is a business associate of mine."
+      ],
+      "collocations": [
+        "associate with 与...联系",
+        "closely associated 密切相关"
+      ],
+      "derivatives": [
+        "association (n.协会；关联)"
+      ]
+    },
+    {
+      "id": "w_00043",
+      "word": "assume",
+      "phonetic": "/əˈsjuːm/",
+      "meaning": "v. 假设；承担；就任",
+      "examples": [
+        "We cannot assume everyone agrees.",
+        "She assumed responsibility for the project."
+      ],
+      "collocations": [
+        "assume that 假设",
+        "assume control 接管"
+      ],
+      "derivatives": [
+        "assumption (n.假设)"
+      ]
+    },
+    {
+      "id": "w_00044",
+      "word": "assure",
+      "phonetic": "/əˈʃʊər/",
+      "meaning": "v. 保证；使确信",
+      "examples": [
+        "I can assure you the product is safe.",
+        "He assured me of his support."
+      ],
+      "collocations": [
+        "assure sb of sth 向某人保证",
+        "rest assured 放心"
+      ],
+      "derivatives": [
+        "assurance (n.保证)",
+        "reassure (v.使放心)"
+      ]
+    },
+    {
+      "id": "w_00045",
+      "word": "atmosphere",
+      "phonetic": "/ˈætməsfɪər/",
+      "meaning": "n. 气氛；大气层",
+      "examples": [
+        "The restaurant has a warm atmosphere.",
+        "Greenhouse gases warm the atmosphere."
+      ],
+      "collocations": [
+        "working atmosphere 工作氛围",
+        "relaxed atmosphere 轻松氛围"
+      ],
+      "derivatives": [
+        "atmospheric (a.大气的)"
+      ]
+    },
+    {
+      "id": "w_00046",
+      "word": "attach",
+      "phonetic": "/əˈtætʃ/",
+      "meaning": "v. 附上；连接；重视",
+      "examples": [
+        "Please attach your resume to the email.",
+        "She attaches great importance to education."
+      ],
+      "collocations": [
+        "attach importance to 重视",
+        "attached file 附件"
+      ],
+      "derivatives": [
+        "attachment (n.附件；依恋)"
+      ]
+    },
+    {
+      "id": "w_00047",
+      "word": "attain",
+      "phonetic": "/əˈteɪn/",
+      "meaning": "v. 达到；获得",
+      "examples": [
+        "Few people attain true mastery.",
+        "She attained her goal of becoming a doctor."
+      ],
+      "collocations": [
+        "attain a goal 达到目标",
+        "attain knowledge 获得知识"
+      ],
+      "derivatives": [
+        "attainable (a.可达到的)",
+        "attainment (n.成就)"
+      ]
+    },
+    {
+      "id": "w_00048",
+      "word": "attempt",
+      "phonetic": "/əˈtempt/",
+      "meaning": "v./n. 尝试；企图",
+      "examples": [
+        "This is our last attempt to resolve the issue.",
+        "He attempted to break the world record."
+      ],
+      "collocations": [
+        "attempt to do 试图做",
+        "in an attempt to 为了"
+      ],
+      "derivatives": [
+        "attempted (a.未遂的)"
+      ]
+    },
+    {
+      "id": "w_00049",
+      "word": "attribute",
+      "phonetic": "/ˈætrɪbjuːt/",
+      "meaning": "v. 归因于 n. 属性",
+      "examples": [
+        "She attributes her success to hard work.",
+        "Patience is a key attribute of a teacher."
+      ],
+      "collocations": [
+        "attribute to 归因于",
+        "positive attribute 积极特质"
+      ],
+      "derivatives": [
+        "attribution (n.归因)",
+        "attributable (a.可归因的)"
+      ]
+    },
+    {
+      "id": "w_00050",
+      "word": "authority",
+      "phonetic": "/ɔːˈθɒrəti/",
+      "meaning": "n. 权威；当局；权力",
+      "examples": [
+        "The local authority manages waste collection.",
+        "She is an authority on ancient history."
+      ],
+      "collocations": [
+        "have the authority to 有权",
+        "local authorities 地方当局"
+      ],
+      "derivatives": [
+        "authoritative (a.权威的)",
+        "authorize (v.授权)"
+      ]
+    },
+    {
+      "id": "w_00051",
+      "word": "available",
+      "phonetic": "/əˈveɪləbl/",
+      "meaning": "adj. 可用的；有效的；有空的",
+      "examples": [
+        "The report will be available next Monday.",
+        "Are you available for a meeting tomorrow?"
+      ],
+      "collocations": [
+        "available resources 可用资源",
+        "make available 提供"
+      ],
+      "derivatives": [
+        "availability (n.可用性)",
+        "unavailable (a.不可用的)"
+      ]
+    },
+    {
+      "id": "w_00052",
+      "word": "aware",
+      "phonetic": "/əˈweər/",
+      "meaning": "adj. 意识到的；知道的",
+      "examples": [
+        "Are you aware of the risks involved?",
+        "She became aware that someone was watching."
+      ],
+      "collocations": [
+        "be aware of 意识到",
+        "fully aware 充分认识"
+      ],
+      "derivatives": [
+        "awareness (n.意识)",
+        "unaware (a.未察觉的)"
+      ]
+    },
+    {
+      "id": "w_00053",
+      "word": "barrier",
+      "phonetic": "/ˈbæriər/",
+      "meaning": "n. 障碍；屏障；壁垒",
+      "examples": [
+        "Language barriers make communication difficult.",
+        "We need to break down barriers to trade."
+      ],
+      "collocations": [
+        "trade barrier 贸易壁垒",
+        "break down barriers 打破障碍"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00054",
+      "word": "benefit",
+      "phonetic": "/ˈbenɪfɪt/",
+      "meaning": "n. 利益 v. 受益；有益于",
+      "examples": [
+        "Regular exercise has many health benefits.",
+        "Everyone will benefit from this policy."
+      ],
+      "collocations": [
+        "benefit from 从...受益",
+        "health benefit 健康益处"
+      ],
+      "derivatives": [
+        "beneficial (a.有益的)",
+        "beneficiary (n.受益人)"
+      ]
+    },
+    {
+      "id": "w_00055",
+      "word": "boom",
+      "phonetic": "/buːm/",
+      "meaning": "n. 繁荣；激增 v. 兴旺",
+      "examples": [
+        "The tech industry experienced a massive boom.",
+        "The economy is booming this quarter."
+      ],
+      "collocations": [
+        "economic boom 经济繁荣",
+        "baby boom 婴儿潮"
+      ],
+      "derivatives": [
+        "booming (a.繁荣的)"
+      ]
+    },
+    {
+      "id": "w_00056",
+      "word": "burden",
+      "phonetic": "/ˈbɜːdn/",
+      "meaning": "n. 负担 v. 使负重",
+      "examples": [
+        "The new tax will burden small businesses.",
+        "She carried the burden of the family alone."
+      ],
+      "collocations": [
+        "heavy burden 沉重负担",
+        "financial burden 经济负担"
+      ],
+      "derivatives": [
+        "burdensome (a.繁重的)"
+      ]
+    },
+    {
+      "id": "w_00057",
+      "word": "campaign",
+      "phonetic": "/kæmˈpeɪn/",
+      "meaning": "n. 运动；战役 v. 参加运动",
+      "examples": [
+        "The election campaign lasted six months.",
+        "They campaigned for better working conditions."
+      ],
+      "collocations": [
+        "launch a campaign 发起运动",
+        "advertising campaign 广告活动"
+      ],
+      "derivatives": [
+        "campaigner (n.活动家)"
+      ]
+    },
+    {
+      "id": "w_00058",
+      "word": "capable",
+      "phonetic": "/ˈkeɪpəbl/",
+      "meaning": "adj. 有能力的；能胜任的",
+      "examples": [
+        "She is capable of handling complex tasks.",
+        "The system is capable of processing huge data."
+      ],
+      "collocations": [
+        "capable of 能够",
+        "highly capable 能力强的"
+      ],
+      "derivatives": [
+        "capability (n.能力)",
+        "incapable (a.无能力的)"
+      ]
+    },
+    {
+      "id": "w_00059",
+      "word": "challenge",
+      "phonetic": "/ˈtʃæləndʒ/",
+      "meaning": "n./v. 挑战；质疑",
+      "examples": [
+        "Learning a new language is a rewarding challenge.",
+        "They challenged the decision in court."
+      ],
+      "collocations": [
+        "face a challenge 面对挑战",
+        "challenge the view 质疑观点"
+      ],
+      "derivatives": [
+        "challenging (a.有挑战性的)"
+      ]
+    },
+    {
+      "id": "w_00060",
+      "word": "circumstance",
+      "phonetic": "/ˈsɜːkəmstəns/",
+      "meaning": "n. 环境；情况；境遇",
+      "examples": [
+        "Under no circumstance should you lie.",
+        "We must adapt to changing circumstances."
+      ],
+      "collocations": [
+        "under the circumstances 在这种情况下",
+        "financial circumstances 经济状况"
+      ],
+      "derivatives": [
+        "circumstantial (a.间接的)"
+      ]
+    },
+    {
+      "id": "w_00061",
+      "word": "claim",
+      "phonetic": "/kleɪm/",
+      "meaning": "v./n. 声称；要求；索赔",
+      "examples": [
+        "The company claims its product is best.",
+        "She filed an insurance claim after the accident."
+      ],
+      "collocations": [
+        "claim that 声称",
+        "make a claim 索赔"
+      ],
+      "derivatives": [
+        "claimant (n.索赔人)"
+      ]
+    },
+    {
+      "id": "w_00062",
+      "word": "collapse",
+      "phonetic": "/kəˈlæps/",
+      "meaning": "v./n. 崩溃；倒塌；暴跌",
+      "examples": [
+        "The bridge could collapse under heavy weight.",
+        "The economy collapsed after the crisis."
+      ],
+      "collocations": [
+        "economic collapse 经济崩溃",
+        "near collapse 几乎崩溃"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00063",
+      "word": "commit",
+      "phonetic": "/kəˈmɪt/",
+      "meaning": "v. 犯(罪)；承诺；投入",
+      "examples": [
+        "We are fully committed to quality service.",
+        "He committed a serious crime."
+      ],
+      "collocations": [
+        "commit to 承诺",
+        "commit suicide 自杀"
+      ],
+      "derivatives": [
+        "commitment (n.承诺)",
+        "committed (a.投入的)"
+      ]
+    },
+    {
+      "id": "w_00064",
+      "word": "communicate",
+      "phonetic": "/kəˈmjuːnɪkeɪt/",
+      "meaning": "v. 交流；传达；沟通",
+      "examples": [
+        "It is essential to communicate your ideas clearly.",
+        "They communicated via email."
+      ],
+      "collocations": [
+        "communicate with 与...交流",
+        "communicate effectively 有效沟通"
+      ],
+      "derivatives": [
+        "communication (n.交流)",
+        "communicative (a.健谈的)"
+      ]
+    },
+    {
+      "id": "w_00065",
+      "word": "community",
+      "phonetic": "/kəˈmjuːnəti/",
+      "meaning": "n. 社区；团体；社会",
+      "examples": [
+        "The local community came together to help.",
+        "Join our online community of learners."
+      ],
+      "collocations": [
+        "local community 当地社区",
+        "international community 国际社会"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00066",
+      "word": "compare",
+      "phonetic": "/kəmˈpeər/",
+      "meaning": "v. 比较；对比；比喻",
+      "examples": [
+        "Compare prices before making a purchase.",
+        "Life is often compared to a journey."
+      ],
+      "collocations": [
+        "compare with/to 与...比较",
+        "beyond compare 无与伦比"
+      ],
+      "derivatives": [
+        "comparison (n.比较)",
+        "comparable (a.可比较的)"
+      ]
+    },
+    {
+      "id": "w_00067",
+      "word": "compensate",
+      "phonetic": "/ˈkɒmpenseɪt/",
+      "meaning": "v. 补偿；赔偿；弥补",
+      "examples": [
+        "The company compensated her for damages.",
+        "Hard work can compensate for lack of talent."
+      ],
+      "collocations": [
+        "compensate for 弥补",
+        "fully compensated 全额补偿"
+      ],
+      "derivatives": [
+        "compensation (n.补偿)"
+      ]
+    },
+    {
+      "id": "w_00068",
+      "word": "compete",
+      "phonetic": "/kəmˈpiːt/",
+      "meaning": "v. 竞争；比赛",
+      "examples": [
+        "Small businesses struggle to compete.",
+        "Athletes from 50 countries will compete."
+      ],
+      "collocations": [
+        "compete with 与...竞争",
+        "compete against 与...比赛"
+      ],
+      "derivatives": [
+        "competition (n.竞争)",
+        "competitor (n.竞争者)"
+      ]
+    },
+    {
+      "id": "w_00069",
+      "word": "complain",
+      "phonetic": "/kəmˈpleɪn/",
+      "meaning": "v. 抱怨；投诉",
+      "examples": [
+        "Customers complain about the long wait.",
+        "She complained of a headache."
+      ],
+      "collocations": [
+        "complain about 抱怨",
+        "complain of 诉说(病痛)"
+      ],
+      "derivatives": [
+        "complaint (n.投诉)",
+        "complainant (n.投诉人)"
+      ]
+    },
+    {
+      "id": "w_00070",
+      "word": "complex",
+      "phonetic": "/ˈkɒmpleks/",
+      "meaning": "adj. 复杂的 n. 综合体",
+      "examples": [
+        "The human brain is incredibly complex.",
+        "We live in a housing complex."
+      ],
+      "collocations": [
+        "highly complex 极其复杂",
+        "inferiority complex 自卑情结"
+      ],
+      "derivatives": [
+        "complexity (n.复杂性)"
+      ]
+    },
+    {
+      "id": "w_00071",
+      "word": "component",
+      "phonetic": "/kəmˈpəʊnənt/",
+      "meaning": "n. 成分；组件 adj. 组成的",
+      "examples": [
+        "Trust is an essential component of relationships.",
+        "Each component was carefully tested."
+      ],
+      "collocations": [
+        "key component 关键组成部分",
+        "electronic components 电子元件"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00072",
+      "word": "concentrate",
+      "phonetic": "/ˈkɒnsntreɪt/",
+      "meaning": "v. 集中；专注；浓缩",
+      "examples": [
+        "I can't concentrate with all this noise.",
+        "The factory concentrates on producing chips."
+      ],
+      "collocations": [
+        "concentrate on 专注于",
+        "concentrate efforts 集中努力"
+      ],
+      "derivatives": [
+        "concentration (n.专注)",
+        "concentrated (a.浓缩的)"
+      ]
+    },
+    {
+      "id": "w_00073",
+      "word": "concept",
+      "phonetic": "/ˈkɒnsept/",
+      "meaning": "n. 概念；观念",
+      "examples": [
+        "The concept of time varies across cultures.",
+        "This is a relatively new concept in science."
+      ],
+      "collocations": [
+        "basic concept 基本概念",
+        "grasp a concept 理解概念"
+      ],
+      "derivatives": [
+        "conceptual (a.概念上的)"
+      ]
+    },
+    {
+      "id": "w_00074",
+      "word": "concern",
+      "phonetic": "/kənˈsɜːn/",
+      "meaning": "n./v. 关心；担忧；涉及",
+      "examples": [
+        "Environmental protection is a major concern.",
+        "This matter concerns everyone in the room."
+      ],
+      "collocations": [
+        "show concern for 关心",
+        "as far as I'm concerned 就我而言"
+      ],
+      "derivatives": [
+        "concerned (a.关心的)",
+        "concerning (prep.关于)"
+      ]
+    },
+    {
+      "id": "w_00075",
+      "word": "conclude",
+      "phonetic": "/kənˈkluːd/",
+      "meaning": "v. 总结；结束；推断",
+      "examples": [
+        "The meeting concluded with a Q&A session.",
+        "What can we conclude from these results?"
+      ],
+      "collocations": [
+        "conclude that 推断出",
+        "conclude a deal 达成协议"
+      ],
+      "derivatives": [
+        "conclusion (n.结论)",
+        "conclusive (a.决定性的)"
+      ]
+    },
+    {
+      "id": "w_00076",
+      "word": "conduct",
+      "phonetic": "/ˈkɒndʌkt/",
+      "meaning": "n. 行为 v. 实施；引导；指挥",
+      "examples": [
+        "The scientist conducted a series of experiments.",
+        "His conduct was praised by everyone."
+      ],
+      "collocations": [
+        "conduct research 进行研究",
+        "code of conduct 行为准则"
+      ],
+      "derivatives": [
+        "conductor (n.指挥；导体)"
+      ]
+    },
+    {
+      "id": "w_00077",
+      "word": "confirm",
+      "phonetic": "/kənˈfɜːm/",
+      "meaning": "v. 确认；证实；批准",
+      "examples": [
+        "Please confirm your attendance by Friday.",
+        "The results confirmed our hypothesis."
+      ],
+      "collocations": [
+        "confirm a reservation 确认预订",
+        "it is confirmed that 已确认"
+      ],
+      "derivatives": [
+        "confirmation (n.确认)",
+        "confirmed (a.确认的)"
+      ]
+    },
+    {
+      "id": "w_00078",
+      "word": "conflict",
+      "phonetic": "/ˈkɒnflɪkt/",
+      "meaning": "n. 冲突 v. 抵触；矛盾",
+      "examples": [
+        "The two countries have been in conflict.",
+        "His statement conflicts with the evidence."
+      ],
+      "collocations": [
+        "armed conflict 武装冲突",
+        "conflict of interest 利益冲突"
+      ],
+      "derivatives": [
+        "conflicting (a.矛盾的)"
+      ]
+    },
+    {
+      "id": "w_00079",
+      "word": "confront",
+      "phonetic": "/kənˈfrʌnt/",
+      "meaning": "v. 面对；对抗；对峙",
+      "examples": [
+        "You need to confront your fears.",
+        "The company was confronted with a lawsuit."
+      ],
+      "collocations": [
+        "be confronted with 面对",
+        "confront an issue 正视问题"
+      ],
+      "derivatives": [
+        "confrontation (n.对抗)"
+      ]
+    },
+    {
+      "id": "w_00080",
+      "word": "conscious",
+      "phonetic": "/ˈkɒnʃəs/",
+      "meaning": "adj. 有意识的；清醒的；刻意的",
+      "examples": [
+        "He was barely conscious after the accident.",
+        "We made a conscious decision to change."
+      ],
+      "collocations": [
+        "conscious of 意识到",
+        "environmentally conscious 有环保意识的"
+      ],
+      "derivatives": [
+        "consciousness (n.意识)",
+        "subconscious (a.潜意识的)"
+      ]
+    },
+    {
+      "id": "w_00081",
+      "word": "consequence",
+      "phonetic": "/ˈkɒnsɪkwəns/",
+      "meaning": "n. 结果；后果；重要性",
+      "examples": [
+        "Every action has consequences.",
+        "The mistake was of little consequence."
+      ],
+      "collocations": [
+        "serious consequences 严重后果",
+        "as a consequence 因此"
+      ],
+      "derivatives": [
+        "consequent (a.随之发生的)",
+        "consequently (adv.因此)"
+      ]
+    },
+    {
+      "id": "w_00082",
+      "word": "conserve",
+      "phonetic": "/kənˈsɜːv/",
+      "meaning": "v. 保存；节约；保护",
+      "examples": [
+        "We should all try to conserve water.",
+        "The area is conserved as a nature reserve."
+      ],
+      "collocations": [
+        "conserve energy 节约能源",
+        "conserve resources 保护资源"
+      ],
+      "derivatives": [
+        "conservation (n.保护)",
+        "conservative (a.保守的)"
+      ]
+    },
+    {
+      "id": "w_00083",
+      "word": "consider",
+      "phonetic": "/kənˈsɪdər/",
+      "meaning": "v. 考虑；认为；体谅",
+      "examples": [
+        "You should consider all options carefully.",
+        "She is considered a leading expert."
+      ],
+      "collocations": [
+        "consider doing 考虑做",
+        "consider it necessary 认为必要"
+      ],
+      "derivatives": [
+        "consideration (n.考虑)",
+        "considerable (a.相当大的)"
+      ]
+    },
+    {
+      "id": "w_00084",
+      "word": "consistent",
+      "phonetic": "/kənˈsɪstənt/",
+      "meaning": "adj. 一致的；始终如一的",
+      "examples": [
+        "Her performance has been remarkably consistent.",
+        "Your actions must be consistent with your words."
+      ],
+      "collocations": [
+        "consistent with 与...一致",
+        "consistent quality 稳定的质量"
+      ],
+      "derivatives": [
+        "consistency (n.一致性)",
+        "consistently (adv.一贯地)"
+      ]
+    },
+    {
+      "id": "w_00085",
+      "word": "constant",
+      "phonetic": "/ˈkɒnstənt/",
+      "meaning": "adj. 持续的；不变的；忠实的",
+      "examples": [
+        "The constant noise was unbearable.",
+        "She has been a constant source of support."
+      ],
+      "collocations": [
+        "constant change 不断变化",
+        "constant temperature 恒温"
+      ],
+      "derivatives": [
+        "constantly (adv.不断地)",
+        "constancy (n.恒定)"
+      ]
+    },
+    {
+      "id": "w_00086",
+      "word": "constitute",
+      "phonetic": "/ˈkɒnstɪtjuːt/",
+      "meaning": "v. 构成；组成；设立",
+      "examples": [
+        "Women constitute half of the workforce.",
+        "This constitutes a serious breach of contract."
+      ],
+      "collocations": [
+        "constitute a threat 构成威胁",
+        "constitute a crime 构成犯罪"
+      ],
+      "derivatives": [
+        "constitution (n.宪法；构成)"
+      ]
+    },
+    {
+      "id": "w_00087",
+      "word": "construct",
+      "phonetic": "/kənˈstrʌkt/",
+      "meaning": "v. 建造；构建 n. 构想",
+      "examples": [
+        "They plan to construct a new bridge.",
+        "The argument was carefully constructed."
+      ],
+      "collocations": [
+        "construct a theory 构建理论",
+        "well-constructed 结构良好的"
+      ],
+      "derivatives": [
+        "construction (n.建设)",
+        "constructive (a.建设性的)"
+      ]
+    },
+    {
+      "id": "w_00088",
+      "word": "consume",
+      "phonetic": "/kənˈsjuːm/",
+      "meaning": "v. 消费；消耗；吃光",
+      "examples": [
+        "The average family consumes 300L of water daily.",
+        "The fire consumed the entire building."
+      ],
+      "collocations": [
+        "consume resources 消耗资源",
+        "time-consuming 耗时的"
+      ],
+      "derivatives": [
+        "consumer (n.消费者)",
+        "consumption (n.消费)"
+      ]
+    },
+    {
+      "id": "w_00089",
+      "word": "contact",
+      "phonetic": "/ˈkɒntækt/",
+      "meaning": "n./v. 接触；联系",
+      "examples": [
+        "Please contact customer service for help.",
+        "I lost contact with her years ago."
+      ],
+      "collocations": [
+        "contact details 联系方式",
+        "stay in contact 保持联系"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00090",
+      "word": "contemporary",
+      "phonetic": "/kənˈtemprəri/",
+      "meaning": "adj. 当代的；同时代的",
+      "examples": [
+        "The museum exhibits contemporary art.",
+        "Shakespeare was contemporary with Galileo."
+      ],
+      "collocations": [
+        "contemporary society 当代社会",
+        "contemporary music 当代音乐"
+      ],
+      "derivatives": [
+        "contemporaries (n.同时代人)"
+      ]
+    },
+    {
+      "id": "w_00091",
+      "word": "contribute",
+      "phonetic": "/kənˈtrɪbjuːt/",
+      "meaning": "v. 贡献；捐献；导致；投稿",
+      "examples": [
+        "Everyone should contribute to the environment.",
+        "Smoking contributed to his early death."
+      ],
+      "collocations": [
+        "contribute to 有助于；导致",
+        "contribute money 捐款"
+      ],
+      "derivatives": [
+        "contribution (n.贡献)",
+        "contributor (n.贡献者)"
+      ]
+    },
+    {
+      "id": "w_00092",
+      "word": "controversial",
+      "phonetic": "/ˌkɒntrəˈvɜːʃl/",
+      "meaning": "adj. 有争议的",
+      "examples": [
+        "The new law remains highly controversial.",
+        "It was a controversial decision."
+      ],
+      "collocations": [
+        "highly controversial 极具争议",
+        "controversial issue 争议问题"
+      ],
+      "derivatives": [
+        "controversy (n.争议)"
+      ]
+    },
+    {
+      "id": "w_00093",
+      "word": "convenient",
+      "phonetic": "/kənˈviːniənt/",
+      "meaning": "adj. 方便的；便利的",
+      "examples": [
+        "Online shopping is far more convenient.",
+        "Is 3 PM a convenient time for you?"
+      ],
+      "collocations": [
+        "convenient for 对...方便",
+        "mutually convenient 双方方便的"
+      ],
+      "derivatives": [
+        "convenience (n.便利)",
+        "inconvenient (a.不方便的)"
+      ]
+    },
+    {
+      "id": "w_00094",
+      "word": "conventional",
+      "phonetic": "/kənˈvenʃənl/",
+      "meaning": "adj. 传统的；常规的",
+      "examples": [
+        "She chose an unconventional path.",
+        "Conventional wisdom suggests otherwise."
+      ],
+      "collocations": [
+        "conventional wisdom 传统观念",
+        "conventional methods 常规方法"
+      ],
+      "derivatives": [
+        "convention (n.惯例)"
+      ]
+    },
+    {
+      "id": "w_00095",
+      "word": "convince",
+      "phonetic": "/kənˈvɪns/",
+      "meaning": "v. 说服；使确信",
+      "examples": [
+        "He tried to convince me to invest.",
+        "I'm not convinced that this is the right choice."
+      ],
+      "collocations": [
+        "convince sb of sth 说服某人",
+        "convince sb to do 说服某人做"
+      ],
+      "derivatives": [
+        "convincing (a.令人信服的)",
+        "convinced (a.确信的)"
+      ]
+    },
+    {
+      "id": "w_00096",
+      "word": "cooperate",
+      "phonetic": "/kəʊˈɒpəreɪt/",
+      "meaning": "v. 合作；协作",
+      "examples": [
+        "The two companies agreed to cooperate.",
+        "Witnesses refused to cooperate with police."
+      ],
+      "collocations": [
+        "cooperate with 与...合作",
+        "fully cooperate 全力配合"
+      ],
+      "derivatives": [
+        "cooperation (n.合作)",
+        "cooperative (a.合作的)"
+      ]
+    },
+    {
+      "id": "w_00097",
+      "word": "coordinate",
+      "phonetic": "/kəʊˈɔːdɪneɪt/",
+      "meaning": "v. 协调 n. 坐标",
+      "examples": [
+        "You need to coordinate efforts with the team.",
+        "GPS uses coordinates to pinpoint locations."
+      ],
+      "collocations": [
+        "coordinate with 与...协调",
+        "coordinate activities 协调活动"
+      ],
+      "derivatives": [
+        "coordination (n.协调)",
+        "coordinator (n.协调人)"
+      ]
+    },
+    {
+      "id": "w_00098",
+      "word": "corporate",
+      "phonetic": "/ˈkɔːpərət/",
+      "meaning": "adj. 公司的；法人的",
+      "examples": [
+        "The corporate headquarters is in New York.",
+        "Corporate culture varies between companies."
+      ],
+      "collocations": [
+        "corporate responsibility 企业责任",
+        "corporate governance 公司治理"
+      ],
+      "derivatives": [
+        "corporation (n.公司)"
+      ]
+    },
+    {
+      "id": "w_00099",
+      "word": "correspond",
+      "phonetic": "/ˌkɒrəˈspɒnd/",
+      "meaning": "v. 符合；对应；通信",
+      "examples": [
+        "The results correspond with our predictions.",
+        "We corresponded by email for years."
+      ],
+      "collocations": [
+        "correspond to 对应于",
+        "correspond with 与...通信"
+      ],
+      "derivatives": [
+        "correspondence (n.通信；对应)",
+        "correspondent (n.记者)"
+      ]
+    },
+    {
+      "id": "w_00100",
+      "word": "create",
+      "phonetic": "/kriˈeɪt/",
+      "meaning": "v. 创造；引起；创作",
+      "examples": [
+        "Artists create works that inspire people.",
+        "The plan created more problems than it solved."
+      ],
+      "collocations": [
+        "create opportunities 创造机会",
+        "create a masterpiece 创作杰作"
+      ],
+      "derivatives": [
+        "creation (n.创造)",
+        "creator (n.创造者)"
+      ]
+    },
+    {
+      "id": "w_00101",
+      "word": "crisis",
+      "phonetic": "/ˈkraɪsɪs/",
+      "meaning": "n. 危机；紧要关头",
+      "examples": [
+        "The country is facing an economic crisis.",
+        "We need to act now — this is a crisis."
+      ],
+      "collocations": [
+        "financial crisis 金融危机",
+        "midlife crisis 中年危机"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00102",
+      "word": "critical",
+      "phonetic": "/ˈkrɪtɪkl/",
+      "meaning": "adj. 批评的；关键的；危急的",
+      "examples": [
+        "Your support is critical to our success.",
+        "The patient remains in critical condition."
+      ],
+      "collocations": [
+        "critical of 对...批评",
+        "critical role 关键作用"
+      ],
+      "derivatives": [
+        "criticize (v.批评)",
+        "criticism (n.批评)"
+      ]
+    },
+    {
+      "id": "w_00103",
+      "word": "crucial",
+      "phonetic": "/ˈkruːʃl/",
+      "meaning": "adj. 关键的；决定性的",
+      "examples": [
+        "The next 48 hours are crucial.",
+        "This decision could be crucial for our future."
+      ],
+      "collocations": [
+        "crucial role 关键角色",
+        "crucial factor 关键因素"
+      ],
+      "derivatives": [
+        "crucially (adv.关键地)"
+      ]
+    },
+    {
+      "id": "w_00104",
+      "word": "cultivate",
+      "phonetic": "/ˈkʌltɪveɪt/",
+      "meaning": "v. 培养；耕作；建立",
+      "examples": [
+        "Reading helps to cultivate a rich vocabulary.",
+        "They cultivate rice in the southern provinces."
+      ],
+      "collocations": [
+        "cultivate a habit 培养习惯",
+        "cultivate relationships 建立关系"
+      ],
+      "derivatives": [
+        "cultivation (n.培养；耕作)"
+      ]
+    },
+    {
+      "id": "w_00105",
+      "word": "current",
+      "phonetic": "/ˈkʌrənt/",
+      "meaning": "adj. 当前的 n. 水流；电流",
+      "examples": [
+        "The current situation requires immediate action.",
+        "Strong currents make swimming dangerous here."
+      ],
+      "collocations": [
+        "current affairs 时事",
+        "electric current 电流"
+      ],
+      "derivatives": [
+        "currently (adv.当前)"
+      ]
+    },
+    {
+      "id": "w_00106",
+      "word": "debate",
+      "phonetic": "/dɪˈbeɪt/",
+      "meaning": "n./v. 辩论；讨论",
+      "examples": [
+        "There is ongoing debate about climate policy.",
+        "Scientists debated the findings at the conference."
+      ],
+      "collocations": [
+        "heated debate 激烈辩论",
+        "under debate 在讨论中"
+      ],
+      "derivatives": [
+        "debatable (a.有争议的)"
+      ]
+    },
+    {
+      "id": "w_00107",
+      "word": "decade",
+      "phonetic": "/ˈdekeɪd/",
+      "meaning": "n. 十年",
+      "examples": [
+        "The city has changed dramatically over the past decade.",
+        "It took decades to build this infrastructure."
+      ],
+      "collocations": [
+        "over the past decade 过去十年",
+        "decades of experience 数十年经验"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00108",
+      "word": "decline",
+      "phonetic": "/dɪˈklaɪn/",
+      "meaning": "v./n. 下降；拒绝；衰退",
+      "examples": [
+        "The company's profits have been in decline.",
+        "She declined the job offer politely."
+      ],
+      "collocations": [
+        "decline sharply 急剧下降",
+        "decline an invitation 拒绝邀请"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00109",
+      "word": "define",
+      "phonetic": "/dɪˈfaɪn/",
+      "meaning": "v. 定义；界定；明确",
+      "examples": [
+        "How do you define success?",
+        "The boundaries are clearly defined."
+      ],
+      "collocations": [
+        "clearly define 明确定义",
+        "define as 定义为"
+      ],
+      "derivatives": [
+        "definition (n.定义)",
+        "definitive (a.权威的)"
+      ]
+    },
+    {
+      "id": "w_00110",
+      "word": "demand",
+      "phonetic": "/dɪˈmɑːnd/",
+      "meaning": "n./v. 要求；需求",
+      "examples": [
+        "There is growing demand for renewable energy.",
+        "The workers demanded better wages."
+      ],
+      "collocations": [
+        "in demand 受欢迎",
+        "supply and demand 供求"
+      ],
+      "derivatives": [
+        "demanding (a.要求高的)"
+      ]
+    },
+    {
+      "id": "w_00111",
+      "word": "demonstrate",
+      "phonetic": "/ˈdemənstreɪt/",
+      "meaning": "v. 证明；示范；示威",
+      "examples": [
+        "The study demonstrates a clear link.",
+        "She demonstrated how the machine works."
+      ],
+      "collocations": [
+        "demonstrate the ability 展示能力",
+        "demonstrate against 抗议"
+      ],
+      "derivatives": [
+        "demonstration (n.示范)",
+        "demonstrator (n.示威者)"
+      ]
+    },
+    {
+      "id": "w_00112",
+      "word": "deny",
+      "phonetic": "/dɪˈnaɪ/",
+      "meaning": "v. 否认；拒绝；剥夺",
+      "examples": [
+        "The company denies any wrongdoing.",
+        "No one should be denied access to education."
+      ],
+      "collocations": [
+        "deny doing 否认做过",
+        "deny access 拒绝访问"
+      ],
+      "derivatives": [
+        "denial (n.否认)"
+      ]
+    },
+    {
+      "id": "w_00113",
+      "word": "depend",
+      "phonetic": "/dɪˈpend/",
+      "meaning": "v. 依赖；取决于",
+      "examples": [
+        "The outcome will depend on various factors.",
+        "You can depend on me to get the job done."
+      ],
+      "collocations": [
+        "depend on 依赖",
+        "it depends 视情况而定"
+      ],
+      "derivatives": [
+        "dependent (a.依赖的)",
+        "dependence (n.依赖)"
+      ]
+    },
+    {
+      "id": "w_00114",
+      "word": "derive",
+      "phonetic": "/dɪˈraɪv/",
+      "meaning": "v. 源自；获得；推导出",
+      "examples": [
+        "Many English words derive from Latin.",
+        "She derives great satisfaction from her work."
+      ],
+      "collocations": [
+        "derive from 源自",
+        "derive pleasure from 从...获得乐趣"
+      ],
+      "derivatives": [
+        "derivative (n.派生词)",
+        "derivation (n.起源)"
+      ]
+    },
+    {
+      "id": "w_00115",
+      "word": "deserve",
+      "phonetic": "/dɪˈzɜːv/",
+      "meaning": "v. 值得；应得",
+      "examples": [
+        "She deserves recognition for her hard work.",
+        "You deserve a break after all this effort."
+      ],
+      "collocations": [
+        "deserve attention 值得关注",
+        "well-deserved 当之无愧的"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00116",
+      "word": "design",
+      "phonetic": "/dɪˈzaɪn/",
+      "meaning": "v./n. 设计；计划；意图",
+      "examples": [
+        "The building was designed by a famous architect.",
+        "This software is designed for beginners."
+      ],
+      "collocations": [
+        "design for 为...设计",
+        "graphic design 平面设计"
+      ],
+      "derivatives": [
+        "designer (n.设计师)"
+      ]
+    },
+    {
+      "id": "w_00117",
+      "word": "desire",
+      "phonetic": "/dɪˈzaɪər/",
+      "meaning": "n./v. 渴望；欲望；愿望",
+      "examples": [
+        "The desire for knowledge is fundamental.",
+        "She desired nothing more than to go home."
+      ],
+      "collocations": [
+        "strong desire 强烈愿望",
+        "desire to do 渴望做"
+      ],
+      "derivatives": [
+        "desirable (a.令人满意的)"
+      ]
+    },
+    {
+      "id": "w_00118",
+      "word": "despite",
+      "phonetic": "/dɪˈspaɪt/",
+      "meaning": "prep. 尽管；虽然",
+      "examples": [
+        "Despite the rain, the concert was a success.",
+        "He continued working despite his illness."
+      ],
+      "collocations": [
+        "despite the fact that 尽管"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00119",
+      "word": "destroy",
+      "phonetic": "/dɪˈstrɔɪ/",
+      "meaning": "v. 破坏；毁灭；消灭",
+      "examples": [
+        "The fire destroyed over 200 hectares of forest.",
+        "The scandal destroyed his reputation."
+      ],
+      "collocations": [
+        "completely destroy 完全摧毁",
+        "destroy evidence 销毁证据"
+      ],
+      "derivatives": [
+        "destruction (n.破坏)",
+        "destructive (a.破坏性的)"
+      ]
+    },
+    {
+      "id": "w_00120",
+      "word": "detect",
+      "phonetic": "/dɪˈtekt/",
+      "meaning": "v. 发现；探测；察觉",
+      "examples": [
+        "The sensor can detect the slightest movement.",
+        "I detected a note of sarcasm in her voice."
+      ],
+      "collocations": [
+        "detect changes 检测变化",
+        "hard to detect 难以察觉"
+      ],
+      "derivatives": [
+        "detection (n.发现)",
+        "detective (n.侦探)"
+      ]
+    },
+    {
+      "id": "w_00121",
+      "word": "determine",
+      "phonetic": "/dɪˈtɜːmɪn/",
+      "meaning": "v. 决定；确定；下决心",
+      "examples": [
+        "A blood test will help determine the cause.",
+        "She determined to prove them wrong."
+      ],
+      "collocations": [
+        "determine to do 决心做",
+        "determine the outcome 决定结果"
+      ],
+      "derivatives": [
+        "determination (n.决心)",
+        "determined (a.坚决的)"
+      ]
+    },
+    {
+      "id": "w_00122",
+      "word": "device",
+      "phonetic": "/dɪˈvaɪs/",
+      "meaning": "n. 设备；装置；手段",
+      "examples": [
+        "This device can translate speech in real time.",
+        "Smartphones have become essential devices."
+      ],
+      "collocations": [
+        "electronic device 电子设备",
+        "safety device 安全装置"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00123",
+      "word": "devote",
+      "phonetic": "/dɪˈvəʊt/",
+      "meaning": "v. 致力于；奉献",
+      "examples": [
+        "He devoted his life to scientific research.",
+        "She devotes an hour each day to reading."
+      ],
+      "collocations": [
+        "devote to 致力于",
+        "devote oneself to 献身于"
+      ],
+      "derivatives": [
+        "devotion (n.奉献)",
+        "devoted (a.忠诚的)"
+      ]
+    },
+    {
+      "id": "w_00124",
+      "word": "digital",
+      "phonetic": "/ˈdɪdʒɪtl/",
+      "meaning": "adj. 数字的；数码的",
+      "examples": [
+        "The digital revolution has changed everything.",
+        "Digital skills are essential in today's job market."
+      ],
+      "collocations": [
+        "digital age 数字时代",
+        "digital currency 数字货币"
+      ],
+      "derivatives": [
+        "digitally (adv.数字地)"
+      ]
+    },
+    {
+      "id": "w_00125",
+      "word": "discipline",
+      "phonetic": "/ˈdɪsəplɪn/",
+      "meaning": "n. 纪律；学科 v. 训练",
+      "examples": [
+        "Self-discipline is essential for success.",
+        "Linguistics is a fascinating discipline."
+      ],
+      "collocations": [
+        "self-discipline 自律",
+        "maintain discipline 维持纪律"
+      ],
+      "derivatives": [
+        "disciplinary (a.纪律的)"
+      ]
+    },
+    {
+      "id": "w_00126",
+      "word": "display",
+      "phonetic": "/dɪˈspleɪ/",
+      "meaning": "v./n. 展示；显示；陈列",
+      "examples": [
+        "The museum will display the artifacts.",
+        "The screen displays real-time information."
+      ],
+      "collocations": [
+        "on display 展出",
+        "display screen 显示屏"
+      ],
+      "derivatives": []
+    },
+    {
+      "id": "w_00127",
+      "word": "distinct",
+      "phonetic": "/dɪˈstɪŋkt/",
+      "meaning": "adj. 不同的；明显的；独特的",
+      "examples": [
+        "There is a distinct difference between them.",
+        "The region has a distinct cultural identity."
+      ],
+      "collocations": [
+        "distinct from 与...不同",
+        "distinct advantage 明显优势"
+      ],
+      "derivatives": [
+        "distinction (n.区别)",
+        "distinctive (a.独特的)"
+      ]
+    },
+    {
+      "id": "w_00128",
+      "word": "distinguish",
+      "phonetic": "/dɪˈstɪŋɡwɪʃ/",
+      "meaning": "v. 区分；辨别；使杰出",
+      "examples": [
+        "Color blindness makes it hard to distinguish red.",
+        "She distinguished herself as a brilliant scholar."
+      ],
+      "collocations": [
+        "distinguish between 区分",
+        "distinguish from 与...区分"
+      ],
+      "derivatives": [
+        "distinguished (a.杰出的)"
+      ]
+    },
+    {
+      "id": "w_00129",
+      "word": "economy",
+      "phonetic": "/ɪˈkɒnəmi/",
+      "meaning": "n. 经济；节约",
+      "examples": [
+        "The economy is showing signs of recovery.",
+        "We need to make economies in our spending."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "economic (a.经济的)"
+      ]
+    },
+    {
+      "id": "w_00130",
+      "word": "education",
+      "phonetic": "/ˌedʒuˈkeɪʃn/",
+      "meaning": "n. 教育；培养",
+      "examples": [
+        "Education is the key to a better future.",
+        "She received a good education abroad."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "educate (v.教育)"
+      ]
+    },
+    {
+      "id": "w_00131",
+      "word": "efficient",
+      "phonetic": "/ɪˈfɪʃnt/",
+      "meaning": "adj. 高效的",
+      "examples": [
+        "The new system is far more efficient.",
+        "We need efficient use of resources."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "efficiency (n.效率)"
+      ]
+    },
+    {
+      "id": "w_00132",
+      "word": "eliminate",
+      "phonetic": "/ɪˈlɪmɪneɪt/",
+      "meaning": "v. 消除；淘汰",
+      "examples": [
+        "The goal is to eliminate poverty.",
+        "The team was eliminated in the first round."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "elimination (n.消除)"
+      ]
+    },
+    {
+      "id": "w_00133",
+      "word": "embrace",
+      "phonetic": "/ɪmˈbreɪs/",
+      "meaning": "v. 拥抱；包含；欣然接受",
+      "examples": [
+        "We should embrace change.",
+        "The course embraces a wide range of topics."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00134",
+      "word": "emerge",
+      "phonetic": "/iˈmɜːdʒ/",
+      "meaning": "v. 出现；浮现",
+      "examples": [
+        "New evidence has emerged.",
+        "The sun emerged from behind the clouds."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "emergence (n.出现)"
+      ]
+    },
+    {
+      "id": "w_00135",
+      "word": "emergency",
+      "phonetic": "/iˈmɜːdʒənsi/",
+      "meaning": "n. 紧急情况",
+      "examples": [
+        "In case of emergency, call 911.",
+        "The hospital has an emergency room."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00136",
+      "word": "emphasize",
+      "phonetic": "/ˈemfəsaɪz/",
+      "meaning": "v. 强调；着重",
+      "examples": [
+        "The teacher emphasized the importance of practice.",
+        "I cannot emphasize this enough."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "emphasis (n.强调)"
+      ]
+    },
+    {
+      "id": "w_00137",
+      "word": "employ",
+      "phonetic": "/ɪmˈplɔɪ/",
+      "meaning": "v. 雇用；使用",
+      "examples": [
+        "The factory employs 500 workers.",
+        "She employed a different strategy."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "employment (n.就业)"
+      ]
+    },
+    {
+      "id": "w_00138",
+      "word": "enable",
+      "phonetic": "/ɪˈneɪbl/",
+      "meaning": "v. 使能够",
+      "examples": [
+        "This scholarship will enable her to study abroad.",
+        "The new software enables faster processing."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00139",
+      "word": "encounter",
+      "phonetic": "/ɪnˈkaʊntər/",
+      "meaning": "v./n. 遇到；遭遇",
+      "examples": [
+        "You may encounter unexpected challenges.",
+        "I had a brief encounter with a celebrity."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00140",
+      "word": "encourage",
+      "phonetic": "/ɪnˈkʌrɪdʒ/",
+      "meaning": "v. 鼓励；促进",
+      "examples": [
+        "Parents should encourage their children to read.",
+        "The policy encourages investment."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "encouragement (n.鼓励)"
+      ]
+    },
+    {
+      "id": "w_00141",
+      "word": "enforce",
+      "phonetic": "/ɪnˈfɔːs/",
+      "meaning": "v. 执行；强制",
+      "examples": [
+        "The police enforce the law.",
+        "We need to enforce stricter rules."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "enforcement (n.执行)"
+      ]
+    },
+    {
+      "id": "w_00142",
+      "word": "engage",
+      "phonetic": "/ɪnˈɡeɪdʒ/",
+      "meaning": "v. 从事；参与；吸引",
+      "examples": [
+        "The speaker managed to engage the audience.",
+        "They are engaged in important research."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "engagement (n.参与)"
+      ]
+    },
+    {
+      "id": "w_00143",
+      "word": "enhance",
+      "phonetic": "/ɪnˈhɑːns/",
+      "meaning": "v. 增强；提高",
+      "examples": [
+        "Exercise can enhance your health.",
+        "The app enhances the learning experience."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "enhancement (n.增强)"
+      ]
+    },
+    {
+      "id": "w_00144",
+      "word": "enormous",
+      "phonetic": "/ɪˈnɔːməs/",
+      "meaning": "adj. 巨大的",
+      "examples": [
+        "The project required an enormous effort.",
+        "There was an enormous crowd at the concert."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00145",
+      "word": "ensure",
+      "phonetic": "/ɪnˈʃʊər/",
+      "meaning": "v. 确保；保证",
+      "examples": [
+        "Please ensure all doors are locked.",
+        "We must ensure the safety of our workers."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00146",
+      "word": "enterprise",
+      "phonetic": "/ˈentəpraɪz/",
+      "meaning": "n. 企业；事业",
+      "examples": [
+        "She started her own enterprise at 25.",
+        "This is a challenging enterprise."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00147",
+      "word": "environment",
+      "phonetic": "/ɪnˈvaɪrənmənt/",
+      "meaning": "n. 环境",
+      "examples": [
+        "We must protect the environment.",
+        "The work environment here is excellent."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "environmental (a.环境的)"
+      ]
+    },
+    {
+      "id": "w_00148",
+      "word": "equip",
+      "phonetic": "/ɪˈkwɪp/",
+      "meaning": "v. 装备；配备",
+      "examples": [
+        "The lab is fully equipped.",
+        "Education equips you for life."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "equipment (n.设备)"
+      ]
+    },
+    {
+      "id": "w_00149",
+      "word": "essential",
+      "phonetic": "/ɪˈsenʃl/",
+      "meaning": "adj. 必要的；本质的",
+      "examples": [
+        "Water is essential for life.",
+        "The essential point is that we need change."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00150",
+      "word": "establish",
+      "phonetic": "/ɪˈstæblɪʃ/",
+      "meaning": "v. 建立；确立",
+      "examples": [
+        "The company was established in 1995.",
+        "We need to establish clear rules."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "establishment (n.建立)"
+      ]
+    },
+    {
+      "id": "w_00151",
+      "word": "estimate",
+      "phonetic": "/ˈestɪmeɪt/",
+      "meaning": "v./n. 估计；评估",
+      "examples": [
+        "The cost is estimated at $2 million.",
+        "Can you give me a rough estimate?"
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00152",
+      "word": "evaluate",
+      "phonetic": "/ɪˈvæljueɪt/",
+      "meaning": "v. 评价；评估",
+      "examples": [
+        "The teacher will evaluate your progress.",
+        "We need to evaluate all the options."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "evaluation (n.评价)"
+      ]
+    },
+    {
+      "id": "w_00153",
+      "word": "evidence",
+      "phonetic": "/ˈevɪdəns/",
+      "meaning": "n. 证据；迹象",
+      "examples": [
+        "There is strong evidence linking smoking to cancer.",
+        "The police found no evidence of a crime."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00154",
+      "word": "evolution",
+      "phonetic": "/ˌiːvəˈluːʃn/",
+      "meaning": "n. 进化；演变",
+      "examples": [
+        "The theory of evolution explains diversity.",
+        "We studied the evolution of language."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00155",
+      "word": "exceed",
+      "phonetic": "/ɪkˈsiːd/",
+      "meaning": "v. 超过；超越",
+      "examples": [
+        "The cost should not exceed our budget.",
+        "Her performance exceeded all expectations."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00156",
+      "word": "exchange",
+      "phonetic": "/ɪksˈtʃeɪndʒ/",
+      "meaning": "v./n. 交换；兑换",
+      "examples": [
+        "We exchanged ideas at the meeting.",
+        "What is the current exchange rate?"
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00157",
+      "word": "exclude",
+      "phonetic": "/ɪkˈskluːd/",
+      "meaning": "v. 排除；排斥",
+      "examples": [
+        "The price excludes tax.",
+        "No one should be excluded from education."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "exclusion (n.排除)"
+      ]
+    },
+    {
+      "id": "w_00158",
+      "word": "execute",
+      "phonetic": "/ˈeksɪkjuːt/",
+      "meaning": "v. 执行；实施",
+      "examples": [
+        "The plan was poorly executed.",
+        "The CEO executes the board's decisions."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "execution (n.执行)"
+      ]
+    },
+    {
+      "id": "w_00159",
+      "word": "executive",
+      "phonetic": "/ɪɡˈzekjətɪv/",
+      "meaning": "adj. 执行的 n. 高管",
+      "examples": [
+        "She holds an executive position.",
+        "The executive team met to discuss strategy."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00160",
+      "word": "exercise",
+      "phonetic": "/ˈeksəsaɪz/",
+      "meaning": "n./v. 锻炼；练习；行使",
+      "examples": [
+        "Regular exercise is good for health.",
+        "Please complete exercises 1-5."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00161",
+      "word": "exhibit",
+      "phonetic": "/ɪɡˈzɪbɪt/",
+      "meaning": "v. 展览；显示 n. 展品",
+      "examples": [
+        "The gallery will exhibit local artists.",
+        "The patient exhibits several symptoms."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "exhibition (n.展览)"
+      ]
+    },
+    {
+      "id": "w_00162",
+      "word": "exist",
+      "phonetic": "/ɪɡˈzɪst/",
+      "meaning": "v. 存在；生存",
+      "examples": [
+        "Do aliens exist?",
+        "They existed on very little food."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "existence (n.存在)"
+      ]
+    },
+    {
+      "id": "w_00163",
+      "word": "expand",
+      "phonetic": "/ɪkˈspænd/",
+      "meaning": "v. 扩展；扩张",
+      "examples": [
+        "The company plans to expand overseas.",
+        "Metals expand when heated."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "expansion (n.扩张)"
+      ]
+    },
+    {
+      "id": "w_00164",
+      "word": "expect",
+      "phonetic": "/ɪkˈspekt/",
+      "meaning": "v. 期望；预期；料想",
+      "examples": [
+        "I expect to finish by Friday.",
+        "What did you expect?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "expectation (n.期望)"
+      ]
+    },
+    {
+      "id": "w_00165",
+      "word": "expense",
+      "phonetic": "/ɪkˈspens/",
+      "meaning": "n. 费用；代价",
+      "examples": [
+        "Living expenses have increased.",
+        "He achieved success at great personal expense."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "expensive (a.昂贵的)"
+      ]
+    },
+    {
+      "id": "w_00166",
+      "word": "experiment",
+      "phonetic": "/ɪkˈsperɪmənt/",
+      "meaning": "n./v. 实验；试验",
+      "examples": [
+        "The experiment confirmed the theory.",
+        "We experimented with different methods."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00167",
+      "word": "expert",
+      "phonetic": "/ˈekspɜːt/",
+      "meaning": "n. 专家 adj. 熟练的",
+      "examples": [
+        "She is an expert in international law.",
+        "We need expert advice."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "expertise (n.专长)"
+      ]
+    },
+    {
+      "id": "w_00168",
+      "word": "explain",
+      "phonetic": "/ɪkˈspleɪn/",
+      "meaning": "v. 解释；说明",
+      "examples": [
+        "Can you explain how it works?",
+        "She explained the situation to me."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "explanation (n.解释)"
+      ]
+    },
+    {
+      "id": "w_00169",
+      "word": "explicit",
+      "phonetic": "/ɪkˈsplɪsɪt/",
+      "meaning": "adj. 明确的；直率的",
+      "examples": [
+        "The instructions were very explicit.",
+        "He was explicit about his intentions."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00170",
+      "word": "exploit",
+      "phonetic": "/ɪkˈsplɔɪt/",
+      "meaning": "v. 开发；剥削",
+      "examples": [
+        "We should exploit every opportunity.",
+        "Workers were exploited by the factory."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "exploitation (n.开发)"
+      ]
+    },
+    {
+      "id": "w_00171",
+      "word": "explore",
+      "phonetic": "/ɪkˈsplɔːr/",
+      "meaning": "v. 探索；探究",
+      "examples": [
+        "Let's explore the city together.",
+        "The article explores different viewpoints."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "exploration (n.探索)"
+      ]
+    },
+    {
+      "id": "w_00172",
+      "word": "export",
+      "phonetic": "/ɪkˈspɔːt/",
+      "meaning": "v. 出口 n. 出口产品",
+      "examples": [
+        "The country exports coffee worldwide.",
+        "Exports have increased this year."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00173",
+      "word": "expose",
+      "phonetic": "/ɪkˈspəʊz/",
+      "meaning": "v. 暴露；揭露",
+      "examples": [
+        "The report exposes serious flaws.",
+        "Don't expose your skin to the sun."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "exposure (n.暴露)"
+      ]
+    },
+    {
+      "id": "w_00174",
+      "word": "express",
+      "phonetic": "/ɪkˈspres/",
+      "meaning": "v. 表达 adj. 快速的",
+      "examples": [
+        "I want to express my gratitude.",
+        "He took the express train."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "expression (n.表达)"
+      ]
+    },
+    {
+      "id": "w_00175",
+      "word": "extend",
+      "phonetic": "/ɪkˈstend/",
+      "meaning": "v. 延伸；扩展；提供",
+      "examples": [
+        "We decided to extend our stay.",
+        "They extended a warm welcome to us."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "extension (n.延伸)"
+      ]
+    },
+    {
+      "id": "w_00176",
+      "word": "extensive",
+      "phonetic": "/ɪkˈstensɪv/",
+      "meaning": "adj. 广泛的；大量的",
+      "examples": [
+        "She has extensive experience.",
+        "The fire caused extensive damage."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00177",
+      "word": "external",
+      "phonetic": "/ɪkˈstɜːnl/",
+      "meaning": "adj. 外部的；外面的",
+      "examples": [
+        "External factors affected the results.",
+        "The external walls need painting."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00178",
+      "word": "extreme",
+      "phonetic": "/ɪkˈstriːm/",
+      "meaning": "adj. 极端的 n. 极端",
+      "examples": [
+        "The extreme weather caused flooding.",
+        "He went from one extreme to the other."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00179",
+      "word": "facilitate",
+      "phonetic": "/fəˈsɪlɪteɪt/",
+      "meaning": "v. 促进；使便利",
+      "examples": [
+        "The new software facilitates collaboration.",
+        "Good infrastructure facilitates trade."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00180",
+      "word": "factor",
+      "phonetic": "/ˈfæktər/",
+      "meaning": "n. 因素；要素",
+      "examples": [
+        "Price is just one factor to consider.",
+        "Hard work was the key factor in his success."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00181",
+      "word": "feature",
+      "phonetic": "/ˈfiːtʃər/",
+      "meaning": "n. 特征；特色 v. 以...为特色",
+      "examples": [
+        "The phone features a new camera.",
+        "Patience is a key feature of a good teacher."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00182",
+      "word": "figure",
+      "phonetic": "/ˈfɪɡər/",
+      "meaning": "n. 数字；人物 v. 认为",
+      "examples": [
+        "The figures show a decline.",
+        "She is a prominent figure in politics."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00183",
+      "word": "finance",
+      "phonetic": "/ˈfaɪnæns/",
+      "meaning": "n. 金融 v. 资助",
+      "examples": [
+        "She works in finance.",
+        "The project was financed by the government."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "financial (a.金融的)"
+      ]
+    },
+    {
+      "id": "w_00184",
+      "word": "flexible",
+      "phonetic": "/ˈfleksəbl/",
+      "meaning": "adj. 灵活的；柔韧的",
+      "examples": [
+        "The company offers flexible hours.",
+        "Yoga helps keep your body flexible."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "flexibility (n.灵活性)"
+      ]
+    },
+    {
+      "id": "w_00185",
+      "word": "flourish",
+      "phonetic": "/ˈflʌrɪʃ/",
+      "meaning": "v. 繁荣；兴旺",
+      "examples": [
+        "Small businesses can flourish with support.",
+        "The arts flourished in this period."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00186",
+      "word": "focus",
+      "phonetic": "/ˈfəʊkəs/",
+      "meaning": "v. 集中 n. 焦点",
+      "examples": [
+        "We need to focus on the most urgent problems.",
+        "The focus of the meeting was budget planning."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00187",
+      "word": "forbid",
+      "phonetic": "/fəˈbɪd/",
+      "meaning": "v. 禁止；不许",
+      "examples": [
+        "The school forbids phones in class.",
+        "Smoking is strictly forbidden."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00188",
+      "word": "forecast",
+      "phonetic": "/ˈfɔːkɑːst/",
+      "meaning": "v./n. 预测；预报",
+      "examples": [
+        "The weather forecast says it will rain.",
+        "Economists forecast growth next year."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00189",
+      "word": "formal",
+      "phonetic": "/ˈfɔːml/",
+      "meaning": "adj. 正式的；形式的",
+      "examples": [
+        "Please use formal language in emails.",
+        "He received no formal education."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "informal (a.非正式的)"
+      ]
+    },
+    {
+      "id": "w_00190",
+      "word": "former",
+      "phonetic": "/ˈfɔːmər/",
+      "meaning": "adj. 前者的；以前的",
+      "examples": [
+        "The former president made a rare appearance.",
+        "Of the two options, I prefer the former."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00191",
+      "word": "foundation",
+      "phonetic": "/faʊnˈdeɪʃn/",
+      "meaning": "n. 基础；基金会",
+      "examples": [
+        "A solid foundation is crucial for success.",
+        "The charity was set up as a foundation."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00192",
+      "word": "framework",
+      "phonetic": "/ˈfreɪmwɜːk/",
+      "meaning": "n. 框架；结构",
+      "examples": [
+        "The agreement provides a framework for cooperation.",
+        "We need a legal framework for this."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00193",
+      "word": "frequent",
+      "phonetic": "/ˈfriːkwənt/",
+      "meaning": "adj. 频繁的",
+      "examples": [
+        "Frequent exercise improves health.",
+        "Her visits became less frequent."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "frequency (n.频率)"
+      ]
+    },
+    {
+      "id": "w_00194",
+      "word": "fulfill",
+      "phonetic": "/fʊlˈfɪl/",
+      "meaning": "v. 实现；满足；履行",
+      "examples": [
+        "We strive to fulfill customer needs.",
+        "He fulfilled his dream of becoming a pilot."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00195",
+      "word": "function",
+      "phonetic": "/ˈfʌŋkʃn/",
+      "meaning": "n. 功能；函数 v. 运行",
+      "examples": [
+        "The main function of the heart is to pump blood.",
+        "The machine is functioning normally."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00196",
+      "word": "fundamental",
+      "phonetic": "/ˌfʌndəˈmentl/",
+      "meaning": "adj. 基本的 n. 原理",
+      "examples": [
+        "Freedom of speech is fundamental.",
+        "Let's go back to fundamentals."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00197",
+      "word": "generate",
+      "phonetic": "/ˈdʒenəreɪt/",
+      "meaning": "v. 产生；生成",
+      "examples": [
+        "Wind turbines generate electricity.",
+        "The proposal generated a lot of discussion."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "generation (n.产生)"
+      ]
+    },
+    {
+      "id": "w_00198",
+      "word": "generous",
+      "phonetic": "/ˈdʒenərəs/",
+      "meaning": "adj. 慷慨的；丰富的",
+      "examples": [
+        "She made a generous donation.",
+        "A generous portion of food was served."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "generosity (n.慷慨)"
+      ]
+    },
+    {
+      "id": "w_00199",
+      "word": "global",
+      "phonetic": "/ˈɡləʊbl/",
+      "meaning": "adj. 全球的；整体的",
+      "examples": [
+        "Climate change is a global issue.",
+        "We need a global perspective."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00200",
+      "word": "govern",
+      "phonetic": "/ˈɡʌvn/",
+      "meaning": "v. 统治；管理；支配",
+      "examples": [
+        "New regulations govern AI use.",
+        "The country is governed by elected officials."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "government (n.政府)"
+      ]
+    },
+    {
+      "id": "w_00201",
+      "word": "guarantee",
+      "phonetic": "/ˌɡærənˈtiː/",
+      "meaning": "v./n. 保证；担保",
+      "examples": [
+        "The product comes with a one-year guarantee.",
+        "I can't guarantee it will work."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00202",
+      "word": "handle",
+      "phonetic": "/ˈhændl/",
+      "meaning": "v. 处理 n. 把手",
+      "examples": [
+        "She knows how to handle difficult customers.",
+        "The door handle was broken."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00203",
+      "word": "highlight",
+      "phonetic": "/ˈhaɪlaɪt/",
+      "meaning": "v. 强调；突出 n. 亮点",
+      "examples": [
+        "The report highlights key issues.",
+        "The trip to Paris was the highlight of my year."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00204",
+      "word": "household",
+      "phonetic": "/ˈhaʊshəʊld/",
+      "meaning": "n. 家庭 adj. 家用的",
+      "examples": [
+        "The average household uses 300L of water daily.",
+        "Household chores can be tiring."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00205",
+      "word": "identical",
+      "phonetic": "/aɪˈdentɪkl/",
+      "meaning": "adj. 完全相同的",
+      "examples": [
+        "The two samples were almost identical.",
+        "Your phone is identical to mine."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00206",
+      "word": "identify",
+      "phonetic": "/aɪˈdentɪfaɪ/",
+      "meaning": "v. 识别；确认；认同",
+      "examples": [
+        "Police identified the suspect from CCTV.",
+        "I can identify with her struggles."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "identification (n.识别)"
+      ]
+    },
+    {
+      "id": "w_00207",
+      "word": "ignore",
+      "phonetic": "/ɪɡˈnɔːr/",
+      "meaning": "v. 忽视；不理睬",
+      "examples": [
+        "You cannot ignore the warning signs.",
+        "He ignored my advice completely."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00208",
+      "word": "illustrate",
+      "phonetic": "/ˈɪləstreɪt/",
+      "meaning": "v. 说明；举例；插图",
+      "examples": [
+        "Let me illustrate my point with an example.",
+        "The book is beautifully illustrated."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "illustration (n.说明)"
+      ]
+    },
+    {
+      "id": "w_00209",
+      "word": "immigrant",
+      "phonetic": "/ˈɪmɪɡrənt/",
+      "meaning": "n. 移民 adj. 移民的",
+      "examples": [
+        "Many immigrants came to this country.",
+        "She is the daughter of immigrants."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "immigration (n.移民)"
+      ]
+    },
+    {
+      "id": "w_00210",
+      "word": "impact",
+      "phonetic": "/ˈɪmpækt/",
+      "meaning": "n. 影响；冲击 v. 影响",
+      "examples": [
+        "The pandemic had a massive impact.",
+        "New technology impacts every industry."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00211",
+      "word": "implement",
+      "phonetic": "/ˈɪmplɪment/",
+      "meaning": "v. 实施；执行",
+      "examples": [
+        "It will take months to implement the policy.",
+        "The plan was never fully implemented."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "implementation (n.实施)"
+      ]
+    },
+    {
+      "id": "w_00212",
+      "word": "imply",
+      "phonetic": "/ɪmˈplaɪ/",
+      "meaning": "v. 暗示；意味着",
+      "examples": [
+        "His silence implied agreement.",
+        "What are you implying?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "implication (n.含义)"
+      ]
+    },
+    {
+      "id": "w_00213",
+      "word": "impose",
+      "phonetic": "/ɪmˈpəʊz/",
+      "meaning": "v. 强加；征收",
+      "examples": [
+        "The court imposed a heavy fine.",
+        "Don't impose your views on others."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00214",
+      "word": "income",
+      "phonetic": "/ˈɪnkʌm/",
+      "meaning": "n. 收入；收益",
+      "examples": [
+        "She has a steady income from freelance work.",
+        "Income inequality is a growing problem."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00215",
+      "word": "indicate",
+      "phonetic": "/ˈɪndɪkeɪt/",
+      "meaning": "v. 表明；指示；暗示",
+      "examples": [
+        "Recent polls indicate a shift in opinion.",
+        "The sign indicates the direction."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "indication (n.迹象)"
+      ]
+    },
+    {
+      "id": "w_00216",
+      "word": "individual",
+      "phonetic": "/ˌɪndɪˈvɪdʒuəl/",
+      "meaning": "adj. 个人的 n. 个体",
+      "examples": [
+        "Each individual has unique talents.",
+        "We respect individual differences."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00217",
+      "word": "industrial",
+      "phonetic": "/ɪnˈdʌstriəl/",
+      "meaning": "adj. 工业的；产业的",
+      "examples": [
+        "The city was once an industrial center.",
+        "The Industrial Revolution changed society."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "industry (n.工业)"
+      ]
+    },
+    {
+      "id": "w_00218",
+      "word": "inevitable",
+      "phonetic": "/ɪnˈevɪtəbl/",
+      "meaning": "adj. 不可避免的",
+      "examples": [
+        "Change is inevitable in any organization.",
+        "The accident seemed almost inevitable."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00219",
+      "word": "influence",
+      "phonetic": "/ˈɪnfluəns/",
+      "meaning": "n./v. 影响；作用",
+      "examples": [
+        "Her work influenced a generation of artists.",
+        "Parents have a strong influence on children."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "influential (a.有影响的)"
+      ]
+    },
+    {
+      "id": "w_00220",
+      "word": "initial",
+      "phonetic": "/ɪˈnɪʃl/",
+      "meaning": "adj. 最初的 n. 首字母",
+      "examples": [
+        "The initial results are promising.",
+        "Please write your initials here."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00221",
+      "word": "innovation",
+      "phonetic": "/ˌɪnəˈveɪʃn/",
+      "meaning": "n. 创新；革新",
+      "examples": [
+        "Technological innovation drives change.",
+        "This product is a major innovation."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "innovate (v.创新)"
+      ]
+    },
+    {
+      "id": "w_00222",
+      "word": "insight",
+      "phonetic": "/ˈɪnsaɪt/",
+      "meaning": "n. 洞察力；深刻见解",
+      "examples": [
+        "The book provides valuable insights.",
+        "She has great insight into human nature."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00223",
+      "word": "institute",
+      "phonetic": "/ˈɪnstɪtjuːt/",
+      "meaning": "n. 机构；学院 v. 建立",
+      "examples": [
+        "He works at a research institute.",
+        "The government instituted new reforms."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "institution (n.机构)"
+      ]
+    },
+    {
+      "id": "w_00224",
+      "word": "integrate",
+      "phonetic": "/ˈɪntɪɡreɪt/",
+      "meaning": "v. 整合；融入",
+      "examples": [
+        "We need to integrate new technologies.",
+        "She integrated well into the team."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "integration (n.整合)"
+      ]
+    },
+    {
+      "id": "w_00225",
+      "word": "intellectual",
+      "phonetic": "/ˌɪntəˈlektʃuəl/",
+      "meaning": "adj. 智力的 n. 知识分子",
+      "examples": [
+        "Reading is an intellectual exercise.",
+        "She is one of the leading intellectuals."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00226",
+      "word": "intense",
+      "phonetic": "/ɪnˈtens/",
+      "meaning": "adj. 强烈的；激烈的",
+      "examples": [
+        "The competition was intense.",
+        "She has an intense desire to succeed."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "intensity (n.强度)"
+      ]
+    },
+    {
+      "id": "w_00227",
+      "word": "interact",
+      "phonetic": "/ˌɪntərˈækt/",
+      "meaning": "v. 互动；相互作用",
+      "examples": [
+        "Children learn by interacting with others.",
+        "The two chemicals interact violently."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "interaction (n.互动)"
+      ]
+    },
+    {
+      "id": "w_00228",
+      "word": "interpret",
+      "phonetic": "/ɪnˈtɜːprɪt/",
+      "meaning": "v. 解释；口译",
+      "examples": [
+        "How do you interpret this poem?",
+        "She interpreted for the delegation."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "interpretation (n.解释)"
+      ]
+    },
+    {
+      "id": "w_00229",
+      "word": "invest",
+      "phonetic": "/ɪnˈvest/",
+      "meaning": "v. 投资；投入",
+      "examples": [
+        "Many people invest in the stock market.",
+        "She invested a lot of time in this project."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "investment (n.投资)"
+      ]
+    },
+    {
+      "id": "w_00230",
+      "word": "investigate",
+      "phonetic": "/ɪnˈvestɪɡeɪt/",
+      "meaning": "v. 调查；研究",
+      "examples": [
+        "Police are investigating the cause.",
+        "Scientists are investigating the phenomenon."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "investigation (n.调查)"
+      ]
+    },
+    {
+      "id": "w_00231",
+      "word": "involve",
+      "phonetic": "/ɪnˈvɒlv/",
+      "meaning": "v. 涉及；包含；参与",
+      "examples": [
+        "The project involves a lot of teamwork.",
+        "How many people are involved?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "involvement (n.参与)"
+      ]
+    },
+    {
+      "id": "w_00232",
+      "word": "isolate",
+      "phonetic": "/ˈaɪsəleɪt/",
+      "meaning": "v. 隔离；孤立",
+      "examples": [
+        "The patient was isolated to prevent infection.",
+        "I felt isolated in the new city."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "isolation (n.隔离)"
+      ]
+    },
+    {
+      "id": "w_00233",
+      "word": "issue",
+      "phonetic": "/ˈɪʃuː/",
+      "meaning": "n. 问题；议题 v. 发布",
+      "examples": [
+        "Climate change is a pressing issue.",
+        "The company issued a statement."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00234",
+      "word": "justify",
+      "phonetic": "/ˈdʒʌstɪfaɪ/",
+      "meaning": "v. 证明...正当；为...辩护",
+      "examples": [
+        "How can you justify this expense?",
+        "The end does not justify the means."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "justification (n.正当理由)"
+      ]
+    },
+    {
+      "id": "w_00235",
+      "word": "keen",
+      "phonetic": "/kiːn/",
+      "meaning": "adj. 热衷的；敏锐的；渴望的",
+      "examples": [
+        "She is keen on learning languages.",
+        "He has a keen sense of observation."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00236",
+      "word": "launch",
+      "phonetic": "/lɔːntʃ/",
+      "meaning": "v. 发射；发起；推出 n. 发布",
+      "examples": [
+        "The company launched a new product.",
+        "The rocket was launched successfully."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00237",
+      "word": "leading",
+      "phonetic": "/ˈliːdɪŋ/",
+      "meaning": "adj. 领先的；主要的",
+      "examples": [
+        "She is a leading expert in her field.",
+        "China is a leading producer of electronics."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00238",
+      "word": "legal",
+      "phonetic": "/ˈliːɡl/",
+      "meaning": "adj. 法律的；合法的",
+      "examples": [
+        "You should seek legal advice.",
+        "Is this legal in your country?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "illegal (a.非法的)"
+      ]
+    },
+    {
+      "id": "w_00239",
+      "word": "liberal",
+      "phonetic": "/ˈlɪbərəl/",
+      "meaning": "adj. 自由的；开明的；慷慨的",
+      "examples": [
+        "He holds liberal views on social issues.",
+        "She was liberal with her praise."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00240",
+      "word": "limitation",
+      "phonetic": "/ˌlɪmɪˈteɪʃn/",
+      "meaning": "n. 限制；局限",
+      "examples": [
+        "Every study has its limitations.",
+        "The speed limitation is 60 mph."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "limit (n./v.限制)"
+      ]
+    },
+    {
+      "id": "w_00241",
+      "word": "maintain",
+      "phonetic": "/meɪnˈteɪn/",
+      "meaning": "v. 维持；保养；坚持认为",
+      "examples": [
+        "It's important to maintain good health.",
+        "He maintains that he is innocent."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "maintenance (n.维护)"
+      ]
+    },
+    {
+      "id": "w_00242",
+      "word": "manipulate",
+      "phonetic": "/məˈnɪpjuleɪt/",
+      "meaning": "v. 操纵；操作",
+      "examples": [
+        "Politicians manipulate statistics.",
+        "The device is hard to manipulate."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "manipulation (n.操纵)"
+      ]
+    },
+    {
+      "id": "w_00243",
+      "word": "massive",
+      "phonetic": "/ˈmæsɪv/",
+      "meaning": "adj. 巨大的；大量的",
+      "examples": [
+        "The earthquake caused massive destruction.",
+        "There was a massive crowd at the concert."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00244",
+      "word": "mechanism",
+      "phonetic": "/ˈmekənɪzəm/",
+      "meaning": "n. 机制；原理",
+      "examples": [
+        "Scientists study the mechanism of disease.",
+        "The mechanism is quite simple."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00245",
+      "word": "mental",
+      "phonetic": "/ˈmentl/",
+      "meaning": "adj. 精神的；心理的",
+      "examples": [
+        "Mental health is as important as physical health.",
+        "She made a mental note to call him."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00246",
+      "word": "military",
+      "phonetic": "/ˈmɪlətri/",
+      "meaning": "adj. 军事的 n. 军队",
+      "examples": [
+        "The government increased military spending.",
+        "He served in the military for 20 years."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00247",
+      "word": "moderate",
+      "phonetic": "/ˈmɒdərət/",
+      "meaning": "adj. 适度的 v. 缓和",
+      "examples": [
+        "Moderate exercise is best for health.",
+        "The moderator kept the debate civil."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00248",
+      "word": "monitor",
+      "phonetic": "/ˈmɒnɪtər/",
+      "meaning": "v. 监控 n. 显示器",
+      "examples": [
+        "Doctors monitor the patient's condition.",
+        "The computer monitor is 27 inches."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00249",
+      "word": "motivate",
+      "phonetic": "/ˈməʊtɪveɪt/",
+      "meaning": "v. 激励；激发",
+      "examples": [
+        "A good leader knows how to motivate.",
+        "What motivates you to study?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "motivation (n.动力)"
+      ]
+    },
+    {
+      "id": "w_00250",
+      "word": "negative",
+      "phonetic": "/ˈneɡətɪv/",
+      "meaning": "adj. 消极的；负面的",
+      "examples": [
+        "Turn negative experiences into lessons.",
+        "The test came back negative."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00251",
+      "word": "negotiate",
+      "phonetic": "/nɪˈɡəʊʃieɪt/",
+      "meaning": "v. 谈判；协商",
+      "examples": [
+        "The union is negotiating for better wages.",
+        "We negotiated a lower price."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "negotiation (n.谈判)"
+      ]
+    },
+    {
+      "id": "w_00252",
+      "word": "nevertheless",
+      "phonetic": "/ˌnevəðəˈles/",
+      "meaning": "adv. 然而；尽管如此",
+      "examples": [
+        "It was raining; nevertheless, the game continued.",
+        "She was tired but continued nevertheless."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00253",
+      "word": "notion",
+      "phonetic": "/ˈnəʊʃn/",
+      "meaning": "n. 概念；观念",
+      "examples": [
+        "She rejected the notion that women are inferior.",
+        "I have a vague notion of what happened."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00254",
+      "word": "numerous",
+      "phonetic": "/ˈnjuːmərəs/",
+      "meaning": "adj. 许多的；大量的",
+      "examples": [
+        "There are numerous reasons to start early.",
+        "She has received numerous awards."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00255",
+      "word": "objective",
+      "phonetic": "/əbˈdʒektɪv/",
+      "meaning": "n. 目标 adj. 客观的",
+      "examples": [
+        "The main objective is to increase sales.",
+        "We need an objective assessment."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00256",
+      "word": "obtain",
+      "phonetic": "/əbˈteɪn/",
+      "meaning": "v. 获得；得到",
+      "examples": [
+        "You need a license to obtain certain chemicals.",
+        "Information can be obtained online."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00257",
+      "word": "obvious",
+      "phonetic": "/ˈɒbviəs/",
+      "meaning": "adj. 明显的；显然的",
+      "examples": [
+        "The solution seems obvious in retrospect.",
+        "It was obvious that she was upset."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00258",
+      "word": "offend",
+      "phonetic": "/əˈfend/",
+      "meaning": "v. 冒犯；违反",
+      "examples": [
+        "I didn't mean to offend you.",
+        "His actions offended against the rules."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "offence (n.冒犯)"
+      ]
+    },
+    {
+      "id": "w_00259",
+      "word": "opponent",
+      "phonetic": "/əˈpəʊnənt/",
+      "meaning": "n. 对手；反对者",
+      "examples": [
+        "She defeated her opponent easily.",
+        "He is a strong opponent of the policy."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00260",
+      "word": "opportunity",
+      "phonetic": "/ˌɒpəˈtjuːnəti/",
+      "meaning": "n. 机会；时机",
+      "examples": [
+        "This internship is a great opportunity.",
+        "Don't miss this opportunity."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00261",
+      "word": "oppose",
+      "phonetic": "/əˈpəʊz/",
+      "meaning": "v. 反对；对抗",
+      "examples": [
+        "I strongly oppose any form of discrimination.",
+        "The proposal was opposed by many."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "opposition (n.反对)"
+      ]
+    },
+    {
+      "id": "w_00262",
+      "word": "option",
+      "phonetic": "/ˈɒpʃn/",
+      "meaning": "n. 选择；选项",
+      "examples": [
+        "We have no option but to cancel.",
+        "There are several options available."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "optional (a.可选的)"
+      ]
+    },
+    {
+      "id": "w_00263",
+      "word": "original",
+      "phonetic": "/əˈrɪdʒənl/",
+      "meaning": "adj. 原始的；独创的 n. 原作",
+      "examples": [
+        "The original version is much better.",
+        "She has a very original mind."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "origin (n.起源)"
+      ]
+    },
+    {
+      "id": "w_00264",
+      "word": "outcome",
+      "phonetic": "/ˈaʊtkʌm/",
+      "meaning": "n. 结果；成果",
+      "examples": [
+        "The outcome surprised many analysts.",
+        "What was the outcome of the meeting?"
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00265",
+      "word": "outline",
+      "phonetic": "/ˈaʊtlaɪn/",
+      "meaning": "n. 大纲；轮廓 v. 概述",
+      "examples": [
+        "Let me outline the main points.",
+        "She drew an outline of the building."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00266",
+      "word": "overcome",
+      "phonetic": "/ˌəʊvəˈkʌm/",
+      "meaning": "v. 克服；战胜",
+      "examples": [
+        "She overcame her fear of public speaking.",
+        "We must overcome these obstacles together."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00267",
+      "word": "overseas",
+      "phonetic": "/ˌəʊvəˈsiːz/",
+      "meaning": "adv./adj. 海外；国外",
+      "examples": [
+        "He worked overseas for five years.",
+        "Overseas markets are important for exports."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00268",
+      "word": "participate",
+      "phonetic": "/pɑːˈtɪsɪpeɪt/",
+      "meaning": "v. 参与；参加",
+      "examples": [
+        "All students are encouraged to participate.",
+        "She participated in the debate."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "participation (n.参与)"
+      ]
+    },
+    {
+      "id": "w_00269",
+      "word": "particularly",
+      "phonetic": "/pəˈtɪkjələli/",
+      "meaning": "adv. 特别地；尤其",
+      "examples": [
+        "I am particularly interested in history.",
+        "This is particularly important for beginners."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00270",
+      "word": "passion",
+      "phonetic": "/ˈpæʃn/",
+      "meaning": "n. 热情；激情；酷爱",
+      "examples": [
+        "She has a genuine passion for teaching.",
+        "Music is his greatest passion."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "passionate (a.热情的)"
+      ]
+    },
+    {
+      "id": "w_00271",
+      "word": "peculiar",
+      "phonetic": "/pɪˈkjuːliər/",
+      "meaning": "adj. 特有的；奇怪的",
+      "examples": [
+        "There was a peculiar smell in the room.",
+        "The custom is peculiar to this region."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00272",
+      "word": "perform",
+      "phonetic": "/pəˈfɔːm/",
+      "meaning": "v. 执行；表演；表现",
+      "examples": [
+        "The band will perform tonight.",
+        "How did the company perform this quarter?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "performance (n.表现)"
+      ]
+    },
+    {
+      "id": "w_00273",
+      "word": "permanent",
+      "phonetic": "/ˈpɜːmənənt/",
+      "meaning": "adj. 永久的；长期的",
+      "examples": [
+        "Are you looking for permanent work?",
+        "The damage is permanent."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00274",
+      "word": "perspective",
+      "phonetic": "/pəˈspektɪv/",
+      "meaning": "n. 观点；视角；透视",
+      "examples": [
+        "Travel gives you a new perspective.",
+        "From my perspective, the plan is flawed."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00275",
+      "word": "phenomenon",
+      "phonetic": "/fɪˈnɒmɪnən/",
+      "meaning": "n. 现象；奇才",
+      "examples": [
+        "Globalization is a complex phenomenon.",
+        "The aurora is a natural phenomenon."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00276",
+      "word": "platform",
+      "phonetic": "/ˈplætfɔːm/",
+      "meaning": "n. 平台；站台；讲台",
+      "examples": [
+        "Candidates outlined their policies on the platform.",
+        "Social media platforms have huge influence."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00277",
+      "word": "policy",
+      "phonetic": "/ˈpɒləsi/",
+      "meaning": "n. 政策；方针；保险单",
+      "examples": [
+        "The new policy takes effect next month.",
+        "It's company policy to recycle."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00278",
+      "word": "portion",
+      "phonetic": "/ˈpɔːʃn/",
+      "meaning": "n. 部分；一份",
+      "examples": [
+        "A large portion of the budget goes to healthcare.",
+        "Would you like a portion of fries?"
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00279",
+      "word": "potential",
+      "phonetic": "/pəˈtenʃl/",
+      "meaning": "adj. 潜在的 n. 潜力",
+      "examples": [
+        "The athlete shows great potential.",
+        "We must consider potential risks."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00280",
+      "word": "poverty",
+      "phonetic": "/ˈpɒvəti/",
+      "meaning": "n. 贫穷；贫困",
+      "examples": [
+        "The organization works to alleviate poverty.",
+        "Millions live in poverty worldwide."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00281",
+      "word": "practical",
+      "phonetic": "/ˈpræktɪkl/",
+      "meaning": "adj. 实际的；实用的",
+      "examples": [
+        "We need a practical solution.",
+        "She has a lot of practical experience."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00282",
+      "word": "precise",
+      "phonetic": "/prɪˈsaɪs/",
+      "meaning": "adj. 精确的；准确的",
+      "examples": [
+        "Can you be more precise?",
+        "The measurements must be precise."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "precision (n.精确)"
+      ]
+    },
+    {
+      "id": "w_00283",
+      "word": "predict",
+      "phonetic": "/prɪˈdɪkt/",
+      "meaning": "v. 预测；预言",
+      "examples": [
+        "It's impossible to predict the future.",
+        "Economists predicted the recession."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "prediction (n.预测)"
+      ]
+    },
+    {
+      "id": "w_00284",
+      "word": "prejudice",
+      "phonetic": "/ˈpredʒudɪs/",
+      "meaning": "n. 偏见 v. 损害",
+      "examples": [
+        "We must fight against prejudice.",
+        "The news prejudiced the jury."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00285",
+      "word": "preserve",
+      "phonetic": "/prɪˈzɜːv/",
+      "meaning": "v. 保存；保护；维护",
+      "examples": [
+        "We should preserve these ancient buildings.",
+        "The society was preserved as a museum."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "preservation (n.保护)"
+      ]
+    },
+    {
+      "id": "w_00286",
+      "word": "pressure",
+      "phonetic": "/ˈpreʃər/",
+      "meaning": "n. 压力 v. 施压",
+      "examples": [
+        "Many students feel intense pressure.",
+        "Don't let others pressure you."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00287",
+      "word": "previous",
+      "phonetic": "/ˈpriːviəs/",
+      "meaning": "adj. 以前的；先前的",
+      "examples": [
+        "My previous job involved travel.",
+        "The previous owner left this note."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00288",
+      "word": "primary",
+      "phonetic": "/ˈpraɪməri/",
+      "meaning": "adj. 主要的；初级的",
+      "examples": [
+        "The primary goal is customer satisfaction.",
+        "She teaches at a primary school."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00289",
+      "word": "principle",
+      "phonetic": "/ˈprɪnsəpl/",
+      "meaning": "n. 原则；原理",
+      "examples": [
+        "He refused to compromise his principles.",
+        "The principle of democracy is important."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00290",
+      "word": "priority",
+      "phonetic": "/praɪˈɒrəti/",
+      "meaning": "n. 优先权；重点",
+      "examples": [
+        "Safety must be our top priority.",
+        "Education should be a national priority."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00291",
+      "word": "procedure",
+      "phonetic": "/prəˈsiːdʒər/",
+      "meaning": "n. 程序；步骤",
+      "examples": [
+        "Please follow the standard procedure.",
+        "The medical procedure was successful."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00292",
+      "word": "process",
+      "phonetic": "/ˈprəʊses/",
+      "meaning": "n. 过程 v. 处理",
+      "examples": [
+        "Learning a language is a gradual process.",
+        "The application is being processed."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00293",
+      "word": "productive",
+      "phonetic": "/prəˈdʌktɪv/",
+      "meaning": "adj. 多产的；富有成效的",
+      "examples": [
+        "The meeting was highly productive.",
+        "She is a very productive writer."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "productivity (n.生产力)"
+      ]
+    },
+    {
+      "id": "w_00294",
+      "word": "profession",
+      "phonetic": "/prəˈfeʃn/",
+      "meaning": "n. 职业；专业",
+      "examples": [
+        "Teaching is a noble profession.",
+        "He entered the medical profession."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "professional (a.专业的)"
+      ]
+    },
+    {
+      "id": "w_00295",
+      "word": "profit",
+      "phonetic": "/ˈprɒfɪt/",
+      "meaning": "n. 利润 v. 获益",
+      "examples": [
+        "The company reported record profits.",
+        "You can profit from this experience."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "profitable (a.盈利的)"
+      ]
+    },
+    {
+      "id": "w_00296",
+      "word": "profound",
+      "phonetic": "/prəˈfaʊnd/",
+      "meaning": "adj. 深刻的；深远的",
+      "examples": [
+        "The experience had a profound impact.",
+        "His words were very profound."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00297",
+      "word": "progress",
+      "phonetic": "/ˈprəʊɡres/",
+      "meaning": "n./v. 进步；进展",
+      "examples": [
+        "We've made significant progress.",
+        "The project is progressing well."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "progressive (a.进步的)"
+      ]
+    },
+    {
+      "id": "w_00298",
+      "word": "project",
+      "phonetic": "/ˈprɒdʒekt/",
+      "meaning": "n. 项目 v. 投射；预计",
+      "examples": [
+        "The construction project takes three years.",
+        "She projected sales for next year."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00299",
+      "word": "promote",
+      "phonetic": "/prəˈməʊt/",
+      "meaning": "v. 促进；推广；晋升",
+      "examples": [
+        "The campaign promotes healthy eating.",
+        "She was promoted to manager."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "promotion (n.晋升)"
+      ]
+    },
+    {
+      "id": "w_00300",
+      "word": "proper",
+      "phonetic": "/ˈprɒpər/",
+      "meaning": "adj. 适当的；正确的",
+      "examples": [
+        "Make sure you follow the proper channels.",
+        "Is this the proper way to do it?"
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00301",
+      "word": "property",
+      "phonetic": "/ˈprɒpəti/",
+      "meaning": "n. 财产；性质；房产",
+      "examples": [
+        "Intellectual property must be respected.",
+        "They bought a property in the countryside."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00302",
+      "word": "proportion",
+      "phonetic": "/prəˈpɔːʃn/",
+      "meaning": "n. 比例；部分；均衡",
+      "examples": [
+        "A large proportion of people live in cities.",
+        "The head is out of proportion with the body."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00303",
+      "word": "propose",
+      "phonetic": "/prəˈpəʊz/",
+      "meaning": "v. 提议；建议；求婚",
+      "examples": [
+        "I propose we postpone the meeting.",
+        "He proposed to her on the beach."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "proposal (n.提议)"
+      ]
+    },
+    {
+      "id": "w_00304",
+      "word": "prospect",
+      "phonetic": "/ˈprɒspekt/",
+      "meaning": "n. 前景；展望；可能性",
+      "examples": [
+        "The prospect of working abroad is exciting.",
+        "There is little prospect of success."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00305",
+      "word": "prosperity",
+      "phonetic": "/prɒˈsperəti/",
+      "meaning": "n. 繁荣；兴旺",
+      "examples": [
+        "Economic prosperity benefits everyone.",
+        "The country enjoyed years of prosperity."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "prosperous (a.繁荣的)"
+      ]
+    },
+    {
+      "id": "w_00306",
+      "word": "purchase",
+      "phonetic": "/ˈpɜːtʃəs/",
+      "meaning": "v./n. 购买",
+      "examples": [
+        "You can purchase tickets online.",
+        "She made several purchases today."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00307",
+      "word": "pursue",
+      "phonetic": "/pəˈsjuː/",
+      "meaning": "v. 追求；追赶；继续",
+      "examples": [
+        "She decided to pursue a career in science.",
+        "Police pursued the suspect on foot."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "pursuit (n.追求)"
+      ]
+    },
+    {
+      "id": "w_00308",
+      "word": "qualify",
+      "phonetic": "/ˈkwɒlɪfaɪ/",
+      "meaning": "v. 使合格；限定；修饰",
+      "examples": [
+        "This degree qualifies you to teach.",
+        "I should qualify my earlier statement."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "qualification (n.资格)"
+      ]
+    },
+    {
+      "id": "w_00309",
+      "word": "range",
+      "phonetic": "/reɪndʒ/",
+      "meaning": "n. 范围 v. 变化；排列",
+      "examples": [
+        "The store offers a wide range of products.",
+        "Prices range from $10 to $100."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00310",
+      "word": "rapid",
+      "phonetic": "/ˈræpɪd/",
+      "meaning": "adj. 快速的；迅速的",
+      "examples": [
+        "The rapid development of AI raises questions.",
+        "We are seeing rapid changes in technology."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00311",
+      "word": "rational",
+      "phonetic": "/ˈræʃnəl/",
+      "meaning": "adj. 理性的；合理的",
+      "examples": [
+        "Let's make a rational decision.",
+        "Is there a rational explanation?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "irrational (a.非理性的)"
+      ]
+    },
+    {
+      "id": "w_00312",
+      "word": "reality",
+      "phonetic": "/riˈæləti/",
+      "meaning": "n. 现实；实际",
+      "examples": [
+        "The reality is far more complex.",
+        "Virtual reality is becoming mainstream."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "realistic (a.现实的)"
+      ]
+    },
+    {
+      "id": "w_00313",
+      "word": "reasonable",
+      "phonetic": "/ˈriːznəbl/",
+      "meaning": "adj. 合理的；公道的",
+      "examples": [
+        "We expect everyone to act reasonably.",
+        "The price seems reasonable."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00314",
+      "word": "recognize",
+      "phonetic": "/ˈrekəɡnaɪz/",
+      "meaning": "v. 认出；承认；认可",
+      "examples": [
+        "I didn't recognize her.",
+        "He is recognized as a leading authority."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "recognition (n.认出)"
+      ]
+    },
+    {
+      "id": "w_00315",
+      "word": "recommend",
+      "phonetic": "/ˌrekəˈmend/",
+      "meaning": "v. 推荐；建议",
+      "examples": [
+        "I highly recommend this restaurant.",
+        "What do you recommend?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "recommendation (n.推荐)"
+      ]
+    },
+    {
+      "id": "w_00316",
+      "word": "recover",
+      "phonetic": "/rɪˈkʌvər/",
+      "meaning": "v. 恢复；康复；找回",
+      "examples": [
+        "It will take weeks to recover.",
+        "Police recovered the stolen goods."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "recovery (n.恢复)"
+      ]
+    },
+    {
+      "id": "w_00317",
+      "word": "reduce",
+      "phonetic": "/rɪˈdjuːs/",
+      "meaning": "v. 减少；降低",
+      "examples": [
+        "We must reduce our carbon emissions.",
+        "The price has been reduced by 20%."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "reduction (n.减少)"
+      ]
+    },
+    {
+      "id": "w_00318",
+      "word": "reflect",
+      "phonetic": "/rɪˈflekt/",
+      "meaning": "v. 反映；反射；反思",
+      "examples": [
+        "Your actions reflect your values.",
+        "Take time to reflect on your mistakes."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "reflection (n.反射)"
+      ]
+    },
+    {
+      "id": "w_00319",
+      "word": "reform",
+      "phonetic": "/rɪˈfɔːm/",
+      "meaning": "v./n. 改革；改造",
+      "examples": [
+        "The government promised to reform education.",
+        "The reforms were widely welcomed."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00320",
+      "word": "regard",
+      "phonetic": "/rɪˈɡɑːd/",
+      "meaning": "v. 看待 n. 尊重；问候",
+      "examples": [
+        "I regard her as a close friend.",
+        "Give my regards to your family."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00321",
+      "word": "register",
+      "phonetic": "/ˈredʒɪstər/",
+      "meaning": "v. 登记；注册 n. 登记簿",
+      "examples": [
+        "Please register for the course.",
+        "The cash register is broken."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "registration (n.注册)"
+      ]
+    },
+    {
+      "id": "w_00322",
+      "word": "regulate",
+      "phonetic": "/ˈreɡjuleɪt/",
+      "meaning": "v. 调节；管理；控制",
+      "examples": [
+        "The agency regulates food safety.",
+        "This valve regulates the flow."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "regulation (n.规章)"
+      ]
+    },
+    {
+      "id": "w_00323",
+      "word": "reinforce",
+      "phonetic": "/ˌriːɪnˈfɔːs/",
+      "meaning": "v. 加强；增强；加固",
+      "examples": [
+        "Positive feedback reinforces good behavior.",
+        "The walls were reinforced with steel."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00324",
+      "word": "reject",
+      "phonetic": "/rɪˈdʒekt/",
+      "meaning": "v. 拒绝；排斥；驳回",
+      "examples": [
+        "The committee rejected his application.",
+        "She felt rejected by her peers."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "rejection (n.拒绝)"
+      ]
+    },
+    {
+      "id": "w_00325",
+      "word": "release",
+      "phonetic": "/rɪˈliːs/",
+      "meaning": "v./n. 释放；发布；发行",
+      "examples": [
+        "The company released new software.",
+        "The prisoner was released early."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00326",
+      "word": "relevant",
+      "phonetic": "/ˈreləvənt/",
+      "meaning": "adj. 相关的；切题的",
+      "examples": [
+        "Include only relevant information.",
+        "Is this still relevant today?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "relevance (n.相关)"
+      ]
+    },
+    {
+      "id": "w_00327",
+      "word": "reliable",
+      "phonetic": "/rɪˈlaɪəbl/",
+      "meaning": "adj. 可靠的；可信赖的",
+      "examples": [
+        "We need a reliable source of energy.",
+        "She is a very reliable friend."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "reliability (n.可靠性)"
+      ]
+    },
+    {
+      "id": "w_00328",
+      "word": "relieve",
+      "phonetic": "/rɪˈliːv/",
+      "meaning": "v. 缓解；减轻；解除",
+      "examples": [
+        "A warm bath relieves stress.",
+        "The medicine relieved her pain."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "relief (n.缓解)"
+      ]
+    },
+    {
+      "id": "w_00329",
+      "word": "rely",
+      "phonetic": "/rɪˈlaɪ/",
+      "meaning": "v. 依赖；依靠",
+      "examples": [
+        "Don't rely too heavily on one source.",
+        "You can rely on me."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "reliance (n.依赖)"
+      ]
+    },
+    {
+      "id": "w_00330",
+      "word": "remain",
+      "phonetic": "/rɪˈmeɪn/",
+      "meaning": "v. 保持；剩余；逗留",
+      "examples": [
+        "The situation remains tense.",
+        "Only a few tickets remain."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00331",
+      "word": "remarkable",
+      "phonetic": "/rɪˈmɑːkəbl/",
+      "meaning": "adj. 显著的；非凡的；引人注目的",
+      "examples": [
+        "She has made remarkable progress.",
+        "It is remarkable that he survived."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00332",
+      "word": "remote",
+      "phonetic": "/rɪˈməʊt/",
+      "meaning": "adj. 遥远的；偏僻的；远程的",
+      "examples": [
+        "The village is in a remote area.",
+        "He works remotely from home."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00333",
+      "word": "replace",
+      "phonetic": "/rɪˈpleɪs/",
+      "meaning": "v. 取代；替换；放回",
+      "examples": [
+        "Machines cannot replace human creativity.",
+        "Please replace the book on the shelf."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "replacement (n.替代)"
+      ]
+    },
+    {
+      "id": "w_00334",
+      "word": "represent",
+      "phonetic": "/ˌreprɪˈzent/",
+      "meaning": "v. 代表；表示；描绘",
+      "examples": [
+        "The lawyer will represent you in court.",
+        "The statue represents peace."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "representation (n.代表)"
+      ]
+    },
+    {
+      "id": "w_00335",
+      "word": "reputation",
+      "phonetic": "/ˌrepjuˈteɪʃn/",
+      "meaning": "n. 名声；声誉；名誉",
+      "examples": [
+        "The company has a good reputation.",
+        "His reputation was ruined by the scandal."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00336",
+      "word": "require",
+      "phonetic": "/rɪˈkwaɪər/",
+      "meaning": "v. 需要；要求；命令",
+      "examples": [
+        "The job requires three years of experience.",
+        "What is required of me?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "requirement (n.要求)"
+      ]
+    },
+    {
+      "id": "w_00337",
+      "word": "research",
+      "phonetic": "/rɪˈsɜːtʃ/",
+      "meaning": "n./v. 研究；调查",
+      "examples": [
+        "The findings were published in a journal.",
+        "She is researching climate change."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00338",
+      "word": "resolve",
+      "phonetic": "/rɪˈzɒlv/",
+      "meaning": "v. 解决；决定 n. 决心",
+      "examples": [
+        "We need to resolve this issue quickly.",
+        "She resolved to work harder."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "resolution (n.决心)"
+      ]
+    },
+    {
+      "id": "w_00339",
+      "word": "resource",
+      "phonetic": "/rɪˈsɔːs/",
+      "meaning": "n. 资源；财力；智谋",
+      "examples": [
+        "Water is a precious resource.",
+        "We must use resources wisely."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "resourceful (a.足智多谋的)"
+      ]
+    },
+    {
+      "id": "w_00340",
+      "word": "respond",
+      "phonetic": "/rɪˈspɒnd/",
+      "meaning": "v. 回应；反应；回答",
+      "examples": [
+        "Please respond by Friday.",
+        "How did she respond to the news?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "response (n.回应)"
+      ]
+    },
+    {
+      "id": "w_00341",
+      "word": "responsible",
+      "phonetic": "/rɪˈspɒnsəbl/",
+      "meaning": "adj. 负责的；有责任的",
+      "examples": [
+        "Who is responsible for this mess?",
+        "She is a responsible person."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "responsibility (n.责任)"
+      ]
+    },
+    {
+      "id": "w_00342",
+      "word": "restore",
+      "phonetic": "/rɪˈstɔːr/",
+      "meaning": "v. 恢复；修复；归还",
+      "examples": [
+        "The church was carefully restored.",
+        "Power was restored after the blackout."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "restoration (n.恢复)"
+      ]
+    },
+    {
+      "id": "w_00343",
+      "word": "restrict",
+      "phonetic": "/rɪˈstrɪkt/",
+      "meaning": "v. 限制；约束；限定",
+      "examples": [
+        "New laws restrict plastic bag use.",
+        "Access is restricted to members."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "restriction (n.限制)"
+      ]
+    },
+    {
+      "id": "w_00344",
+      "word": "reveal",
+      "phonetic": "/rɪˈviːl/",
+      "meaning": "v. 揭示；透露；展现",
+      "examples": [
+        "The investigation revealed new facts.",
+        "She revealed her secret to me."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "revelation (n.揭示)"
+      ]
+    },
+    {
+      "id": "w_00345",
+      "word": "reverse",
+      "phonetic": "/rɪˈvɜːs/",
+      "meaning": "v. 逆转 adj. 相反的 n. 反面",
+      "examples": [
+        "The court reversed the previous ruling.",
+        "The car reversed into a parking space."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00346",
+      "word": "revolution",
+      "phonetic": "/ˌrevəˈluːʃn/",
+      "meaning": "n. 革命；变革；旋转",
+      "examples": [
+        "The internet caused a revolution.",
+        "The French Revolution changed Europe."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "revolutionary (a.革命性的)"
+      ]
+    },
+    {
+      "id": "w_00347",
+      "word": "rival",
+      "phonetic": "/ˈraɪvl/",
+      "meaning": "n. 对手 v. 与...竞争",
+      "examples": [
+        "The two companies are fierce rivals.",
+        "No one can rival her talent."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "rivalry (n.竞争)"
+      ]
+    },
+    {
+      "id": "w_00348",
+      "word": "route",
+      "phonetic": "/ruːt/",
+      "meaning": "n. 路线；路径；航线",
+      "examples": [
+        "What is the shortest route?",
+        "The bus follows a different route."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00349",
+      "word": "routine",
+      "phonetic": "/ruːˈtiːn/",
+      "meaning": "n. 常规；例行公事 adj. 常规的",
+      "examples": [
+        "A morning routine helps productivity.",
+        "The doctor performed a routine checkup."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00350",
+      "word": "sacrifice",
+      "phonetic": "/ˈsækrɪfaɪs/",
+      "meaning": "n./v. 牺牲；献祭；舍弃",
+      "examples": [
+        "She sacrificed her career for her family.",
+        "Success requires sacrifice."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00351",
+      "word": "scale",
+      "phonetic": "/skeɪl/",
+      "meaning": "n. 规模；比例；等级 v. 攀登",
+      "examples": [
+        "The company plans to scale up operations.",
+        "The map has a scale of 1:50,000."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00352",
+      "word": "schedule",
+      "phonetic": "/ˈʃedjuːl/",
+      "meaning": "n. 时间表 v. 安排",
+      "examples": [
+        "The meeting is scheduled for Tuesday.",
+        "I have a busy schedule today."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00353",
+      "word": "security",
+      "phonetic": "/sɪˈkjʊərəti/",
+      "meaning": "n. 安全；保障；安保",
+      "examples": [
+        "Airport security has been tightened.",
+        "Financial security is important."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "secure (a.安全的)"
+      ]
+    },
+    {
+      "id": "w_00354",
+      "word": "sensitive",
+      "phonetic": "/ˈsensətɪv/",
+      "meaning": "adj. 敏感的；体贴的；灵敏的",
+      "examples": [
+        "She is sensitive to criticism.",
+        "This is a sensitive issue."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "sensitivity (n.敏感)"
+      ]
+    },
+    {
+      "id": "w_00355",
+      "word": "severe",
+      "phonetic": "/sɪˈvɪər/",
+      "meaning": "adj. 严重的；严厉的；严峻的",
+      "examples": [
+        "The region suffered severe flooding.",
+        "She received severe criticism."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00356",
+      "word": "shift",
+      "phonetic": "/ʃɪft/",
+      "meaning": "v./n. 转移；变化；轮班",
+      "examples": [
+        "There has been a shift in attitudes.",
+        "She works the night shift."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00357",
+      "word": "significant",
+      "phonetic": "/sɪɡˈnɪfɪkənt/",
+      "meaning": "adj. 重要的；显著的；有意义的",
+      "examples": [
+        "There has been significant improvement.",
+        "The difference is not significant."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "significance (n.重要性)"
+      ]
+    },
+    {
+      "id": "w_00358",
+      "word": "similar",
+      "phonetic": "/ˈsɪmələr/",
+      "meaning": "adj. 相似的；类似的",
+      "examples": [
+        "The two paintings are similar.",
+        "My situation is similar to yours."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "similarity (n.相似)"
+      ]
+    },
+    {
+      "id": "w_00359",
+      "word": "source",
+      "phonetic": "/sɔːs/",
+      "meaning": "n. 来源；出处；源头",
+      "examples": [
+        "Always cite your sources.",
+        "The river has its source in the mountains."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00360",
+      "word": "specific",
+      "phonetic": "/spəˈsɪfɪk/",
+      "meaning": "adj. 具体的；特定的；明确的",
+      "examples": [
+        "Can you be more specific?",
+        "The money is for a specific purpose."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00361",
+      "word": "stable",
+      "phonetic": "/ˈsteɪbl/",
+      "meaning": "adj. 稳定的 n. 马厩",
+      "examples": [
+        "The patient is now stable.",
+        "We need a stable economic environment."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "stability (n.稳定)"
+      ]
+    },
+    {
+      "id": "w_00362",
+      "word": "standard",
+      "phonetic": "/ˈstændəd/",
+      "meaning": "n. 标准 adj. 标准的",
+      "examples": [
+        "We must maintain high standards.",
+        "This is standard procedure."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00363",
+      "word": "statistics",
+      "phonetic": "/stəˈtɪstɪks/",
+      "meaning": "n. 统计；统计学；数据",
+      "examples": [
+        "Official statistics show a decline.",
+        "She is studying statistics at university."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00364",
+      "word": "status",
+      "phonetic": "/ˈsteɪtəs/",
+      "meaning": "n. 地位；状态；身份",
+      "examples": [
+        "Her status as an expert is recognized.",
+        "Check the status of your order."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00365",
+      "word": "strategy",
+      "phonetic": "/ˈstrætədʒi/",
+      "meaning": "n. 策略；战略",
+      "examples": [
+        "The company needs a new strategy.",
+        "What is your strategy for success?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "strategic (a.战略的)"
+      ]
+    },
+    {
+      "id": "w_00366",
+      "word": "stress",
+      "phonetic": "/stres/",
+      "meaning": "n. 压力；强调 v. 强调；使紧张",
+      "examples": [
+        "Managing stress is important.",
+        "I must stress the importance of safety."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00367",
+      "word": "structure",
+      "phonetic": "/ˈstrʌktʃər/",
+      "meaning": "n. 结构 v. 构建；组织",
+      "examples": [
+        "The organizational structure is complex.",
+        "How is the book structured?"
+      ],
+      "collocations": [],
+      "derivatives": [
+        "structural (a.结构的)"
+      ]
+    },
+    {
+      "id": "w_00368",
+      "word": "substantial",
+      "phonetic": "/səbˈstænʃl/",
+      "meaning": "adj. 大量的；实质的；重大的",
+      "examples": [
+        "A substantial number voted against.",
+        "We made substantial progress."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00369",
+      "word": "sufficient",
+      "phonetic": "/səˈfɪʃnt/",
+      "meaning": "adj. 足够的；充分的",
+      "examples": [
+        "We have sufficient evidence.",
+        "The food was more than sufficient."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00370",
+      "word": "supervise",
+      "phonetic": "/ˈsuːpəvaɪz/",
+      "meaning": "v. 监督；管理；指导",
+      "examples": [
+        "An engineer supervises the work.",
+        "Parents should supervise young children."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "supervision (n.监督)"
+      ]
+    },
+    {
+      "id": "w_00371",
+      "word": "survey",
+      "phonetic": "/ˈsɜːveɪ/",
+      "meaning": "n./v. 调查；勘测；审视",
+      "examples": [
+        "A recent survey shows growing support.",
+        "The crew surveyed the damage."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00372",
+      "word": "survive",
+      "phonetic": "/səˈvaɪv/",
+      "meaning": "v. 幸存；生存；比...活得长",
+      "examples": [
+        "Only a few survived.",
+        "She survived her husband by ten years."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "survival (n.生存)"
+      ]
+    },
+    {
+      "id": "w_00373",
+      "word": "suspend",
+      "phonetic": "/səˈspend/",
+      "meaning": "v. 暂停；悬挂；使停职",
+      "examples": [
+        "Operations were suspended temporarily.",
+        "The lamp was suspended from the ceiling."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "suspension (n.暂停)"
+      ]
+    },
+    {
+      "id": "w_00374",
+      "word": "sustain",
+      "phonetic": "/səˈsteɪn/",
+      "meaning": "v. 维持；支撑；遭受",
+      "examples": [
+        "The economy cannot sustain this growth.",
+        "He sustained serious injuries."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "sustainable (a.可持续的)"
+      ]
+    },
+    {
+      "id": "w_00375",
+      "word": "symbol",
+      "phonetic": "/ˈsɪmbl/",
+      "meaning": "n. 象征；符号；标志",
+      "examples": [
+        "The dove is a symbol of peace.",
+        "The symbol π represents pi."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "symbolic (a.象征性的)"
+      ]
+    },
+    {
+      "id": "w_00376",
+      "word": "target",
+      "phonetic": "/ˈtɑːɡɪt/",
+      "meaning": "n. 目标 v. 瞄准；针对",
+      "examples": [
+        "The government set a target of zero emissions.",
+        "The campaign targets young voters."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00377",
+      "word": "technique",
+      "phonetic": "/tekˈniːk/",
+      "meaning": "n. 技术；技巧；技能",
+      "examples": [
+        "She uses a special painting technique.",
+        "Good technique is essential in sports."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "technical (a.技术的)"
+      ]
+    },
+    {
+      "id": "w_00378",
+      "word": "technology",
+      "phonetic": "/tekˈnɒlədʒi/",
+      "meaning": "n. 技术；工艺；科技",
+      "examples": [
+        "Modern technology has changed communication.",
+        "The company invests heavily in technology."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00379",
+      "word": "temporary",
+      "phonetic": "/ˈtemprəri/",
+      "meaning": "adj. 临时的；暂时的",
+      "examples": [
+        "This is only a temporary solution.",
+        "She took a temporary job."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00380",
+      "word": "tendency",
+      "phonetic": "/ˈtendənsi/",
+      "meaning": "n. 趋势；倾向；癖好",
+      "examples": [
+        "She has a tendency to worry.",
+        "There is a growing tendency towards remote work."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "tend (v.倾向)"
+      ]
+    },
+    {
+      "id": "w_00381",
+      "word": "threat",
+      "phonetic": "/θret/",
+      "meaning": "n. 威胁；恐吓；凶兆",
+      "examples": [
+        "Cyber attacks pose a serious threat.",
+        "The threat of rain canceled the picnic."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "threaten (v.威胁)"
+      ]
+    },
+    {
+      "id": "w_00382",
+      "word": "tolerate",
+      "phonetic": "/ˈtɒləreɪt/",
+      "meaning": "v. 容忍；忍受；容许",
+      "examples": [
+        "We cannot tolerate harassment.",
+        "The plant tolerates dry conditions."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "tolerance (n.容忍)"
+      ]
+    },
+    {
+      "id": "w_00383",
+      "word": "trace",
+      "phonetic": "/treɪs/",
+      "meaning": "v. 追踪；追溯 n. 痕迹；微量",
+      "examples": [
+        "Police traced the source of the call.",
+        "The ship vanished without trace."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00384",
+      "word": "tradition",
+      "phonetic": "/trəˈdɪʃn/",
+      "meaning": "n. 传统；惯例",
+      "examples": [
+        "It's a Chinese tradition.",
+        "We must respect local traditions."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "traditional (a.传统的)"
+      ]
+    },
+    {
+      "id": "w_00385",
+      "word": "transfer",
+      "phonetic": "/trænsˈfɜːr/",
+      "meaning": "v./n. 转移；转让；调动；换乘",
+      "examples": [
+        "You can transfer money online.",
+        "She transferred to another school."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00386",
+      "word": "transform",
+      "phonetic": "/trænsˈfɔːm/",
+      "meaning": "v. 改变；转换；改造",
+      "examples": [
+        "The CEO transformed the company.",
+        "The area was transformed by development."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "transformation (n.改变)"
+      ]
+    },
+    {
+      "id": "w_00387",
+      "word": "transition",
+      "phonetic": "/trænˈzɪʃn/",
+      "meaning": "n. 过渡；转变；变迁",
+      "examples": [
+        "The country is in transition.",
+        "The transition was smooth."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00388",
+      "word": "trend",
+      "phonetic": "/trend/",
+      "meaning": "n. 趋势；潮流；动向",
+      "examples": [
+        "The latest trend is minimalism.",
+        "We need to follow market trends."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00389",
+      "word": "trigger",
+      "phonetic": "/ˈtrɪɡər/",
+      "meaning": "v. 触发；引起 n. 扳机；诱因",
+      "examples": [
+        "Certain foods trigger allergies.",
+        "Stress can be a trigger for illness."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00390",
+      "word": "ultimate",
+      "phonetic": "/ˈʌltɪmət/",
+      "meaning": "adj. 最终的；根本的；极致的",
+      "examples": [
+        "The ultimate goal is sustainability.",
+        "She has the ultimate responsibility."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00391",
+      "word": "undergo",
+      "phonetic": "/ˌʌndəˈɡəʊ/",
+      "meaning": "v. 经历；遭受；接受",
+      "examples": [
+        "The building will undergo renovations.",
+        "She underwent major surgery."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00392",
+      "word": "undertake",
+      "phonetic": "/ˌʌndəˈteɪk/",
+      "meaning": "v. 承担；从事；承诺",
+      "examples": [
+        "The company undertook a full review.",
+        "He undertook to finish the work on time."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00393",
+      "word": "unique",
+      "phonetic": "/juˈniːk/",
+      "meaning": "adj. 独特的；唯一的；罕见的",
+      "examples": [
+        "Each person has unique talents.",
+        "This is a unique opportunity."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00394",
+      "word": "urban",
+      "phonetic": "/ˈɜːbən/",
+      "meaning": "adj. 城市的；都市的",
+      "examples": [
+        "Urban areas are growing rapidly.",
+        "Urban planning is a complex field."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "suburban (a.郊区的)"
+      ]
+    },
+    {
+      "id": "w_00395",
+      "word": "urge",
+      "phonetic": "/ɜːdʒ/",
+      "meaning": "v. 敦促；力劝 n. 冲动；强烈欲望",
+      "examples": [
+        "I urge you to reconsider.",
+        "She felt an urge to travel."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00396",
+      "word": "utilize",
+      "phonetic": "/ˈjuːtəlaɪz/",
+      "meaning": "v. 利用；使用",
+      "examples": [
+        "We should utilize all resources.",
+        "The system utilizes solar power."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "utility (n.实用)"
+      ]
+    },
+    {
+      "id": "w_00397",
+      "word": "valid",
+      "phonetic": "/ˈvælɪd/",
+      "meaning": "adj. 有效的；合理的；正当的",
+      "examples": [
+        "Your passport must be valid.",
+        "She made a valid point."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "validity (n.有效性)"
+      ]
+    },
+    {
+      "id": "w_00398",
+      "word": "variety",
+      "phonetic": "/vəˈraɪəti/",
+      "meaning": "n. 多样性；种类；变化",
+      "examples": [
+        "The shop offers a wide variety.",
+        "I like variety in my work."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "various (a.各种各样的)"
+      ]
+    },
+    {
+      "id": "w_00399",
+      "word": "version",
+      "phonetic": "/ˈvɜːʃn/",
+      "meaning": "n. 版本；说法；译本",
+      "examples": [
+        "The latest version has new features.",
+        "Let me tell you my version of events."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00400",
+      "word": "victim",
+      "phonetic": "/ˈvɪktɪm/",
+      "meaning": "n. 受害者；牺牲品；受骗者",
+      "examples": [
+        "The charity supports victims of crime.",
+        "He fell victim to a scam."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00401",
+      "word": "virtue",
+      "phonetic": "/ˈvɜːtʃuː/",
+      "meaning": "n. 美德；优点；德行",
+      "examples": [
+        "Patience is a virtue.",
+        "The plan has the virtue of simplicity."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "virtual (a.虚拟的)"
+      ]
+    },
+    {
+      "id": "w_00402",
+      "word": "visible",
+      "phonetic": "/ˈvɪzəbl/",
+      "meaning": "adj. 可见的；明显的",
+      "examples": [
+        "The mountain is clearly visible.",
+        "There has been visible improvement."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "visibility (n.可见度)"
+      ]
+    },
+    {
+      "id": "w_00403",
+      "word": "vision",
+      "phonetic": "/ˈvɪʒn/",
+      "meaning": "n. 视力；愿景；远见；幻象",
+      "examples": [
+        "The company has a clear vision.",
+        "She has excellent vision."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00404",
+      "word": "volume",
+      "phonetic": "/ˈvɒljuːm/",
+      "meaning": "n. 量；体积；音量；卷",
+      "examples": [
+        "Please turn down the volume.",
+        "A large volume of data was processed."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00405",
+      "word": "volunteer",
+      "phonetic": "/ˌvɒlənˈtɪər/",
+      "meaning": "n. 志愿者 v. 自愿做",
+      "examples": [
+        "Many people volunteer at charities.",
+        "She volunteered to help."
+      ],
+      "collocations": [],
+      "derivatives": [
+        "voluntary (a.自愿的)"
+      ]
+    },
+    {
+      "id": "w_00406",
+      "word": "welfare",
+      "phonetic": "/ˈwelfeər/",
+      "meaning": "n. 福利；幸福；安康",
+      "examples": [
+        "The government provides welfare.",
+        "We are concerned about your welfare."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00407",
+      "word": "widespread",
+      "phonetic": "/ˈwaɪdspred/",
+      "meaning": "adj. 广泛的；普遍的",
+      "examples": [
+        "There is widespread concern.",
+        "The disease is widespread in the region."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00408",
+      "word": "witness",
+      "phonetic": "/ˈwɪtnəs/",
+      "meaning": "n. 证人 v. 目击；见证",
+      "examples": [
+        "Police interviewed witnesses.",
+        "We witnessed a historic event."
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00409",
+      "word": "worthwhile",
+      "phonetic": "/ˌwɜːθˈwaɪl/",
+      "meaning": "adj. 值得的；有价值的",
+      "examples": [
+        "The effort was worthwhile.",
+        "Is it worthwhile to continue?"
+      ],
+      "collocations": [],
+      "derivatives": []
+    },
+    {
+      "id": "w_00410",
+      "word": "yield",
+      "phonetic": "/jiːld/",
+      "meaning": "v. 产出；屈服 n. 产量；收益",
+      "examples": [
+        "The talks failed to yield results.",
+        "The crop yield was high this year."
+      ],
+      "collocations": [],
+      "derivatives": []
+    }
+  ]
+}
