@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">WordPal-词友</string>
+    <string name="title_activity_main">WordPal-词友</string>
+    <string name="package_name">fun.zerolight.wordpal</string>
+    <string name="custom_url_scheme">fun.zerolight.wordpal</string>
+</resources>

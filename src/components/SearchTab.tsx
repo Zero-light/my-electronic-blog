@@ -43,8 +43,6 @@ export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ on
 
   return (
     <div className="flex flex-col w-full h-full pt-4 px-4">
-      {/* Install button — always visible */}
-      <InstallBanner />
       {/* Search box */}
       <div className="max-w-lg mx-auto w-full mb-6">
         <div className="glass-panel flex items-center gap-3 px-5 py-3">
@@ -139,46 +137,3 @@ export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ on
   );
 };
 
-const InstallBanner: React.FC = () => {
-  const [show, setShow] = useState(true);
-  const [installed, setInstalled] = useState(false);
-  const [prompt, setPrompt] = useState<any>(null);
-  useEffect(() => {
-    const h = (e: Event) => { e.preventDefault(); setPrompt(e); };
-    window.addEventListener('beforeinstallprompt', h);
-    // Also check on load
-    setTimeout(() => { if (!prompt) setShow(true); }, 2000);
-    if (window.matchMedia('(display-mode: standalone)').matches) setInstalled(true);
-    return () => window.removeEventListener('beforeinstallprompt', h);
-  }, []);
-  const install = async () => {
-    // Method 1: beforeinstallprompt
-    if (prompt) {
-      prompt.prompt();
-      const r = await prompt.userChoice;
-      if (r.outcome === 'accepted') { setInstalled(true); return; }
-      setPrompt(null);
-    }
-    // Method 2: show instructions
-    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
-    const msg = isIOS
-      ? '📱 iPhone/iPad 安装方法:\n\n1. 点 Safari 底部中间"分享"按钮\n2. 滑动找到"添加到主屏幕"\n3. 点"添加"'
-      : '📱 安装方法:\n\n• Edge: 底部菜单 → "添加至手机"\n• 小米浏览器: 菜单 → "添加到桌面"\n• Chrome: 右上角 ⋮ → "安装应用"';
-    alert(msg);
-  };
-  if (installed) return null;
-  if (!show) return null;
-  return (
-    <div className="max-w-lg mx-auto w-full mb-4 glass-panel px-4 py-3 flex items-center gap-3" style={{background:'rgba(72,209,204,0.18)',border:'1.5px solid rgba(72,209,204,0.35)'}}>
-      <span className="text-xl">📱</span>
-      <div className="flex-1">
-        <p className="text-white/95 text-sm font-semibold">添加到手机桌面</p>
-        <p className="text-white/45 text-[11px]">{prompt?'点击安装，像 App 一样使用':'离线也能学单词'}</p>
-      </div>
-      <button className="glass-btn px-5 py-2 text-sm font-bold" style={{background:'rgba(72,209,204,0.45)',border:'1px solid rgba(72,209,204,0.6)'}} onClick={install}>
-        {prompt?'📥 安装':'📖 如何安装'}
-      </button>
-      <button className="text-white/20 hover:text-white/50 ml-0.5" onClick={() => setShow(false)}><X size={14} /></button>
-    </div>
-  );
-};
