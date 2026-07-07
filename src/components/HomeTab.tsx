@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Apple, Heart, Hand } from 'lucide-react';
+import { Apple, Hand } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
 import { Pet } from './Pet';
 import { ProgressBar } from './ProgressBar';
-import { getLevelInfo } from '../data/saveManager';
+import { getLevelInfo, getNextEvo } from '../data/saveManager';
 
 export const HomeTab: React.FC = () => {
   const { save, doFeed, doPet } = useGameStore();
@@ -23,18 +23,12 @@ export const HomeTab: React.FC = () => {
 
   const handlePet = () => {
     const result = doPet();
-    if (result.ok) {
-      setPetMsg('♡ 好舒服~');
-      setPetState('idle');
-      setTimeout(() => setPetMsg(''), 1500);
-    } else {
-      const sec = Math.ceil(result.cooldown / 1000);
-      setPetMsg(`等 ${sec} 秒再摸吧~`);
-      setTimeout(() => setPetMsg(''), 1500);
-    }
+    if (result.ok) { setPetMsg('♡ 好舒服~'); setPetState('idle'); setTimeout(() => setPetMsg(''), 1500); }
+    else { setPetMsg(`等 ${Math.ceil(result.cooldown/1000)} 秒再摸吧~`); setTimeout(() => setPetMsg(''), 1500); }
   };
 
   const levelInfo = getLevelInfo(save.pet.level);
+  const nextEvo = getNextEvo(save);
 
   return (
     <div className="flex flex-col items-center w-full h-full pt-6">
@@ -59,20 +53,16 @@ export const HomeTab: React.FC = () => {
       {/* Pet area */}
       <div className="flex-1 flex flex-col items-center justify-center">
         <Pet
-          type={save.currentPet as any}
+          type={save.currentPet}
           mood={mood}
-          level={save.pet.level as any}
+          level={save.pet.level}
           state={petState}
           equippedHat={save.equippedItems.hat}
+          equippedSkin={save.equippedItems.skin}
         />
 
-        {/* Pet message */}
-        {petMsg && (
-          <div className="glass-chip mt-2 animate-fadeIn text-sm">{petMsg}</div>
-        )}
-        {showYum && (
-          <div className="glass-chip mt-2 animate-slideUp text-warm-400">🍎 好吃!</div>
-        )}
+        {petMsg && <div className="glass-chip mt-2 animate-fadeIn text-sm">{petMsg}</div>}
+        {showYum && <div className="glass-chip mt-2 animate-slideUp text-warm-400">🍎 好吃!</div>}
 
         <p className="text-white/40 text-xs mt-2">
           {mood === 'happy' ? '♡ 好开心~' : mood === 'normal' ? '平静' : mood === 'sad' ? '不太开心...' : '好饿...zzz'}
@@ -81,33 +71,42 @@ export const HomeTab: React.FC = () => {
 
       {/* Hunger bar */}
       <div className="w-72 mb-2">
-        <div className="flex justify-between text-xs text-white/40 mb-0.5">
-          <span>饱食度</span><span>{Math.round(save.pet.hunger)}%</span>
-        </div>
+        <div className="flex justify-between text-xs text-white/40 mb-0.5"><span>饱食度</span><span>{Math.round(save.pet.hunger)}%</span></div>
         <ProgressBar progress={save.pet.hunger / 100} />
       </div>
 
       {/* Happiness bar */}
       <div className="w-72 mb-2">
-        <div className="flex justify-between text-xs text-white/40 mb-0.5">
-          <span>心情</span><span>{Math.round(save.pet.happiness)}%</span>
-        </div>
+        <div className="flex justify-between text-xs text-white/40 mb-0.5"><span>心情</span><span>{Math.round(save.pet.happiness)}%</span></div>
         <ProgressBar progress={save.pet.happiness / 100} />
       </div>
 
-      {/* XP bar */}
-      <div className="w-72 mb-5">
+      {/* Evolution progress */}
+      <div className="w-72 mb-4">
         <div className="flex justify-between text-xs text-white/40 mb-0.5">
-          <span>经验 {levelInfo.emoji}{levelInfo.num}</span>
-          <span>{save.pet.xp}/{levelInfo.next}</span>
+          <span>进化 {nextEvo ? `→ ${nextEvo.emoji}${nextEvo.label}` : '✨ 已满级'}</span>
+          <span>
+            📖{save.totalWordsLearned}词 🔄{save.totalWordsReviewed || 0}词
+          </span>
         </div>
-        <ProgressBar progress={
-          levelInfo.num === 0 ? save.pet.xp / XP_EGG
-          : levelInfo.num === 1 ? (save.pet.xp - XP_EGG) / (XP_BABY - XP_EGG)
-          : levelInfo.num === 2 ? (save.pet.xp - XP_BABY) / (XP_GROWTH - XP_BABY)
-          : levelInfo.num === 3 ? (save.pet.xp - XP_GROWTH) / (XP_MATURE - XP_GROWTH)
-          : 1
-        } />
+        {nextEvo && (
+          <ProgressBar progress={
+            Math.min(1,
+              (save.totalWordsLearned / nextEvo.learned) * 0.6 +
+              ((save.totalWordsReviewed || 0) / (nextEvo.reviewed || 1)) * 0.4
+            )
+          } />
+        )}
+        {!nextEvo && (
+          <div className="glass-progress">
+            <div className="glass-progress-fill" style={{ width: '100%', background: 'linear-gradient(90deg, #FFD70080, #FFD700)' }} />
+          </div>
+        )}
+      </div>
+
+      {/* Diamond earning info */}
+      <div className="text-[10px] text-white/30 mb-3">
+        每 50 词📖+3💎 | 每 50 复习🔄+2💎 | 满分回合+3💎 | Streak 奖励💎
       </div>
 
       {/* Action buttons */}
@@ -122,8 +121,3 @@ export const HomeTab: React.FC = () => {
     </div>
   );
 };
-
-const XP_EGG = 30;
-const XP_BABY = 100;
-const XP_GROWTH = 300;
-const XP_MATURE = 600;

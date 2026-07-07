@@ -30,7 +30,8 @@ export interface WeeklyStat { date: string; words: number; correct: number; }
 
 export interface ShopItem {
   id: string; category: 'hat' | 'skin' | 'background' | 'bubble';
-  name: string; icon: string; price: number; preview: string;
+  name: string; icon: string; price: number; priceType?: 'apple' | 'diamond';
+  preview: string; tintColor?: string;
 }
 
 export interface OfflineReward {
@@ -45,7 +46,7 @@ export interface StreakReward {
 
 export interface SaveData {
   version: number; createdAt: number; lastLogin: number;
-  totalWordsLearned: number; foodCount: number;
+  totalWordsLearned: number; totalWordsReviewed: number; foodCount: number;
   diamonds: number; // rare currency from achievements/streaks
   dailyStreak: number; lastCheckin: string;
   currentPet: string; unlockedPets: string[];

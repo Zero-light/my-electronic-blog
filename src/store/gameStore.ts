@@ -1,25 +1,16 @@
 import { create } from 'zustand';
-import type { SaveData, PetType, WordEntry, DailyTask, ShopItem } from '../data/types';
+import type { SaveData, PetType, DailyTask, ShopItem } from '../data/types';
 import {
-  loadSave, saveWrite, applyHungerDecay, feedPet, addFood, addXP, addDiamonds,
+  loadSave, applyHungerDecay, feedPet, addFood, addXP, addDiamonds,
   switchPet, endStudySession, buyItem, equipItem, unequipItem,
   checkOffline, refreshDaily, getTodayStats, petInteraction, checkStreakRewards,
-  getLevelInfo,
 } from '../data/saveManager';
-import { loadWordPack } from '../data/wordBank';
-import { shuffle } from '../utils/helpers';
 
 interface GameState {
   save: SaveData;
-  // UI
-  showBackpack: boolean;
   showStreakReward: { tier: number; label: string } | null;
   // Study
-  studyWords: WordEntry[];
-  studyIndex: number;
-  studyCorrect: number;
-  studyWrong: number;
-  studyStreak: number;
+  studyWords: any[]; studyIndex: number; studyCorrect: number; studyWrong: number; studyStreak: number;
   // Actions
   init: () => Promise<void>;
   doFeed: () => boolean;
@@ -35,7 +26,6 @@ interface GameState {
 
 export const useGameStore = create<GameState>((set, get) => ({
   save: loadSave(),
-  showBackpack: false,
   showStreakReward: null,
   studyWords: [], studyIndex: 0, studyCorrect: 0, studyWrong: 0, studyStreak: 0,
 
@@ -43,11 +33,11 @@ export const useGameStore = create<GameState>((set, get) => ({
     let save = loadSave();
     save = applyHungerDecay(save);
     save = refreshDaily(save);
-    const offline = checkOffline(save);
+    checkOffline(save);
     const streak = checkStreakRewards(save);
     set({
       save,
-      showStreakReward: streak ? { tier: streak.tier, label: streak.tier === 1 ? '🔥 火焰徽章' : streak.tier === 2 ? '🎁 稀有宝箱' : '👑 限定皮肤' } : null,
+      showStreakReward: streak ? { tier: streak.tier, label: streak.tier === 1 ? '🔥 火焰徽章' : streak.tier === 2 ? '🎁 稀有宝箱' : '👑 传说守护者' } : null,
     });
   },
 
@@ -64,11 +54,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     return result;
   },
 
-  doSwitchPet: (type) => {
-    const { save } = get();
-    switchPet(save, type);
-    set({ save: { ...save } });
-  },
+  doSwitchPet: (type) => { const { save } = get(); switchPet(save, type); set({ save: { ...save } }); },
 
   doBuyItem: (item) => {
     const { save } = get();
@@ -76,17 +62,8 @@ export const useGameStore = create<GameState>((set, get) => ({
     return false;
   },
 
-  doEquip: (category, itemId) => {
-    const { save } = get();
-    equipItem(save, category, itemId);
-    set({ save: { ...save } });
-  },
-
-  doUnequip: (category) => {
-    const { save } = get();
-    unequipItem(save, category);
-    set({ save: { ...save } });
-  },
+  doEquip: (category, itemId) => { const { save } = get(); equipItem(save, category, itemId); set({ save: { ...save } }); },
+  doUnequip: (category) => { const { save } = get(); unequipItem(save, category); set({ save: { ...save } }); },
 
   answerQuestion: (correct) => {
     const { save, studyIndex, studyCorrect, studyWrong, studyStreak } = get();
@@ -95,11 +72,14 @@ export const useGameStore = create<GameState>((set, get) => ({
     const newStreak = correct ? studyStreak + 1 : 0;
     if (correct) {
       addXP(save, 5);
-      addFood(save, newStreak >= 5 && Math.random() < 0.2 ? 15 : (newStreak >= 3 ? 8 : 5));
+      addFood(save, newStreak >= 5 ? 15 : (newStreak >= 3 ? 8 : 5));
     } else { addFood(save, 1); }
     set({ save: { ...save }, studyCorrect: newCorrect, studyWrong: newWrong, studyStreak: newStreak });
+
+    const total = get().studyWords.length;
     const delay = correct ? 600 : 1500;
-    if (studyIndex + 1 >= get().studyWords.length) {
+    if (studyIndex + 1 >= total) {
+      // End session — this triggers vocabulary-based evolution
       endStudySession(save, studyIndex + 1, newCorrect, newWrong);
       setTimeout(() => set({ studyIndex: studyIndex + 1, save: { ...save } }), delay);
     } else {
