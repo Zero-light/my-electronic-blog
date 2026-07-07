@@ -2,238 +2,200 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ═══════════════════════════════════════════════════════════
-   Global Anti-Blur Rendering
-   ═══════════════════════════════════════════════════════════ */
+/* ═══════ Anti-Blur / Sharp Rendering ═══════ */
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-
 html, body, #root {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  margin: 0; padding: 0;
+  width: 100%; height: 100%; overflow: hidden; margin: 0; padding: 0;
   font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   Glass Morphism Base Classes
-   z-index layers: bg(z0) → blur(z10) → highlight(z20) → text(z50)
-   ═══════════════════════════════════════════════════════════ */
-
+/* ═══════ Glass Morphism ═══════ */
 @layer components {
-  /* ── Glass Panel (containers) ──────────────────────── */
   .glass-panel {
-    position: relative;
-    background: rgba(255, 255, 255, 0.12);
-    border: 0.5px solid rgba(255, 255, 255, 0.25);
-    border-radius: 20px;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow:
-      0 1px 0 0 rgba(255, 255, 255, 0.2) inset,
-      0 2px 8px 0 rgba(0, 0, 0, 0.04),
-      0 8px 32px 0 rgba(139, 184, 208, 0.08);
+    background: rgba(255,255,255,0.10);
+    border: 0.5px solid rgba(255,255,255,0.22);
+    border-radius: 22px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.18) inset,
+                0 2px 12px rgba(0,0,0,0.04),
+                0 8px 40px rgba(139,184,208,0.06);
     overflow: hidden;
   }
-
-  /* Top-edge highlight layer */
   .glass-panel::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 35%);
-    pointer-events: none;
-    z-index: 1;
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 38%);
+    pointer-events: none; z-index: 1;
   }
+  .glass-panel > * { position: relative; z-index: 50; }
 
-  /* Text inside glass panels must sit above ::after */
-  .glass-panel > * {
-    position: relative;
-    z-index: 50;
-  }
-
-  /* ── Glass Button ──────────────────────────────────── */
   .glass-btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 22px;
-    border-radius: 16px;
-    border: 0.5px solid rgba(255, 255, 255, 0.3);
-    background: rgba(139, 184, 208, 0.30);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    box-shadow:
-      0 1px 0 0 rgba(255,255,255,0.25) inset,
-      0 2px 6px 0 rgba(0,0,0,0.06);
-    color: #FFFFFF;
-    font-weight: 600;
-    font-size: 15px;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    user-select: none;
-    letter-spacing: 0.3px;
-    z-index: 50;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 22px; border-radius: 16px;
+    border: 0.5px solid rgba(255,255,255,0.28);
+    background: rgba(139,184,208,0.28);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    color: #fff; font-weight: 600; font-size: 14px; cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.34,1.56,0.64,1);
+    user-select: none; letter-spacing: 0.3px; z-index: 50;
   }
-
   .glass-btn:hover {
-    transform: translateY(-2px) scale(1.03);
-    background: rgba(139, 184, 208, 0.42);
-    box-shadow:
-      0 1px 0 0 rgba(255,255,255,0.3) inset,
-      0 4px 16px 0 rgba(139,184,208,0.15),
-      0 0 0 4px rgba(255,255,255,0.08);
+    transform: translateY(-2px) scale(1.04);
+    background: rgba(139,184,208,0.42);
+    box-shadow: 0 4px 20px rgba(139,184,208,0.15), 0 0 0 5px rgba(255,255,255,0.06);
   }
+  .glass-btn:active { transform: scale(0.94); transition: transform 0.08s ease; }
+  .glass-btn-feed { background: rgba(126,203,154,0.30); }
+  .glass-btn-feed:hover { background: rgba(126,203,154,0.45); }
+  .glass-btn-shop { background: rgba(255,212,196,0.26); color: #3D3D5C; }
+  .glass-btn-back { background: rgba(107,156,181,0.26); }
 
-  .glass-btn:active {
-    transform: scale(0.94);
-    transition: transform 0.1s ease;
-  }
-
-  .glass-btn-feed {
-    background: rgba(126, 203, 154, 0.32);
-  }
-  .glass-btn-feed:hover {
-    background: rgba(126, 203, 154, 0.45);
-    box-shadow: 0 4px 16px 0 rgba(126,203,154,0.18), 0 0 0 4px rgba(255,255,255,0.08);
-  }
-
-  .glass-btn-shop {
-    background: rgba(255, 212, 196, 0.28);
-    color: #3D3D5C;
-  }
-  .glass-btn-shop:hover {
-    background: rgba(255, 212, 196, 0.42);
-  }
-
-  .glass-btn-back {
-    background: rgba(107, 156, 181, 0.28);
-  }
-  .glass-btn-back:hover {
-    background: rgba(107, 156, 181, 0.40);
-  }
-
-  /* ── Glass Chip (small labels) ─────────────────────── */
   .glass-chip {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 0.5px solid rgba(255, 255, 255, 0.22);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    font-size: 13px;
-    font-weight: 600;
-    color: #FFFFFF;
-    z-index: 50;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 13px; border-radius: 999px;
+    background: rgba(255,255,255,0.14);
+    border: 0.5px solid rgba(255,255,255,0.20);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    font-size: 12px; font-weight: 600; color: #fff; z-index: 50;
   }
 
-  /* ── Progress Bar ──────────────────────────────────── */
+  /* Progress bar */
   .glass-progress {
-    position: relative;
-    width: 100%;
-    height: 14px;
-    border-radius: 7px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 0.5px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden;
-    z-index: 50;
+    width: 100%; height: 12px; border-radius: 6px;
+    background: rgba(255,255,255,0.14);
+    border: 0.5px solid rgba(255,255,255,0.18);
+    overflow: hidden; position: relative; z-index: 50;
   }
-
   .glass-progress-fill {
-    height: 100%;
-    border-radius: 7px;
-    background: linear-gradient(90deg, rgba(139,184,208,0.7), rgba(139,184,208,0.9));
+    height: 100%; border-radius: 6px;
+    background: linear-gradient(90deg, rgba(139,184,208,0.65), rgba(139,184,208,0.88));
+    transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
     position: relative;
-    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-
-  /* Shimmer on progress bar */
   .glass-progress-fill::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
     animation: shimmer 2.5s ease-in-out infinite;
   }
 
-  /* ── Modal Backdrop ────────────────────────────────── */
+  /* Modal / Drawer */
   .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    animation: fadeIn 0.3s ease-out;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.22); backdrop-filter: blur(3px);
+    display: flex; align-items: center; justify-content: center; z-index: 100;
+    animation: fadeIn 0.25s ease-out;
   }
-
-  /* ── Drawer (slide from right) ─────────────────────── */
   .drawer-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    z-index: 100;
-    animation: fadeIn 0.3s ease-out;
+    position: fixed; inset: 0; background: rgba(0,0,0,0.18);
+    backdrop-filter: blur(2px); z-index: 100;
   }
-
   .drawer-panel {
-    position: fixed;
-    right: 0; top: 0; bottom: 0;
-    width: 360px;
-    max-width: 90vw;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-left: 0.5px solid rgba(255, 255, 255, 0.2);
-    box-shadow: -4px 0 40px rgba(0,0,0,0.1);
-    z-index: 101;
-    animation: slideRight 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow-y: auto;
+    position: fixed; right: 0; top: 0; bottom: 0; width: 340px; max-width: 88vw;
+    background: rgba(255,255,255,0.06); backdrop-filter: blur(22px);
+    border-left: 0.5px solid rgba(255,255,255,0.18);
+    box-shadow: -4px 0 36px rgba(0,0,0,0.08);
+    z-index: 101; overflow-y: auto;
+    animation: slideRight 0.32s cubic-bezier(0.16,1,0.3,1);
   }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   Animation Keyframes (global)
-   ═══════════════════════════════════════════════════════════ */
-@keyframes shimmer {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(400%); }
-}
+/* ═══════ Animations ═══════ */
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(400%); } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes slideRight { 0% { transform: translateX(100%); } 100% { transform: translateX(0); } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes breathe { 0%,100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+@keyframes bounce-sm { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-16px); } 60% { transform: translateY(-6px); } }
+@keyframes eating { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(0.85) scaleX(1.08); } }
+@keyframes sleep { 0%,100% { transform: scale(1); } 50% { transform: scale(0.96); opacity: 0.8; } }
 
-@keyframes fadeIn {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
+/* ═══════ CSS Pet ═══════ */
+.pet-body {
+  position: relative; width: 160px; height: 180px;
+  margin: 0 auto;
+  transition: transform 0.3s ease;
 }
+.pet-body.happy { animation: bounce-sm 0.6s ease infinite; }
+.pet-body.eating { animation: eating 0.35s ease infinite; }
+.pet-body.sleeping { animation: sleep 3s ease-in-out infinite; }
+.pet-body.idle { animation: float 3.5s ease-in-out infinite; }
 
-@keyframes slideRight {
-  0%   { transform: translateX(100%); }
-  100% { transform: translateX(0); }
+/* Pet base shape — round blob with highlight */
+.pet-shape {
+  width: 130px; height: 130px; border-radius: 50%;
+  position: absolute; left: 50%; top: 20px; transform: translateX(-50%);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
 }
-
-@keyframes breathe {
-  0%, 100% { opacity: 0.6; }
-  50%      { opacity: 1; }
+.pet-shape::after {
+  content: ''; position: absolute;
+  width: 55%; height: 28%; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  top: 15%; left: 22%;
 }
+/* Eyes */
+.pet-eyes { position: absolute; top: 58px; left: 50%; transform: translateX(-50%); display: flex; gap: 32px; }
+.pet-eye {
+  width: 12px; height: 14px; background: #3D3D5C; border-radius: 50%; position: relative;
+  transition: all 0.3s ease;
+}
+.pet-eye::after { content: ''; position: absolute; width: 4px; height: 4px; background: #fff; border-radius: 50%; top: 3px; left: 6px; }
+.pet-eye.closed { height: 2px; border-radius: 2px; margin-top: 6px; }
+/* Blush */
+.pet-blush { position: absolute; top: 68px; display: flex; gap: 80px; left: 50%; transform: translateX(-50%); }
+.pet-blush-dot { width: 14px; height: 8px; background: rgba(255,181,197,0.55); border-radius: 50%; }
+/* Mouth */
+.pet-mouth { position: absolute; top: 82px; left: 50%; transform: translateX(-50%); }
+.pet-mouth-line {
+  width: 20px; height: 2px; background: #3D3D5C; border-radius: 1px; margin: 0 auto;
+  transition: all 0.3s ease;
+}
+.pet-mouth-line.smile { width: 24px; height: 3px; border-radius: 0 0 12px 12px; height: 8px; background: transparent; border: 2px solid #3D3D5C; border-top: none; }
+.pet-mouth-line.sad { width: 20px; height: 3px; border-radius: 12px 12px 0 0; height: 7px; background: transparent; border: 2px solid #3D3D5C; border-bottom: none; }
 
-/* ═══════════════════════════════════════════════════════════
-   Reduced Motion
-   ═══════════════════════════════════════════════════════════ */
+/* Ears / Decorations */
+.pet-ear {
+  width: 28px; height: 28px; border-radius: 50%; position: absolute; top: 10px;
+  transition: background 0.4s ease;
+}
+.pet-ear-left { left: 18px; }
+.pet-ear-right { right: 18px; }
+.pet-hat { position: absolute; top: -8px; left: 50%; transform: translateX(-50%); font-size: 22px; }
+
+/* Level star */
+.pet-level-star { position: absolute; top: -4px; right: 24px; font-size: 16px; animation: float 2s ease-in-out infinite; }
+
+/* Food drops */
+.pet-drop { position: absolute; font-size: 16px; animation: fadeIn 0.6s ease-out forwards; }
+
+/* ═══════ Tab Bar ═══════ */
+.tab-bar {
+  position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 6px; z-index: 80;
+}
+.tab-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 8px 16px; border-radius: 16px; border: none;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  color: rgba(255,255,255,0.5); cursor: pointer;
+  transition: all 0.22s ease; font-size: 11px; font-weight: 500;
+  font-family: inherit;
+}
+.tab-btn.active {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 0.5px solid rgba(255,255,255,0.25);
+  box-shadow: 0 1px 0 0 rgba(255,255,255,0.15) inset;
+}
+.tab-btn .tab-icon { font-size: 18px; }
+.tab-btn:hover:not(.active) { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.12); }
+
+/* ═══════ Reduced Motion ═══════ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
