@@ -21,7 +21,7 @@ type LearnPhase = 'question' | 'reveal' | 'done';
 export const LearnTab: React.FC = () => {
   const { save, startLearn, answerLearn, nextLearn, currentLearnWord, learnChoices, learnAnswered } = useGameStore();
   const [phase, setPhase] = useState<LearnPhase>('question');
-  const [bank, setBank] = useState<any[] | null>(null);
+  const [bank, setBank] = useState<any[]>([]);
   const [selectedIdx, setSelectedIdx] = useState(-1);
   const [wasCorrect, setWasCorrect] = useState(false);
   const [dueCount, setDueCount] = useState(0);
@@ -33,7 +33,7 @@ export const LearnTab: React.FC = () => {
   }, [save.wordbook]);
 
   const handleStart = () => {
-    if (bank.length) { startLearn(save.wordbook, bank); setPhase('question'); setSelectedIdx(-1); }
+    if (bank.length > 0) { startLearn(save.wordbook, bank); setPhase('question'); setSelectedIdx(-1); }
   };
 
   const handleChoice = (idx: number) => {
