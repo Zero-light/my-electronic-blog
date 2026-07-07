@@ -2,20 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Search, BookmarkPlus, BookOpen, ChevronRight } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
 
-let wordBankCache: any[] | null = null;
+const sr: any[] = []; let srDone = false;
 async function loadBank(): Promise<any[]> {
-  if (wordBankCache) return wordBankCache;
+  if (srDone) return sr;
   const r = await fetch('/assets/words/wordbank.json');
-  const d = await r.json();
-  wordBankCache = d.words || [];
-  return wordBankCache;
+  sr.push(...((await r.json()).words || []));
+  srDone = true; return sr;
 }
 
 export const SearchTab: React.FC = () => {
   const { save, search, addWord } = useGameStore();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
-  const [bank, setBank] = useState<any[] | null>(null);
+  const [bank, setBank] = useState<any[]>([]);
   const [added, setAdded] = useState<Set<string>>(new Set());
 
   useEffect(() => { loadBank().then(setBank); }, []);
@@ -24,7 +23,7 @@ export const SearchTab: React.FC = () => {
   const handleSearch = (q: string) => {
     setQuery(q);
     if (q.length < 2) { setResults([]); return; }
-    setResults(bank ? search(q, bank) : []);
+    setResults(bank.length ? search(q, bank) : []);
   };
 
   return (

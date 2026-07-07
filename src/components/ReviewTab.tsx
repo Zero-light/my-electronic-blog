@@ -5,18 +5,17 @@ import React, { useEffect, useState } from 'react';
 import { EyeOff, Eye, Volume2 } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
 
-let bankCache: any[] | null = null;
+const rv: any[] = []; let rvDone = false;
 async function loadBank(): Promise<any[]> {
-  if (bankCache) return bankCache;
+  if (rvDone) return rv;
   const r = await fetch('/assets/words/wordbank.json');
-  const d = await r.json();
-  bankCache = d.words || [];
-  return bankCache;
+  rv.push(...((await r.json()).words || []));
+  rvDone = true; return rv;
 }
 
 export const ReviewTab: React.FC = () => {
   const { save, getDueWords, updateReview } = useGameStore();
-  const [bank, setBank] = useState<any[] | null>(null);
+  const [bank, setBank] = useState<any[]>([]);
   const [due, setDue] = useState<any[]>([]);
   const [index, setIndex] = useState(0);
   const [revealed, setRevealed] = useState(false);
@@ -25,11 +24,11 @@ export const ReviewTab: React.FC = () => {
   useEffect(() => { loadBank().then(setBank); }, []);
   useEffect(() => {
     const dueIds = getDueWords();
-    const full = dueIds.map(d => (bank || []).find(w => w && w.id === d.wordId)).filter(Boolean);
+    const full = dueIds.map(d => bank.find(w => w && w.id === d.wordId)).filter(Boolean);
     setDue(full);
   }, [bank, save.wordbook]);
 
-  if (!bank) return <div className="flex items-center justify-center h-full text-white/40 text-sm">加载中...</div>;
+  if (!bank.length) return <div className="flex items-center justify-center h-full text-white/40 text-sm">加载中...</div>;
   if (due.length === 0 || index >= due.length) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-4">

@@ -5,13 +5,15 @@ import React, { useEffect, useState } from 'react';
 import { Volume2, Check, EyeOff, Eye, ChevronRight } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
 
-let bankCache: any[] | null = null;
+const wb: any[] = [];
+let wbLoaded = false;
 async function loadBank(): Promise<any[]> {
-  if (bankCache) return bankCache;
+  if (wbLoaded) return wb;
   const r = await fetch('/assets/words/wordbank.json');
   const d = await r.json();
-  bankCache = d.words || [];
-  return bankCache;
+  wb.push(...(d.words || []));
+  wbLoaded = true;
+  return wb;
 }
 
 type LearnPhase = 'question' | 'reveal' | 'done';
@@ -31,7 +33,7 @@ export const LearnTab: React.FC = () => {
   }, [save.wordbook]);
 
   const handleStart = () => {
-    if (bank && bank.length) { startLearn(save.wordbook, bank); setPhase('question'); setSelectedIdx(-1); }
+    if (bank.length) { startLearn(save.wordbook, bank); setPhase('question'); setSelectedIdx(-1); }
   };
 
   const handleChoice = (idx: number) => {
