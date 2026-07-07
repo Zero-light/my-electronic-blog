@@ -14,6 +14,8 @@ import { lighten, darken } from '../utils/Helpers';
 import { drawGlassPanel } from '../ui/GlassPanel';
 import { createGlassButton } from '../ui/GlassButton';
 import { GradientBg } from '../ui/GradientBg';
+import { DailyTaskPanel, getDailyTasks } from '../ui/DailyTaskPanel';
+import { ShopDrawer } from '../ui/ShopDrawer';
 
 // ─── Boot Scene ────────────────────────────────────────────
 export class BootScene extends Phaser.Scene {
@@ -36,6 +38,9 @@ export class HomeScene extends Phaser.Scene {
   private xpBarGfx!: Phaser.GameObjects.Graphics;
   private moodBubble!: Phaser.GameObjects.Container;
   private isPetHovered = false;
+  private dailyPanel!: DailyTaskPanel;
+  private shopDrawer!: ShopDrawer;
+  private offlinePopup!: Phaser.GameObjects.Container | null;
 
   constructor() { super('Home'); }
 
@@ -114,6 +119,28 @@ export class HomeScene extends Phaser.Scene {
     this.drawXPBar();
     this.drawHungerBar();
     this.drawButtons();
+
+    // Daily tasks panel
+    SAVE.refreshDaily(save);
+    const tasks = getDailyTasks(save);
+    this.dailyPanel = new DailyTaskPanel(this, GAME_WIDTH / 2, 100);
+    this.dailyPanel.create(tasks, () => {
+      AudioEngine.evolve();
+      const bonus = this.add.text(GAME_WIDTH / 2, 140, '🎉 全部完成! +8 🍎', {
+        fontSize: '16px', color: COLORS.textMain, fontFamily: 'Inter, "PingFang SC", sans-serif', fontStyle: '700',
+        backgroundColor: 'rgba(126,203,154,0.35)', padding: { left: 16, right: 16, top: 8, bottom: 8 },
+      }).setOrigin(0.5).setDepth(60);
+      SAVE.addFood(SAVE.load(), 8);
+      this.foodCount = SAVE.load().foodCount;
+      this.drawFoodHUD();
+      this.tweens.add({ targets: bonus, alpha: 0, y: 170, duration: 2000, onComplete: () => bonus.destroy() });
+    });
+
+    // Shop drawer
+    this.shopDrawer = new ShopDrawer(this);
+
+    // Offline rewards
+    this.checkOfflineRewards(save);
 
     // Hunger decay timer
     this.time.addEvent({
@@ -443,6 +470,13 @@ export class HomeScene extends Phaser.Scene {
     createGlassButton({
       scene: this, x: GAME_WIDTH / 2 + 220, y: btnY,
       width: 100, height: 46, label: '🛍 装扮', variant: 'shop',
+      onClick: () => { AudioEngine.click(); this.shopDrawer.open(); },
+    });
+
+    // Pet switch button
+    createGlassButton({
+      scene: this, x: GAME_WIDTH / 2 + 340, y: btnY,
+      width: 80, height: 46, label: '🐾 换宠', variant: 'back',
       onClick: () => { AudioEngine.click(); this.scene.start('Wardrobe'); },
     });
   }
@@ -514,6 +548,58 @@ export class HomeScene extends Phaser.Scene {
         onComplete: () => p.destroy(),
       });
     }
+  }
+
+  // ── Offline Rewards ──────────────────────────────────
+  private checkOfflineRewards(save: ReturnType<typeof SAVE.load>) {
+    const reward = SAVE.checkOffline(save);
+    if (!reward) return;
+
+    this.foodCount = save.foodCount;
+    this.petHunger = save.pet.hunger;
+
+    // Popup
+    setTimeout(() => {
+      const container = this.add.container(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 50).setDepth(200);
+      this.offlinePopup = container;
+
+      const bg = this.add.graphics();
+      drawGlassPanel(bg, { x: -160, y: -80, width: 320, height: 160, radius: 24 });
+      container.add(bg);
+
+      container.add(this.add.text(0, -55, '🌙 欢迎回来!', {
+        fontSize: '20px', color: COLORS.textMain, fontFamily: 'Inter, "PingFang SC", sans-serif', fontStyle: '700',
+      }).setOrigin(0.5));
+
+      container.add(this.add.text(0, -20, `离线 ${reward.offlineHours} 小时`, {
+        fontSize: '14px', color: COLORS.textSecondary, fontFamily: 'Inter, sans-serif',
+      }).setOrigin(0.5));
+
+      container.add(this.add.text(0, 10, `饱食度恢复 +${reward.hungerRecovered}  🍎 +${reward.bonusApples}`, {
+        fontSize: '15px', color: COLORS.textMain, fontFamily: 'Inter, sans-serif', fontStyle: '600',
+      }).setOrigin(0.5));
+
+      const okBtn = this.add.text(0, 55, '收下!', {
+        fontSize: '16px', color: COLORS.textMain, fontFamily: 'Inter, "PingFang SC", sans-serif', fontStyle: '700',
+        backgroundColor: 'rgba(139,184,208,0.5)', padding: { left: 30, right: 30, top: 10, bottom: 10 },
+      }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+      okBtn.on('pointerdown', () => {
+        AudioEngine.click();
+        this.tweens.add({
+          targets: container, alpha: 0, scale: 0.9,
+          duration: 250, onComplete: () => container.destroy(),
+        });
+        this.offlinePopup = null;
+        this.drawFoodHUD();
+        this.drawHungerBar();
+      });
+      container.add(okBtn);
+
+      container.setAlpha(0).setScale(0.7);
+      this.tweens.add({
+        targets: container, alpha: 1, scale: 1, duration: 350, ease: 'Back.easeOut',
+      });
+    }, 800);
   }
 }
 

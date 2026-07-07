@@ -51,6 +51,49 @@ export interface DailyCheckIn {
   earnedFood: number;
 }
 
+// ── New Game Systems ──────────────────────────────────────
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  unlockedAt?: number;
+}
+
+export interface DailyTask {
+  id: string;
+  label: string;
+  target: number;
+  current: number;
+  reward: number; // apples
+  done: boolean;
+}
+
+export interface WeeklyStat {
+  date: string;
+  words: number;
+  correct: number;
+}
+
+export interface ShopItem {
+  id: string;
+  category: 'hat' | 'skin' | 'background' | 'bubble';
+  name: string;
+  icon: string;
+  price: number;
+  preview: string; // emoji or tint color
+}
+
+export interface OfflineReward {
+  lastLogin: number;
+  offlineHours: number;
+  hungerRecovered: number;
+  bonusApples: number;
+}
+
+// ── Full SaveData ─────────────────────────────────────────
+
 export interface SaveData {
   version: number;
   createdAt: number;
@@ -71,10 +114,17 @@ export interface SaveData {
     dailyGoal: number;
   };
   pet: PetState;
-  // Extended fields for runtime use
+  // Extended
   xp?: number;
   dailyCorrect?: number;
   dailyWrong?: number;
+  // New systems
+  ownedItems: string[];
+  equippedItems: { hat?: string; skin?: string; background?: string; bubble?: string };
+  weeklyStats: WeeklyStat[];
+  dailyWordBank: string[]; // word IDs for today's session
+  lastDailyRefresh: string;
+  offlineRewards: OfflineReward | null;
 }
 
 export interface StudyBatch {
