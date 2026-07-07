@@ -24,18 +24,19 @@ const CATS = [
 ];
 
 export const ShopTab: React.FC = () => {
-  const { save, doBuyItem } = useGameStore();
+  const { save, doBuyItem, doEquip, doUnequip } = useGameStore();
   const [cat, setCat] = useState<'hat'|'skin'|'background'|'bubble'>('hat');
   const items = ITEMS.filter(i => i.category === cat);
 
   return (
     <div className="flex flex-col w-full h-full pt-4 px-4">
       {/* Balance */}
-      <div className="flex items-center justify-center mb-4">
-        <div className="glass-chip text-base">🍎 {save.foodCount}</div>
+      <div className="flex items-center justify-center gap-3 mb-4">
+        <div className="glass-chip">🍎 {save.foodCount}</div>
+        <div className="glass-chip">💎 {save.diamonds}</div>
       </div>
 
-      {/* Tabs */}
+      {/* Category tabs */}
       <div className="flex gap-2 justify-center mb-5">
         {CATS.map(c => (
           <button
@@ -50,19 +51,36 @@ export const ShopTab: React.FC = () => {
         ))}
       </div>
 
-      {/* Items */}
+      {/* Items grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-w-xl mx-auto w-full">
         {items.map(item => {
           const owned = save.ownedItems.includes(item.id);
+          const equipped = (save.equippedItems as any)[cat] === item.id;
           return (
-            <div key={item.id} className="glass-panel p-4 flex flex-col items-center gap-1.5">
+            <div key={item.id} className={`glass-panel p-4 flex flex-col items-center gap-1.5 ${
+              equipped ? 'border-white/40 bg-white/18' : ''
+            }`}>
               <span className="text-2xl">{item.icon}</span>
               <span className="text-xs font-medium text-white/75">{item.name}</span>
               {owned ? (
-                <span className="text-xs text-green-300/80 font-medium">已拥有</span>
+                equipped ? (
+                  <button
+                    className="text-[11px] px-2 py-1 rounded-full bg-white/15 text-white/60 hover:bg-white/25"
+                    onClick={() => doUnequip(cat)}
+                  >
+                    使用中 · 卸下
+                  </button>
+                ) : (
+                  <button
+                    className="glass-btn-feed glass-btn px-3 py-1 text-xs"
+                    onClick={() => doEquip(cat, item.id)}
+                  >
+                    穿戴
+                  </button>
+                )
               ) : (
                 <button
-                  className="glass-btn-feed glass-btn px-3 py-1.5 text-xs"
+                  className="glass-btn-feed glass-btn px-3 py-1 text-xs"
                   onClick={() => doBuyItem(item)}
                 >
                   🍎 {item.price}

@@ -1,20 +1,20 @@
 import { create } from 'zustand';
-import type { SaveData, PetType, WordEntry, DailyTask } from '../data/types';
+import type { SaveData, PetType, WordEntry, DailyTask, ShopItem } from '../data/types';
 import {
-  loadSave, saveWrite, applyHungerDecay, feedPet, addFood, addXP,
-  switchPet, endStudySession, buyItem, checkOffline, refreshDaily, getTodayStats,
+  loadSave, saveWrite, applyHungerDecay, feedPet, addFood, addXP, addDiamonds,
+  switchPet, endStudySession, buyItem, equipItem, unequipItem,
+  checkOffline, refreshDaily, getTodayStats, petInteraction, checkStreakRewards,
+  getLevelInfo,
 } from '../data/saveManager';
 import { loadWordPack } from '../data/wordBank';
 import { shuffle } from '../utils/helpers';
 
 interface GameState {
   save: SaveData;
-  // UI state
-  showStudy: boolean;
-  showShop: boolean;
-  showPetGallery: boolean;
-  showAchievements: boolean;
-  showOffline: boolean;
+  // UI
+  showBackpack: boolean;
+  showStreakReward: { tier: number; label: string } | null;
+  // Study
   studyWords: WordEntry[];
   studyIndex: number;
   studyCorrect: number;
@@ -23,25 +23,20 @@ interface GameState {
   // Actions
   init: () => Promise<void>;
   doFeed: () => boolean;
+  doPet: () => { ok: boolean; cooldown: number };
   doSwitchPet: (type: PetType) => void;
-  doBuyItem: (item: any) => boolean;
-  // Study
-  openStudy: () => Promise<void>;
-  answerQuestion: (knew: boolean) => void;
-  closeStudy: () => void;
-  // UI toggles
-  toggleShop: () => void;
-  togglePetGallery: () => void;
-  toggleAchievements: () => void;
-  dismissOffline: () => void;
-  // Daily tasks
+  doBuyItem: (item: ShopItem) => boolean;
+  doEquip: (category: string, itemId: string) => void;
+  doUnequip: (category: string) => void;
+  answerQuestion: (correct: boolean) => void;
+  dismissStreakReward: () => void;
   getDailyTasks: () => DailyTask[];
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
   save: loadSave(),
-  showStudy: false, showShop: false, showPetGallery: false,
-  showAchievements: false, showOffline: false,
+  showBackpack: false,
+  showStreakReward: null,
   studyWords: [], studyIndex: 0, studyCorrect: 0, studyWrong: 0, studyStreak: 0,
 
   init: async () => {
@@ -49,70 +44,70 @@ export const useGameStore = create<GameState>((set, get) => ({
     save = applyHungerDecay(save);
     save = refreshDaily(save);
     const offline = checkOffline(save);
-    set({ save, showOffline: !!offline });
+    const streak = checkStreakRewards(save);
+    set({
+      save,
+      showStreakReward: streak ? { tier: streak.tier, label: streak.tier === 1 ? '🔥 火焰徽章' : streak.tier === 2 ? '🎁 稀有宝箱' : '👑 限定皮肤' } : null,
+    });
   },
 
   doFeed: () => {
     const { save } = get();
-    if (feedPet(save, 20, 5)) { set({ save: { ...save } }); return true; }
+    if (feedPet(save, 25, 5)) { set({ save: { ...save } }); return true; }
     return false;
   },
 
-  doSwitchPet: (type: PetType) => {
+  doPet: () => {
+    const { save } = get();
+    const result = petInteraction(save);
+    if (result.ok) set({ save: { ...save } });
+    return result;
+  },
+
+  doSwitchPet: (type) => {
     const { save } = get();
     switchPet(save, type);
-    set({ save: { ...save }, showPetGallery: false });
+    set({ save: { ...save } });
   },
 
   doBuyItem: (item) => {
     const { save } = get();
-    const ok = buyItem(save, item);
-    if (ok) set({ save: { ...save } });
-    return ok;
+    if (buyItem(save, item)) { set({ save: { ...save } }); return true; }
+    return false;
   },
 
-  openStudy: async () => {
-    const words = await loadWordPack('kaoyan_2');
-    const batch = shuffle(words).slice(0, 20);
-    set({ showStudy: true, studyWords: batch, studyIndex: 0, studyCorrect: 0, studyWrong: 0, studyStreak: 0 });
+  doEquip: (category, itemId) => {
+    const { save } = get();
+    equipItem(save, category, itemId);
+    set({ save: { ...save } });
   },
 
-  answerQuestion: (correct: boolean) => {
-    const { save, studyIndex, studyWords, studyCorrect, studyWrong, studyStreak } = get();
+  doUnequip: (category) => {
+    const { save } = get();
+    unequipItem(save, category);
+    set({ save: { ...save } });
+  },
+
+  answerQuestion: (correct) => {
+    const { save, studyIndex, studyCorrect, studyWrong, studyStreak } = get();
     const newCorrect = studyCorrect + (correct ? 1 : 0);
     const newWrong = studyWrong + (correct ? 0 : 1);
     const newStreak = correct ? studyStreak + 1 : 0;
-
-    // Rewards
     if (correct) {
       addXP(save, 5);
-      const foodAmount = newStreak >= 5 && Math.random() < 0.2 ? 15 : (newStreak >= 3 && Math.random() < 0.3 ? 8 : 5);
-      addFood(save, foodAmount);
-    } else {
-      addFood(save, 1);
-    }
-
+      addFood(save, newStreak >= 5 && Math.random() < 0.2 ? 15 : (newStreak >= 3 ? 8 : 5));
+    } else { addFood(save, 1); }
     set({ save: { ...save }, studyCorrect: newCorrect, studyWrong: newWrong, studyStreak: newStreak });
-
-    // Next word or finish
-    if (studyIndex + 1 >= studyWords.length) {
+    const delay = correct ? 600 : 1500;
+    if (studyIndex + 1 >= get().studyWords.length) {
       endStudySession(save, studyIndex + 1, newCorrect, newWrong);
-      setTimeout(() => set({ showStudy: false, save: { ...save } }), 1200);
+      setTimeout(() => set({ studyIndex: studyIndex + 1, save: { ...save } }), delay);
     } else {
-      setTimeout(() => set({ studyIndex: studyIndex + 1 }), correct ? 600 : 1500);
+      setTimeout(() => set({ studyIndex: studyIndex + 1 }), delay);
     }
   },
 
-  closeStudy: () => {
-    const { save, studyIndex, studyCorrect, studyWrong } = get();
-    if (studyIndex > 0) endStudySession(save, studyIndex, studyCorrect, studyWrong);
-    set({ showStudy: false, save: { ...save } });
-  },
-
-  toggleShop: () => set(s => ({ showShop: !s.showShop })),
-  togglePetGallery: () => set(s => ({ showPetGallery: !s.showPetGallery })),
-  toggleAchievements: () => set(s => ({ showAchievements: !s.showAchievements })),
-  dismissOffline: () => set({ showOffline: false }),
+  dismissStreakReward: () => set({ showStreakReward: null }),
 
   getDailyTasks: () => {
     const { save } = get();
@@ -120,8 +115,8 @@ export const useGameStore = create<GameState>((set, get) => ({
     return [
       { id: 'checkin', label: '打卡', target: 1, current: save.dailyStreak > 0 ? 1 : 0, reward: 2, done: save.lastCheckin === new Date().toISOString().slice(0, 10) },
       { id: 'learn', label: '学习', target: 20, current: stats.words, reward: 5, done: stats.words >= 20 },
-      { id: 'review', label: '复习', target: 5, current: Math.min(stats.words, 5), reward: 3, done: stats.words >= 5 },
       { id: 'feed', label: '喂食', target: 1, current: save.pet.hunger >= 80 ? 1 : 0, reward: 3, done: save.pet.hunger >= 80 },
+      { id: 'pet', label: '互动', target: 1, current: (Date.now() - save.pet.lastPetAt < 600000) ? 1 : 0, reward: 3, done: Date.now() - save.pet.lastPetAt < 600000 },
     ];
   },
 }));
