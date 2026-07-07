@@ -1,14 +1,12 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import path from 'path';
 
 export default defineConfig({
-  base: '/',
+  plugins: [react()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, 'src') },
+  },
   server: { port: 5173, host: true },
-  build: {
-    target: 'es2020',
-    outDir: 'dist',
-    assetsInlineLimit: 0,
-    rollupOptions: {
-      output: { manualChunks: undefined }
-    }
-  }
-})
+  build: { target: 'es2020' },
+});
