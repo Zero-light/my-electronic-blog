@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { SaveData } from '../data/types';
-import { load, save, addToWordbook, updateWordProgress, getDueWords, getWordbookStats,
+import { load, addToWordbook, updateWordProgress, getDueWords, getWordbookStats,
   saveChallengeRecord, getHighScore, refreshDaily, getChallengeDiamonds, getChallengeTier } from '../data/saveManager';
 
 interface GameState {
