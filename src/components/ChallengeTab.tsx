@@ -61,7 +61,7 @@ export const ChallengeTab: React.FC = () => {
     setAnswered(false);
   }, [index, words]);
 
-  useEffect(() => { if (mode === 'timed' && words.length) loadQuestion(); }, [index, mode, loadQuestion]);
+  useEffect(() => { if ((mode === 'timed' || mode === 'boss') && words.length) loadQuestion(); }, [index, mode, loadQuestion]);
 
   // Spelling mode
   useEffect(() => {
@@ -81,6 +81,7 @@ export const ChallengeTab: React.FC = () => {
       setStreak(s => s + 1);
     } else {
       setStreak(0);
+      setScore(s => Math.max(0, s - 30)); // deduct score on wrong
       setTimeLeft(t => Math.max(t - 5, 0));
     }
     setTimeout(() => setIndex(i => i + 1), 400);
@@ -114,32 +115,45 @@ export const ChallengeTab: React.FC = () => {
   const startSpelling = () => { setMode('spelling'); setScore(0); setIndex(0); setCorrect(0); setStreak(0); };
   const startBoss = () => { setMode('boss'); setScore(0); setIndex(0); setCorrect(0); setStreak(0); setTimeLeft(90); };
 
-  // Boss mode uses timed mode logic with 90s and word limit
+  // Boss mode — 10 questions, 90 seconds, diamond rewards
+  const bossTotal = 10;
   if (mode === 'boss') {
-    const bossTotal = 10;
     if (index >= bossTotal) { finishChallenge(); return null; }
+    if (!words.length) return <div className="flex items-center justify-center h-full text-white/50">加载中...</div>;
     const w = words[index];
     return (
       <div className="flex flex-col items-center w-full h-full pt-4 px-4">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="glass-chip text-red-300"><Timer size={14} /> {timeLeft}s</div>
-          <div className="glass-chip text-yellow-300"><Swords size={14} /> BOSS</div>
+        <div className="flex items-center gap-3 mb-3">
+          <div className={`glass-chip ${timeLeft <= 15 ? 'text-red-300 animate-breathe' : 'text-yellow-200'}`}>
+            <Timer size={14} /> {timeLeft}s
+          </div>
+          <div className="glass-chip text-yellow-300"><Swords size={14} /> BOSS {index + 1}/{bossTotal}</div>
           <div className="glass-chip">{score} 分</div>
           <div className="glass-chip">🔥 {streak}x</div>
         </div>
+
+        <div className="text-xs text-white/30 mb-3 text-center">
+          ⚡ 综合挑战 · 答对+100~180分 · 答错-30分 · 通关得💎
+        </div>
+
         <div className="glass-panel w-full max-w-md p-6 mb-4 text-center">
           <h2 className="text-4xl font-extrabold text-white mb-1">{w.word}</h2>
           <p className="text-white/40 text-sm font-mono">{w.phonetic}</p>
+          {w.example && <p className="text-white/20 text-xs italic mt-2">"{w.example}"</p>}
         </div>
         <div className="w-full max-w-md grid gap-2.5">
           {choices.map((c, i) => (
             <button key={i}
-              className={`glass-panel px-5 py-3.5 text-sm font-medium text-white/85 hover:bg-white/18 ${
-                answered && i === correctAns ? 'bg-green-400/25' : answered && i !== correctAns ? 'bg-white/5' : ''
+              className={`glass-panel px-5 py-3.5 text-left text-sm font-medium text-white/85 transition-all ${
+                answered ? 'cursor-default' : 'hover:bg-white/18 cursor-pointer'
+              } ${
+                answered && i === correctAns ? 'bg-green-400/25 border-green-400/40' : ''
+              } ${
+                answered && i !== correctAns ? 'bg-white/5' : ''
               }`}
               onClick={() => handleTimedChoice(i)} disabled={answered}
             >
-              {c}
+              {String.fromCharCode(65 + i)}. {c}
             </button>
           ))}
         </div>
@@ -152,14 +166,19 @@ export const ChallengeTab: React.FC = () => {
     const w = words[index];
     return (
       <div className="flex flex-col items-center w-full h-full pt-4 px-4">
-        <div className="flex items-center gap-4 mb-4">
-          <div className={`glass-chip ${timeLeft <= 10 ? 'text-red-300' : 'text-white/70'}`}>
+        <div className="flex items-center gap-3 mb-3">
+          <div className={`glass-chip ${timeLeft <= 10 ? 'text-red-300 animate-breathe' : 'text-white/70'}`}>
             <Timer size={14} /> {timeLeft}s
           </div>
           <div className="glass-chip">{score} 分</div>
           <div className="glass-chip">{index + 1}/{total}</div>
           <div className="glass-chip">🔥 {streak}x</div>
         </div>
+
+        <div className="text-xs text-white/30 mb-3 text-center">
+          ✅ 答对 +{100 + streak * 20}分 · ❌ 答错 -30分 -5秒
+        </div>
+
         <div className="glass-panel w-full max-w-md p-6 mb-4 text-center">
           <h2 className="text-4xl font-extrabold text-white mb-1">{w.word}</h2>
           <p className="text-white/40 text-sm font-mono">{w.phonetic}</p>
@@ -167,12 +186,14 @@ export const ChallengeTab: React.FC = () => {
         <div className="w-full max-w-md grid gap-2.5">
           {choices.map((c, i) => (
             <button key={i}
-              className={`glass-panel px-5 py-3.5 text-sm font-medium text-white/85 hover:bg-white/18 ${
-                answered && i === correctAns ? 'bg-green-400/25' : ''
+              className={`glass-panel px-5 py-3.5 text-left text-sm font-medium text-white/85 transition-all ${
+                answered ? 'cursor-default' : 'hover:bg-white/18 cursor-pointer'
+              } ${
+                answered && i === correctAns ? 'bg-green-400/25 border-green-400/40' : ''
               }`}
               onClick={() => handleTimedChoice(i)} disabled={answered}
             >
-              {c}
+              {String.fromCharCode(65 + i)}. {c}
             </button>
           ))}
         </div>
