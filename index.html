@@ -3,37 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#E8F0FF" />
+  <meta name="theme-color" content="#D6EAFA" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <title>WordPal — 词友</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
-      background: linear-gradient(135deg, #E8F0FF 0%, #D5E8FF 50%, #FFE5F1 100%);
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
+      background: linear-gradient(135deg, #D6EAFA 0%, #C5DDF5 40%, #FFE8EE 100%);
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     #game {
       width: 100%; height: 100%;
       display: flex; align-items: center; justify-content: center;
     }
-    canvas { display: block; image-rendering: auto; }
+    canvas {
+      display: block;
+      image-rendering: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 60px rgba(139, 184, 208, 0.15);
+    }
     #loading {
       position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 20px; z-index: 10;
+      flex-direction: column; gap: 24px; z-index: 10;
+      background: linear-gradient(135deg, #D6EAFA 0%, #C5DDF5 40%, #FFE8EE 100%);
       transition: opacity 0.6s ease;
+      font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
     }
     #loading.hidden { opacity: 0; pointer-events: none; }
     #loading-spinner {
-      width: 48px; height: 48px; border-radius: 50%;
-      border: 3px solid rgba(124, 156, 248, 0.3);
-      border-top-color: #7C9CF8;
-      animation: spin 1s linear infinite;
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.4);
+      position: relative;
     }
-    #loading-text { font-family: sans-serif; color: #7C9CF8; font-size: 16px; }
+    #loading-spinner::after {
+      content: '';
+      position: absolute;
+      inset: 3px; border-radius: 50%;
+      border: 3px solid rgba(139,184,208,0.2);
+      border-top-color: #8BB8D0;
+      animation: spin 1.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+    #loading-text {
+      font-size: 16px; font-weight: 500; color: rgba(61,61,92,0.6); letter-spacing: 0.5px;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>

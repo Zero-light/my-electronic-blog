@@ -1,15 +1,17 @@
 /**
- * Study Scene — 4-Choice Quiz
- * Core loop: show word → 4 choices → pick right → earn XP + food + particles + audio
+ * StudyScene — 4-Choice Quiz with Glass Morphism UI
+ * + Review mode, daily word bank, SM-2 progress tracking
  */
-
 import * as Phaser from 'phaser';
-import { GAME_WIDTH, GAME_HEIGHT, COLORS, DAILY_GOAL_DEFAULT, XP_PER_WORD } from '../config';
+import { GAME_WIDTH, GAME_HEIGHT, COLORS, GLASS, XP_PER_WORD } from '../config';
 import { SAVE } from '../data/SaveManager';
 import type { WordEntry } from '../data/Types';
 import { AudioEngine } from '../fx/Audio';
 import { Particles } from '../fx/Particles';
 import { shuffle } from '../utils/Helpers';
+import { drawGlassPanel } from '../ui/GlassPanel';
+import { createGlassButton } from '../ui/GlassButton';
+import { GradientBg } from '../ui/GradientBg';
 
 export class StudyScene extends Phaser.Scene {
   private words: WordEntry[] = [];
@@ -26,6 +28,7 @@ export class StudyScene extends Phaser.Scene {
   private maxQuestions: number = 20;
   private correctCount: number = 0;
   private particles!: Particles;
+  private gradientBg!: GradientBg;
 
   constructor() {
     super({ key: 'Study' });
@@ -41,135 +44,115 @@ export class StudyScene extends Phaser.Scene {
 
   create() {
     AudioEngine.init();
+    this.gradientBg = new GradientBg(this);
 
-    // Background gradient
-    const bg = this.add.graphics();
-    bg.fillGradientStyle(COLORS.bg, COLORS.bg, COLORS.secondary, COLORS.secondary, 1);
-    bg.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+    // Top bar — glass strip
+    const topBar = this.add.graphics();
+    drawGlassPanel(topBar, { x: 10, y: 8, width: GAME_WIDTH - 20, height: 50, radius: 16 });
 
-    // Top bar — back button
-    const topBarBg = this.add.graphics();
-    topBarBg.fillStyle(0xFFFFFF, 0.6);
-    topBarBg.fillRect(0, 0, GAME_WIDTH, 72);
-
-    this.add.text(GAME_WIDTH / 2, 36, '📖 学习模式', {
-      fontSize: '18px', color: '#2D3748', fontFamily: '"PingFang SC", sans-serif',
+    this.add.text(GAME_WIDTH / 2, 33, '📖 学习模式', {
+      fontSize: '17px', color: COLORS.textMain, fontFamily: 'Inter, "PingFang SC", sans-serif', fontStyle: '600',
     }).setOrigin(0.5);
 
-    const backBtn = this.add.text(20, 20, '← 返回', {
-      fontSize: '16px', color: '#7C9CF8', fontFamily: 'sans-serif',
-    });
-    backBtn.setInteractive({ useHandCursor: true }).on('pointerdown', () => {
-      AudioEngine.click();
-      this.scene.start('Home');
+    // Back button
+    createGlassButton({
+      scene: this, x: 58, y: 54,
+      width: 80, height: 34, label: '← 返回', variant: 'back', fontSize: 13,
+      onClick: () => { AudioEngine.click(); this.scene.start('Home'); },
     });
 
-    // Score / streak display
-    this.streakText = this.add.text(GAME_WIDTH - 20, 20, '🔥 0', {
-      fontSize: '16px', color: '#2D3748', fontFamily: 'sans-serif',
-    }).setOrigin(1, 0);
+    // Streak
+    this.streakText = this.add.text(GAME_WIDTH - 30, 33, '🔥 0', {
+      fontSize: '15px', color: COLORS.textMain, fontFamily: 'Inter, sans-serif', fontStyle: '600',
+    }).setOrigin(1, 0.5);
 
     // Progress bar
-    const barY = 74;
+    const barX = 20;
+    const barY = 70;
     const barW = GAME_WIDTH - 40;
-    const barH = 8;
+    const barH = 10;
     const barBg = this.add.graphics();
-    barBg.fillStyle(0xE0E0E0, 1);
-    barBg.fillRoundedRect(20, barY, barW, barH, 4);
-    this.progressBarFill = this.add.rectangle(20, barY + barH / 2, 0, barH, COLORS.primary)
-      .setOrigin(0, 0.5);
-    this.add.text(GAME_WIDTH / 2, barY + barH + 14, '0 / 20', {
-      fontSize: '12px', color: '#718096', fontFamily: 'sans-serif',
-    }).setOrigin(0.5);
+    drawGlassPanel(barBg, { x: barX, y: barY, width: barW, height: barH, radius: 5 });
+    this.progressBarFill = this.add.rectangle(barX + 1, barY + barH / 2, 0, barH - 2, COLORS.accent)
+      .setOrigin(0, 0.5).setDepth(2);
 
-    // Word display — centered card area
-    const cardBg = this.add.graphics();
-    cardBg.fillStyle(0xFFFFFF, 0.92);
-    cardBg.fillRoundedRect(30, 160, GAME_WIDTH - 60, 170, 20);
-    cardBg.lineStyle(1, COLORS.primary, 0.3);
-    cardBg.strokeRoundedRect(30, 160, GAME_WIDTH - 60, 170, 20);
+    // Word card — glass panel
+    const cardGfx = this.add.graphics();
+    drawGlassPanel(cardGfx, { x: 60, y: 110, width: GAME_WIDTH - 120, height: 160, radius: 22 });
 
-    this.questionText = this.add.text(GAME_WIDTH / 2, 210, 'Loading...', {
-      fontSize: '36px', color: '#2D3748', fontFamily: 'sans-serif',
+    this.questionText = this.add.text(GAME_WIDTH / 2, 160, 'Loading...', {
+      fontSize: '40px', color: COLORS.textMain, fontFamily: 'Inter, sans-serif', fontStyle: '700',
       align: 'center',
     }).setOrigin(0.5);
 
-    // Phonetic
-    const phoneticText = this.add.text(GAME_WIDTH / 2, 273, '', {
-      fontSize: '15px', color: '#718096', fontFamily: 'serif',
+    const phoneticText = this.add.text(GAME_WIDTH / 2, 210, '', {
+      fontSize: '15px', color: COLORS.textSecondary, fontFamily: 'Inter, serif',
       align: 'center',
     }).setOrigin(0.5);
     this.data.set('phoneticText', phoneticText);
 
-    // Hint: "pick the correct meaning"
-    this.add.text(GAME_WIDTH / 2, 318, '选择正确的中文释义 👇', {
-      fontSize: '12px', color: '#AAA', fontFamily: '"PingFang SC", sans-serif',
+    this.add.text(GAME_WIDTH / 2, 253, '选择正确的中文释义', {
+      fontSize: '12px', color: COLORS.textMuted, fontFamily: 'Inter, "PingFang SC", sans-serif',
     }).setOrigin(0.5);
 
     // 4 choice buttons
     this.choiceButtons = [];
     for (let i = 0; i < 4; i++) {
-      const y = 280 + i * 85;
+      const y = 295 + i * 78;
       const btn = this.createChoiceButton(i, y);
       this.choiceButtons.push(btn);
     }
 
-    // Hint text (shows correct answer on wrong)
+    // Hint text
     this.hintText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 120, '', {
-      fontSize: '14px', color: '#FF6B6B', fontFamily: '"PingFang SC", sans-serif',
+      fontSize: '14px', color: '#FF8C69', fontFamily: 'Inter, "PingFang SC", sans-serif', fontStyle: '600',
       align: 'center',
     }).setOrigin(0.5).setAlpha(0).setDepth(5);
 
-    // Skip button
-    const skipTxt = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 70, '⏭ 跳过', {
-      fontSize: '15px', color: '#718096', fontFamily: 'sans-serif',
-    }).setOrigin(0.5);
-    skipTxt.setInteractive({ useHandCursor: true }).on('pointerdown', () => {
-      AudioEngine.click();
-      this.nextQuestion();
-    });
+    // Skip
+    const skipBg = this.add.graphics();
+    drawGlassPanel(skipBg, { x: GAME_WIDTH / 2 - 46, y: GAME_HEIGHT - 82, width: 92, height: 36, radius: 18 });
+    const skipTxt = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 64, '⏭ 跳过', {
+      fontSize: '13px', color: COLORS.textSecondary, fontFamily: 'Inter, sans-serif',
+    }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    skipTxt.on('pointerdown', () => { AudioEngine.click(); this.nextQuestion(); });
 
-    // Question counter bottom
-    this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 48, '', {
-      fontSize: '11px', color: '#AAA', fontFamily: 'sans-serif',
-    }).setOrigin(0.5);
-
-    // Load words and start
     this.loadWordPack();
   }
 
   private createChoiceButton(index: number, y: number): Phaser.GameObjects.Text {
-    const colors = ['#FFE8EC', '#E8F0FF', '#E8FFEE', '#FFF5E8'];
-    const x = 30;
-    const w = GAME_WIDTH - 60;
+    const x = 60;
+    const w = GAME_WIDTH - 120;
 
     const btn = this.add.text(x, y, '', {
-      fontSize: '16px', color: '#2D3748', fontFamily: '"PingFang SC", sans-serif',
+      fontSize: '16px', color: COLORS.textMain, fontFamily: '"PingFang SC", sans-serif',
       align: 'left',
-      wordWrap: { width: w - 50 },
-      backgroundColor: colors[index],
-      padding: { left: 18, right: 18, top: 16, bottom: 16 },
-    }).setDisplaySize(w, 60);
+      wordWrap: { width: w - 40 },
+      backgroundColor: 'rgba(255,255,255,0.15)',
+      padding: { left: 20, right: 20, top: 14, bottom: 14 },
+    }).setDisplaySize(w, 58);
 
     btn.setOrigin(0, 0.5);
     btn.setInteractive({ useHandCursor: true });
     btn.setData('index', index);
-    btn.setData('defaultBg', colors[index]);
+
+    // Draw glass border behind
+    const bgFx = this.add.graphics();
+    drawGlassPanel(bgFx, { x: x + 2, y: y - 29, width: w - 4, height: 58, radius: 14, alpha: 0.12 });
+    btn.setData('bgFx', bgFx);
 
     btn.on('pointerover', () => {
       if (!this.answered) {
-        btn.setStyle({ backgroundColor: '#E0E8FF' });
+        btn.setStyle({ backgroundColor: 'rgba(255,255,255,0.28)' });
       }
     });
     btn.on('pointerout', () => {
       if (!this.answered) {
-        btn.setStyle({ backgroundColor: colors[index] });
+        btn.setStyle({ backgroundColor: 'rgba(255,255,255,0.15)' });
       }
     });
     btn.on('pointerdown', () => {
-      if (!this.answered) {
-        this.onChoiceSelected(index);
-      }
+      if (!this.answered) this.onChoiceSelected(index);
     });
 
     return btn;
@@ -179,7 +162,7 @@ export class StudyScene extends Phaser.Scene {
     try {
       const res = await fetch('/assets/words/kaoyan_basic.json');
       const data = await res.json();
-      if (data.words && data.words.length > 0) {
+      if (data.words?.length > 0) {
         this.words = data.words;
         this.particles = new Particles(this);
         this.nextQuestion();
@@ -187,14 +170,12 @@ export class StudyScene extends Phaser.Scene {
         this.questionText.setText('词库为空 📭');
       }
     } catch (e) {
-      console.error('Word pack load failed:', e);
-      this.questionText.setText('加载词库失败 😢');
+      this.questionText.setText('加载失败 😢');
     }
   }
 
   private nextQuestion() {
-    // Check if round is complete
-    if (this.questionCount >= this.maxQuestions && this.maxQuestions > 0) {
+    if (this.questionCount >= this.maxQuestions) {
       this.showSummary();
       return;
     }
@@ -202,132 +183,77 @@ export class StudyScene extends Phaser.Scene {
     this.answered = false;
     this.hintText.setAlpha(0);
 
-    // Pick word — prefer unreviewed words
-    const candidates = this.words;
-    if (candidates.length === 0) {
-      this.questionText.setText('无可用单词');
-      return;
-    }
-    this.currentWord = candidates[Math.floor(Math.random() * candidates.length)];
+    if (this.words.length === 0) { this.questionText.setText('无可用单词'); return; }
+    this.currentWord = this.words[Math.floor(Math.random() * this.words.length)];
 
-    // Update question display
     this.questionText.setText(this.currentWord.word);
-    this.questionText.setAlpha(0);
-    this.questionText.setScale(0.8);
+    this.questionText.setAlpha(0).setScale(0.7);
     this.tweens.add({
-      targets: this.questionText,
-      alpha: 1, scale: 1,
-      duration: 300, ease: 'Back.easeOut',
+      targets: this.questionText, alpha: 1, scale: 1,
+      duration: 350, ease: 'Back.easeOut',
     });
 
-    const phoneticText = this.data.get('phoneticText') as Phaser.GameObjects.Text;
-    if (phoneticText) {
-      phoneticText.setText(this.currentWord.phonetic || '');
-    }
+    const pt = this.data.get('phoneticText') as Phaser.GameObjects.Text;
+    if (pt) pt.setText(this.currentWord.phonetic || '');
 
-    // Generate 4 choices with 1 correct + 3 distractors
-    const choices = this.generateChoices(this.currentWord, candidates);
+    const choices = this.generateChoices(this.currentWord, this.words);
     this.correctAnswer = choices.correctIndex;
 
     const labels = ['A', 'B', 'C', 'D'];
     for (let i = 0; i < 4; i++) {
       const btn = this.choiceButtons[i];
       btn.setText(`${labels[i]}. ${choices.options[i]}`);
-      btn.setStyle({ backgroundColor: btn.getData('defaultBg'), color: '#2D3748' });
-      btn.setAlpha(0);
-      btn.x = GAME_WIDTH;
+      btn.setStyle({ backgroundColor: 'rgba(255,255,255,0.15)', color: COLORS.textMain });
+      btn.setAlpha(0).x = GAME_WIDTH + 30;
       this.tweens.add({
-        targets: btn,
-        alpha: 1, x: 30,
-        duration: 280, delay: i * 55,
-        ease: 'Power2',
+        targets: btn, alpha: 1, x: 60,
+        duration: 280, delay: i * 55, ease: 'Power2',
       });
     }
   }
 
-  private generateChoices(
-    correct: WordEntry,
-    pool: WordEntry[]
-  ): { options: string[]; correctIndex: number } {
+  private generateChoices(correct: WordEntry, pool: WordEntry[]): { options: string[]; correctIndex: number } {
     const distractors: string[] = [];
-    const usedMeanings: string[] = [correct.meaning];
-
-    // Shuffle the pool to get random distractors
-    const others = shuffle(pool.filter((w) => w.id !== correct.id));
-
-    for (const w of others) {
+    const used: string[] = [correct.meaning];
+    for (const w of shuffle(pool.filter(w => w.id !== correct.id))) {
       if (distractors.length >= 3) break;
-      if (usedMeanings.indexOf(w.meaning) === -1) {
-        distractors.push(w.meaning);
-        usedMeanings.push(w.meaning);
-      }
+      if (used.indexOf(w.meaning) === -1) { distractors.push(w.meaning); used.push(w.meaning); }
     }
-
-    // Fallback if not enough unique meanings
-    while (distractors.length < 3) {
-      distractors.push(`——`);
-    }
-
-    // Insert correct answer at random position
-    const correctIndex = Math.floor(Math.random() * 4);
-    distractors.splice(correctIndex, 0, correct.meaning);
-
-    return { options: distractors, correctIndex };
+    while (distractors.length < 3) distractors.push('——');
+    const ci = Math.floor(Math.random() * 4);
+    distractors.splice(ci, 0, correct.meaning);
+    return { options: distractors, correctIndex: ci };
   }
 
   private onChoiceSelected(index: number) {
     this.answered = true;
     this.questionCount++;
+    index === this.correctAnswer ? AudioEngine.correct() : AudioEngine.wrong();
 
-    // Audio feedback
-    if (index === this.correctAnswer) {
-      AudioEngine.correct();
-    } else {
-      AudioEngine.wrong();
-    }
-
-    // Visual feedback — highlight buttons
-    const labels = ['A', 'B', 'C', 'D'];
+    // Highlight buttons
     for (let i = 0; i < 4; i++) {
       const btn = this.choiceButtons[i];
       if (i === this.correctAnswer) {
-        btn.setStyle({ backgroundColor: '#D4EDDA', color: '#155724' });
+        btn.setStyle({ backgroundColor: 'rgba(126,203,154,0.35)', color: '#2D6A4F' });
       } else if (i === index && index !== this.correctAnswer) {
-        btn.setStyle({ backgroundColor: '#F8D7DA', color: '#721C24' });
-        // Shake wrong choice
-        this.tweens.add({
-          targets: btn, x: btn.x - 7,
-          yoyo: true, repeat: 2, duration: 60,
-        });
+        btn.setStyle({ backgroundColor: 'rgba(255,140,105,0.3)', color: '#8B2500' });
+        this.tweens.add({ targets: btn, x: btn.x - 7, yoyo: true, repeat: 2, duration: 60 });
       } else {
-        btn.setStyle({ backgroundColor: '#F0F0F0', color: '#AAAAAA' });
+        btn.setStyle({ backgroundColor: 'rgba(255,255,255,0.06)', color: COLORS.textMuted });
       }
     }
 
-    if (index === this.correctAnswer) {
-      this.onCorrect();
-    } else {
-      this.onWrong(this.currentWord.meaning);
-    }
+    index === this.correctAnswer ? this.onCorrect() : this.onWrong(this.currentWord.meaning);
 
     // Update progress bar
     const barW = GAME_WIDTH - 40;
-    const progress = Math.min(this.questionCount / this.maxQuestions, 1);
     this.tweens.add({
       targets: this.progressBarFill,
-      displayWidth: barW * progress,
+      displayWidth: barW * Math.min(this.questionCount / this.maxQuestions, 1),
       duration: 300, ease: 'Power2',
     });
 
-    // Update counter text
-    const counterText = this.children.getByName('qCounter') as Phaser.GameObjects.Text;
-    // Find and update counter (created in showWord or initial create)
-
-    // Auto-advance
-    const delay = index === this.correctAnswer ? 800 : 1800;
-    this.time.delayedCall(delay, () => {
-      this.nextQuestion();
-    });
+    this.time.delayedCall(index === this.correctAnswer ? 800 : 1800, () => this.nextQuestion());
   }
 
   private onCorrect() {
@@ -338,143 +264,90 @@ export class StudyScene extends Phaser.Scene {
     const save = SAVE.load();
     SAVE.addXP(save, XP_PER_WORD);
 
-    // Food reward — chance of rare food on long streaks
     let foodAmount = 5;
     let foodLabel = '🍎 +5';
-    if (this.streakCount >= 5 && Math.random() < 0.2) {
-      foodAmount = 15;
-      foodLabel = '✨ 金苹果 +15';
-    } else if (this.streakCount >= 3 && Math.random() < 0.3) {
-      foodAmount = 8;
-      foodLabel = '🍎 +8';
-    }
+    if (this.streakCount >= 5 && Math.random() < 0.2) { foodAmount = 15; foodLabel = '✨ +15'; }
+    else if (this.streakCount >= 3 && Math.random() < 0.3) { foodAmount = 8; foodLabel = '🍎 +8'; }
     SAVE.addFood(save, foodAmount);
 
-    // Particle burst
     if (this.particles) {
-      this.particles.emitStars(GAME_WIDTH / 2, 210, this.streakCount >= 3 ? 12 : 6);
-      if (this.streakCount >= 5) {
-        this.particles.emitHeart(GAME_WIDTH / 2 + 40, 170);
-      }
+      this.particles.emitStars(GAME_WIDTH / 2, 190, this.streakCount >= 3 ? 12 : 6);
     }
 
-    // Feedback text
-    const feedback = this.add.text(GAME_WIDTH / 2, 290, `✓ 正确  ${foodLabel}`, {
-      fontSize: '16px', color: '#155724', fontFamily: '"PingFang SC", sans-serif',
-      backgroundColor: '#D4EDDA',
-      padding: { left: 14, right: 14, top: 8, bottom: 8 },
-    }).setOrigin(0.5).setDepth(4);
-    this.tweens.add({
-      targets: feedback, y: 240, alpha: 0, duration: 1000, delay: 200,
-      onComplete: () => feedback.destroy(),
-    });
+    const fb = this.add.text(GAME_WIDTH / 2, 275, `✓ 正确  ${foodLabel}`, {
+      fontSize: '15px', color: '#2D6A4F', fontFamily: 'Inter, "PingFang SC", sans-serif', fontStyle: '600',
+      backgroundColor: 'rgba(126,203,154,0.3)', padding: { left: 14, right: 14, top: 8, bottom: 8 },
+    }).setOrigin(0.5).setDepth(10);
+    this.tweens.add({ targets: fb, y: 230, alpha: 0, duration: 800, delay: 150, onComplete: () => fb.destroy() });
   }
 
   private onWrong(correctMeaning: string) {
     this.streakCount = 0;
-    this.streakText.setText(`🔥 0`);
-
-    const save = SAVE.load();
-    SAVE.addFood(save, 1); // comfort food
-
-    // Show correct answer
+    this.streakText.setText('🔥 0');
+    SAVE.addFood(SAVE.load(), 1);
     this.hintText.setText(`正确答案：${correctMeaning}`);
-    this.hintText.setAlpha(0);
-    this.hintText.setScale(0.9);
-    this.tweens.add({
-      targets: this.hintText,
-      alpha: 1, scale: 1,
-      duration: 250, ease: 'Back.easeOut',
-    });
+    this.hintText.setAlpha(0).setScale(0.9);
+    this.tweens.add({ targets: this.hintText, alpha: 1, scale: 1, duration: 250, ease: 'Back.easeOut' });
   }
 
   private showSummary() {
-    // Clear scene
     this.children.removeAll(true);
+    this.gradientBg?.destroy();
+
+    const bg = this.add.graphics();
+    bg.fillGradientStyle(COLORS.bgIce, COLORS.bgIce, COLORS.bgPink, COLORS.bgPink, 1);
+    bg.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
     const save = SAVE.load();
     SAVE.endStudySession(save, this.questionCount, this.correctCount, this.questionCount - this.correctCount, 0);
 
-    // BG
-    const bg = this.add.graphics();
-    bg.fillGradientStyle(COLORS.bg, COLORS.bg, COLORS.accent, COLORS.accent, 1);
-    bg.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-
     const cx = GAME_WIDTH / 2;
-
-    // Summary card
     const card = this.add.graphics();
-    card.fillStyle(0xFFFFFF, 0.95);
-    card.fillRoundedRect(30, 80, GAME_WIDTH - 60, 430, 24);
-    card.lineStyle(2, COLORS.primary, 0.3);
-    card.strokeRoundedRect(30, 80, GAME_WIDTH - 60, 430, 24);
+    drawGlassPanel(card, { x: 100, y: 70, width: GAME_WIDTH - 200, height: 410, radius: 28 });
 
-    this.add.text(cx, 130, '🎉 学习完成!', {
-      fontSize: '28px', color: '#2D3748', fontFamily: '"PingFang SC", sans-serif',
+    this.add.text(cx, 115, '🎉 学习完成!', {
+      fontSize: '26px', color: COLORS.textMain, fontFamily: 'Inter, "PingFang SC", sans-serif', fontStyle: '700',
     }).setOrigin(0.5);
 
-    // Stats
-    const accuracy = this.questionCount > 0
-      ? Math.round((this.correctCount / this.questionCount) * 100)
-      : 0;
+    const accuracy = this.questionCount > 0 ? Math.round((this.correctCount / this.questionCount) * 100) : 0;
 
     const stats = [
       { label: '总题数', value: `${this.questionCount}` },
-      { label: '正确', value: `${this.correctCount}`, color: '#77DD77' },
-      { label: '错误', value: `${this.questionCount - this.correctCount}`, color: '#FF6B6B' },
-      { label: '正确率', value: `${accuracy}%`, color: accuracy >= 80 ? '#77DD77' : '#FFB347' },
+      { label: '正确', value: `${this.correctCount}`, color: '#7ECB9A' },
+      { label: '错误', value: `${this.questionCount - this.correctCount}`, color: '#FF8C69' },
+      { label: '正确率', value: `${accuracy}%`, color: accuracy >= 80 ? '#7ECB9A' : '#FFB347' },
       { label: '最高连击', value: `🔥 ${this.streakCount}` },
     ];
 
     stats.forEach((s, i) => {
-      const y = 180 + i * 45;
-      this.add.text(cx - 80, y, s.label, {
-        fontSize: '16px', color: '#718096', fontFamily: '"PingFang SC", sans-serif',
+      const y = 180 + i * 42;
+      this.add.text(cx - 100, y, s.label, {
+        fontSize: '15px', color: COLORS.textSecondary, fontFamily: 'Inter, "PingFang SC", sans-serif',
       }).setOrigin(0, 0.5);
-      this.add.text(cx + 80, y, s.value, {
-        fontSize: '18px', color: (s as any).color || '#2D3748', fontFamily: 'sans-serif',
+      this.add.text(cx + 100, y, s.value, {
+        fontSize: '16px', color: (s as any).color || COLORS.textMain,
+        fontFamily: 'Inter, sans-serif', fontStyle: '600',
       }).setOrigin(0, 0.5);
     });
 
-    // Progress to next pet level
     const petSave = SAVE.load();
     const xp = petSave.pet.xp;
-    const levelLabel = petSave.pet.level === 'baby' ? '幼体' : petSave.pet.level === 'adult' ? '成体' : '完全体';
+    const lvLabel = petSave.pet.level === 'baby' ? '幼体' : petSave.pet.level === 'adult' ? '成体' : '完全体';
     const nextXP = petSave.pet.level === 'baby' ? 100 : petSave.pet.level === 'adult' ? 300 : 500;
 
-    this.add.text(cx, 425, `宠物经验: ${xp}/${nextXP} XP  (${levelLabel})`, {
-      fontSize: '13px', color: '#718096', fontFamily: '"PingFang SC", sans-serif',
+    this.add.text(cx, 410, `宠物经验: ${xp}/${nextXP} XP  (${lvLabel})`, {
+      fontSize: '12px', color: COLORS.textMuted, fontFamily: 'Inter, "PingFang SC", sans-serif',
     }).setOrigin(0.5);
 
-    // Buttons
-    this.drawSummaryButton(cx - 75, 520, '🔄 再来一轮', COLORS.primary, () => {
-      AudioEngine.click();
-      this.scene.restart();
+    createGlassButton({
+      scene: this, x: cx - 100, y: 520, width: 150, height: 46,
+      label: '🔄 再来一轮', variant: 'primary',
+      onClick: () => { AudioEngine.click(); this.scene.restart(); },
     });
-    this.drawSummaryButton(cx + 75, 520, '🏠 回家', COLORS.accent, () => {
-      AudioEngine.click();
-      this.scene.start('Home');
-    });
-  }
-
-  private drawSummaryButton(x: number, y: number, label: string, color: number, cb: () => void) {
-    const btn = this.add.graphics();
-    btn.fillStyle(color, 1);
-    btn.fillRoundedRect(x - 65, y - 22, 130, 44, 22);
-    const txt = this.add.text(x, y, label, {
-      fontSize: '15px', color: color === COLORS.accent ? '#2D3748' : '#FFF',
-      fontFamily: '"PingFang SC", sans-serif',
-    }).setOrigin(0.5);
-    btn.setInteractive(
-      new Phaser.Geom.Rectangle(x - 65, y - 22, 130, 44),
-      Phaser.Geom.Rectangle.Contains,
-    );
-    btn.on('pointerdown', () => {
-      this.tweens.add({
-        targets: [btn, txt], scaleX: 0.92, scaleY: 0.92,
-        duration: 80, yoyo: true,
-      });
-      cb();
+    createGlassButton({
+      scene: this, x: cx + 100, y: 520, width: 150, height: 46,
+      label: '🏠 回家', variant: 'back',
+      onClick: () => { AudioEngine.click(); this.scene.start('Home'); },
     });
   }
 }
