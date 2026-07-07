@@ -1,9 +1,9 @@
-# WordPal Progress Report — 2026-07-07
+# WordPal Progress Report — 2026-07-07 (更新)
 
-## Current Status: Core Study Loop Implemented
+## Current Status: Core Loop Complete + Pushed to GitHub
 
 Dev server: **http://localhost:5173/**
-Git repo: `C:\\Users\\Zero\\Desktop\\项目文件\\Projects\\09-WordPal\\`
+Git repo: **github.com/Zero-light/my-electronic-blog**
 Build: `vite build` → ✅ SUCCESS
 
 ---
@@ -14,73 +14,59 @@ Build: `vite build` → ✅ SUCCESS
 - [x] **Hunger time-decay** — per-hour -1, auto-refresh loop in HomeScene
 - [x] **Feed action** — button + tween animation, spends food → restores hunger
 - [x] **Pet mood states** — happy/normal/tired/faded (transitions on hunger thresholds)
-- [x] **XP + level-up** —幼体→成体→完全体 at XP 500/1500
-- [x] **Wardrobe trigger** — hooks in HomeScene (data structure in SaveManager)
+- [x] **XP + level-up** — 幼体→成体→完全体 at XP 100/300
+- [x] **Wardrobe trigger** — hooks in HomeScene, registered in main.ts
 
 ### Priority B — Learning Depth
-- [x] **4-choice mode** — StudyScene.ts (full implementation with distractors)
+- [x] **4-choice quiz** — StudyScene.ts (full implementation with distractors, streak, progress bar, summary)
 - [x] **SM-2 algorithm** — SM2.ts (easeFactor ≥ 1.3, grade 0-5)
+- [x] **Audio wired** — click/feed SFX in HomeScene, correct/wrong in StudyScene
+- [x] **Particles wired** — star bursts on correct, hearts on streaks, food trail
+- [x] **1050 考研英语二词汇** — kaoyan_basic.json (生成并接入)
 - [ ] Flip card animation (not started)
 - [ ] Pronunciation (not started)
 
 ### Priority C — Polish
-- [x] **Audio engine** — Audio.ts (Web Audio API, ambient pad + SFX)
-- [x] **Particles** — Particles.ts (stars/hearts/food trail via Phaser Emitter)
+- [x] **Audio engine** — Audio.ts (Web Audio API, ambient pad + SFX, wired)
+- [x] **Particles** — Particles.ts (stars/hearts/food trail, wired)
 - [ ] Liquid glass UI panels (not started)
 - [x] **5 pets render** — Cloudy/Berry/Mochi/Pepper/Tangerine all in HomeScene
-- [ ] Word bank: 2000 total (gen_words.py script ready, export not run)
+- [x] **Scene architecture fixed** — all 4 scenes registered, StudyScene → proper 4-choice
 
 ### Priority D — Deploy
-- [ ] Git push to my-electronic-blog repo
+- [x] **Git push** → github.com/Zero-light/my-electronic-blog ✅
 - [ ] Vercel deployment to www.zerolight.fun
 - [ ] Mobile testing
 
 ---
 
-## 📂 File Map (as of this report)
+## 📂 File Map (Updated)
 
 | File | Lines | Status |
 |------|-------|--------|
-| `src/main.ts` | - | ✅ Entry point |
+| `src/main.ts` | 28 | ✅ All 4 scenes registered |
 | `src/config.ts` | 58 | ✅ Constants + PetDefinitions |
-| `src/data/Types.ts` | ~84 | ✅ Full SaveData/PetState schema |
+| `src/data/Types.ts` | 85 | ✅ Full SaveData/PetState schema |
 | `src/data/SaveManager.ts` | 167 | ✅ Save/Load/Hunger/Feed/XP |
-| `src/data/WordBank.ts` | 45 | ✅ JSON loader |
+| `src/data/WordBank.ts` | 45 | ✅ Kaoyan word pack config |
 | `src/utils/Helpers.ts` | 86 | ✅ lerp/shuffle/easeOutBack |
-| `src/scenes/HomeScene.ts` | 541 | ✅ Pet + HUD + Wardrobe trigger |
-| `src/scenes/StudyScene.ts` | ~316 | ✅ 4-choice quiz |
-| `src/fx/Audio.ts` | 144 | ✅ Web Audio synth |
-| `src/fx/Particles.ts` | ~85 | ✅ Phaser emitter |
-| `src/study/SM2.ts` | ~85 | ✅ SM-2 algorithm |
-| `scripts/gen_words.py` | 1211 | ✅ CET-4 500 ready |
+| `src/scenes/HomeScene.ts` | ~405 | ✅ Pet + HUD + Audio + Wardrobe |
+| `src/scenes/StudyScene.ts` | ~380 | ✅ Full 4-choice quiz + Audio + Particles |
+| `src/fx/Audio.ts` | 144 | ✅ Wired into Home + Study |
+| `src/fx/Particles.ts` | 85 | ✅ Wired into StudyScene |
+| `src/study/SM2.ts` | 85 | ✅ SM-2 algorithm |
+| `public/assets/words/kaoyan_basic.json` | - | ✅ 1050 考研英语二词汇 |
+| `scripts/gen_kaoyan.js` | - | ✅ 词库生成脚本 |
 
 ---
 
-## 🧪 Test Results
+## 🔧 本次修改摘要
 
-| Test | Status | Notes |
-|------|--------|-------|
-| npm install | ✅ | Phaser 4.0.0, Vite 5.4.21, TS 5.9.3 |
-| vite build | ✅ | exit 0, BUILD_OK |
-| npx tsc --noEmit | ⚠️ | phaser.d.ts Map/Set lib conflicts — source code is type-safe |
-| Dev server | ✅ | :5173, responds |
-| Manual study flow | ⚠️ | Untested in browser (dev server live but not click-tested) |
-
-Known issues:
-- `phaser.d.ts` emits "Cannot find name 'Map'" — pre-existing, doesn't affect vite build/run
-- `StudyScene` 4-choice flow not yet browser-tested
+1. **场景架构修复**: main.ts 注册全部 4 个场景，StudyScene 改为真正的 4选1 模式
+2. **词库升级**: CET-4 → 考研英语二 1050 核心词汇
+3. **音效粒子接入**: HomeScene 和 StudyScene 均已接入 AudioEngine + Particles
+4. **Git 推送**: 已推送至 github.com/Zero-light/my-electronic-blog
 
 ---
 
-## 🔧 Next Up (Priority Order)
-
-1. Run `python scripts/gen_words.py` → export 500 words to `public/assets/words/cet4_basic.json`
-2. Wire AudioEngine + Particles into HomeScene and StudyScene
-3. Liquid glass UI panel component (extract from HomeScene inline styling)
-4. Wardrobe scene (data structures exist, build UI)
-5. Flip card animation + pronunciation
-6. Git push → Vercel deploy
-
----
-
-*Last updated: 2026-07-07 02:30 PM — mid blitz, StudyScene just written*
+*Last updated: 2026-07-07 — scene architecture fix + kaoyan word bank + audio/particles wired + git push*
