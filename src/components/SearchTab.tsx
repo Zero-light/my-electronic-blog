@@ -84,13 +84,19 @@ export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ on
         )}
       </div>
 
-      {/* Quick actions — Learn & Review */}
+      {/* Quick actions — Learn & Review with counts */}
       <div className="flex gap-3 justify-center pb-4 pt-2">
         <button className="glass-btn px-6 py-2.5" onClick={() => onNavigate?.('learn')}>
-          <Brain size={16} /> 开始学习
+          <Brain size={16} /> 开始学习 ({save.wordbook.filter(w=>w.status==='new').length}词)
         </button>
         <button className="glass-btn px-6 py-2.5" onClick={() => onNavigate?.('review')}>
-          <RotateCcw size={16} /> 开始复习
+          <RotateCcw size={16} /> 开始复习 ({
+            save.wordbook.filter(w=>{
+              if(!w.lastReview)return true;
+              const n=new Date(w.lastReview);n.setDate(n.getDate()+w.intervalDays);
+              return n<=new Date();
+            }).length
+          }词)
         </button>
       </div>
     </div>

@@ -18,7 +18,7 @@ async function loadBank(): Promise<any[]> {
 
 type LearnPhase = 'question' | 'reveal' | 'done';
 
-export const LearnTab: React.FC = () => {
+export const LearnTab: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   const { save, startLearn, answerLearn, nextLearn, currentLearnWord, learnChoices, learnAnswered } = useGameStore();
   const [phase, setPhase] = useState<LearnPhase>('question');
   const [bank, setBank] = useState<any[]>([]);
@@ -58,6 +58,7 @@ export const LearnTab: React.FC = () => {
         ) : (
           <p className="text-white/25 text-xs">去搜索页面添加新词 📖</p>
         )}
+        {onBack && <button className="text-white/30 text-xs mt-2" onClick={onBack}>← 返回首页</button>}
       </div>
     );
   }
@@ -70,12 +71,14 @@ export const LearnTab: React.FC = () => {
         <p className="text-white font-semibold">完成!</p>
         <button className="glass-btn" onClick={handleStart}>继续学习</button>
         <button className="text-white/30 text-xs" onClick={() => setPhase('question')}>返回</button>
+        {onBack && <button className="text-white/30 text-xs" onClick={onBack}>← 返回首页</button>}
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-center w-full h-full pt-8 px-6 overflow-y-auto">
+    <div className="flex flex-col items-center w-full h-full pt-4 px-6 overflow-y-auto">
+      {onBack && <button className="text-white/30 text-xs self-start mb-2" onClick={onBack}>← 返回首页</button>}
       {/* Word card */}
       <div className="glass-panel w-full max-w-lg p-8 mb-6 flex flex-col items-center text-center">
         <h1 className="text-5xl font-extrabold text-white mb-2">{currentLearnWord.word}</h1>

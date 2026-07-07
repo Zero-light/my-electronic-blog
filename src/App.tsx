@@ -11,6 +11,7 @@ import { ChallengeTab } from './components/ChallengeTab';
 const App: React.FC = () => {
   const init = useGameStore(s => s.init);
   const [activeTab, setActiveTab] = useState<TabId>('search');
+  const [subView, setSubView] = useState<'search' | 'learn' | 'review'>('search');
 
   useEffect(() => { init(); }, [init]);
 
@@ -18,13 +19,17 @@ const App: React.FC = () => {
     <div className="w-full h-full relative overflow-hidden">
       <GradientBg />
       <div className="absolute inset-0 pb-24 z-40 overflow-y-auto">
-        {activeTab === 'search' && <SearchTab onNavigate={(t) => setActiveTab(t as TabId)} />}
-        {activeTab === 'wordbook' && <WordbookTab />}
-        {activeTab === 'learn' && <LearnTab />}
-        {activeTab === 'review' && <ReviewTab />}
-        {activeTab === 'challenge' && <ChallengeTab />}
+        {subView === 'learn' && <LearnTab onBack={() => { setSubView('search'); setActiveTab('wordbook'); }} />}
+        {subView === 'review' && <ReviewTab onBack={() => { setSubView('search'); setActiveTab('wordbook'); }} />}
+        {subView === 'search' && (
+          <>
+            {activeTab === 'search' && <SearchTab onNavigate={(t) => setSubView(t as 'learn' | 'review')} />}
+            {activeTab === 'wordbook' && <WordbookTab />}
+            {activeTab === 'challenge' && <ChallengeTab />}
+          </>
+        )}
       </div>
-      <TabBar active={activeTab} onChange={setActiveTab} />
+      <TabBar active={activeTab} onChange={(t) => { setActiveTab(t); setSubView('search'); }} />
     </div>
   );
 };

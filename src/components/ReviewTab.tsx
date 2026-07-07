@@ -13,7 +13,7 @@ async function loadBank(): Promise<any[]> {
   rvDone = true; return rv;
 }
 
-export const ReviewTab: React.FC = () => {
+export const ReviewTab: React.FC<{ onBack?: () => void }> = ({ onBack }) => {
   const { save, getDueWords, updateReview } = useGameStore();
   const [bank, setBank] = useState<any[]>([]);
   const [due, setDue] = useState<any[]>([]);
@@ -38,6 +38,7 @@ export const ReviewTab: React.FC = () => {
         {due.length > 0 && index >= due.length && (
           <button className="glass-btn text-xs" onClick={() => { setIndex(0); setDone(true); }}>重新开始</button>
         )}
+        {onBack && <button className="text-white/30 text-xs mt-2" onClick={onBack}>← 返回首页</button>}
       </div>
     );
   }
@@ -53,7 +54,8 @@ export const ReviewTab: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-full pt-8 px-6">
+    <div className="flex flex-col items-center w-full h-full pt-4 px-6">
+      {onBack && <button className="text-white/30 text-xs self-start mb-2" onClick={onBack}>← 返回首页</button>}
       {/* Masked word card */}
       <div className="glass-panel w-full max-w-lg p-10 mb-6 flex flex-col items-center text-center min-h-[280px] justify-center">
         <h1 className="text-5xl font-extrabold text-white mb-3">{word.word}</h1>

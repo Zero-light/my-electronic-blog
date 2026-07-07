@@ -1,15 +1,13 @@
 import React from 'react';
-import { Search, BookOpen, Brain, RotateCcw, Zap } from 'lucide-react';
+import { Search, BookOpen, Zap } from 'lucide-react';
 
-export type TabId = 'search' | 'wordbook' | 'learn' | 'review' | 'challenge';
+export type TabId = 'search' | 'wordbook' | 'challenge';
 
 interface TabBarProps { active: TabId; onChange: (tab: TabId) => void; }
 
 const TABS: { id: TabId; label: string; Icon: React.FC<{ size?: number }> }[] = [
   { id: 'search', label: '查词', Icon: (p) => <Search {...p} /> },
   { id: 'wordbook', label: '生词本', Icon: (p) => <BookOpen {...p} /> },
-  { id: 'learn', label: '学习', Icon: (p) => <Brain {...p} /> },
-  { id: 'review', label: '复习', Icon: (p) => <RotateCcw {...p} /> },
   { id: 'challenge', label: '挑战', Icon: (p) => <Zap {...p} /> },
 ];
 
