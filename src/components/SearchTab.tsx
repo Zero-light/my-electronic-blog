@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, BookmarkPlus, BookOpen, ChevronRight } from 'lucide-react';
+import { Search, BookmarkPlus, BookOpen, Brain, RotateCcw } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
 
 const sr: any[] = []; let srDone = false;
@@ -10,7 +10,7 @@ async function loadBank(): Promise<any[]> {
   srDone = true; return sr;
 }
 
-export const SearchTab: React.FC = () => {
+export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }) => {
   const { save, search, addWord } = useGameStore();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<any[]>([]);
@@ -82,6 +82,16 @@ export const SearchTab: React.FC = () => {
             <p className="text-white/25 text-sm">输入单词搜索，加入生词本</p>
           </div>
         )}
+      </div>
+
+      {/* Quick actions — Learn & Review */}
+      <div className="flex gap-3 justify-center pb-4 pt-2">
+        <button className="glass-btn px-6 py-2.5" onClick={() => onNavigate?.('learn')}>
+          <Brain size={16} /> 开始学习
+        </button>
+        <button className="glass-btn px-6 py-2.5" onClick={() => onNavigate?.('review')}>
+          <RotateCcw size={16} /> 开始复习
+        </button>
       </div>
     </div>
   );
