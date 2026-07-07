@@ -264,7 +264,7 @@ export class HomeScene extends Phaser.Scene {
         this.refreshPet();
         this.showFeedTween();
       } else {
-        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 250, '食物不够!', {
+        this.add.text(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 160, '食物不够!', {
           fontFamily: 'sans-serif', fontSize: '18px', color: '#FF6B6B',
         }).setOrigin(0.5).setAlpha(1)
           .setDepth(10);
@@ -364,8 +364,8 @@ export class WardrobeScene extends Phaser.Scene {
     pets.forEach((pt, i) => {
       const col = i % 3;
       const row = Math.floor(i / 3);
-      const x = 80 + col * 120;
-      const y = 200 + row * 180;
+      const x = GAME_WIDTH / 2 + (col - 1) * 160;
+      const y = 220 + row * 180;
       const def = PET_DEFINITIONS[pt];
       const unlocked = save.unlockedPets.indexOf(pt) !== -1;
 

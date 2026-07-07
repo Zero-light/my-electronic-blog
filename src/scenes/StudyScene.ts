@@ -109,13 +109,13 @@ export class StudyScene extends Phaser.Scene {
     // 4 choice buttons
     this.choiceButtons = [];
     for (let i = 0; i < 4; i++) {
-      const y = 290 + i * 76;
+      const y = 210 + i * 64;
       const btn = this.createChoiceButton(i, y);
       this.choiceButtons.push(btn);
     }
 
     // Hint text (shows correct answer on wrong)
-    this.hintText = this.add.text(GAME_WIDTH / 2, 620, '', {
+    this.hintText = this.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 120, '', {
       fontSize: '14px', color: '#FF6B6B', fontFamily: '"PingFang SC", sans-serif',
       align: 'center',
     }).setOrigin(0.5).setAlpha(0).setDepth(5);
@@ -352,20 +352,20 @@ export class StudyScene extends Phaser.Scene {
 
     // Particle burst
     if (this.particles) {
-      this.particles.emitStars(GAME_WIDTH / 2, 180, this.streakCount >= 3 ? 12 : 6);
+      this.particles.emitStars(GAME_WIDTH / 2, 150, this.streakCount >= 3 ? 12 : 6);
       if (this.streakCount >= 5) {
-        this.particles.emitHeart(GAME_WIDTH / 2 + 40, 150);
+        this.particles.emitHeart(GAME_WIDTH / 2 + 40, 120);
       }
     }
 
     // Feedback text
-    const feedback = this.add.text(GAME_WIDTH / 2, 270, `✓ 正确  ${foodLabel}`, {
+    const feedback = this.add.text(GAME_WIDTH / 2, 220, `✓ 正确  ${foodLabel}`, {
       fontSize: '16px', color: '#155724', fontFamily: '"PingFang SC", sans-serif',
       backgroundColor: '#D4EDDA',
       padding: { left: 14, right: 14, top: 8, bottom: 8 },
     }).setOrigin(0.5).setDepth(4);
     this.tweens.add({
-      targets: feedback, y: 230, alpha: 0, duration: 1000, delay: 200,
+      targets: feedback, y: 180, alpha: 0, duration: 1000, delay: 200,
       onComplete: () => feedback.destroy(),
     });
   }
@@ -405,11 +405,11 @@ export class StudyScene extends Phaser.Scene {
     // Summary card
     const card = this.add.graphics();
     card.fillStyle(0xFFFFFF, 0.95);
-    card.fillRoundedRect(30, 120, GAME_WIDTH - 60, 380, 24);
+    card.fillRoundedRect(30, 60, GAME_WIDTH - 60, 320, 24);
     card.lineStyle(2, COLORS.primary, 0.3);
-    card.strokeRoundedRect(30, 120, GAME_WIDTH - 60, 380, 24);
+    card.strokeRoundedRect(30, 60, GAME_WIDTH - 60, 320, 24);
 
-    this.add.text(cx, 170, '🎉 学习完成!', {
+    this.add.text(cx, 100, '🎉 学习完成!', {
       fontSize: '28px', color: '#2D3748', fontFamily: '"PingFang SC", sans-serif',
     }).setOrigin(0.5);
 
@@ -427,7 +427,7 @@ export class StudyScene extends Phaser.Scene {
     ];
 
     stats.forEach((s, i) => {
-      const y = 230 + i * 42;
+      const y = 150 + i * 36;
       this.add.text(cx - 80, y, s.label, {
         fontSize: '16px', color: '#718096', fontFamily: '"PingFang SC", sans-serif',
       }).setOrigin(0, 0.5);
@@ -442,16 +442,16 @@ export class StudyScene extends Phaser.Scene {
     const levelLabel = petSave.pet.level === 'baby' ? '幼体' : petSave.pet.level === 'adult' ? '成体' : '完全体';
     const nextXP = petSave.pet.level === 'baby' ? 100 : petSave.pet.level === 'adult' ? 300 : 500;
 
-    this.add.text(cx, 456, `宠物经验: ${xp}/${nextXP} XP  (${levelLabel})`, {
+    this.add.text(cx, 380, `宠物经验: ${xp}/${nextXP} XP  (${levelLabel})`, {
       fontSize: '13px', color: '#718096', fontFamily: '"PingFang SC", sans-serif',
     }).setOrigin(0.5);
 
     // Buttons
-    this.drawSummaryButton(cx - 75, 520, '🔄 再来一轮', COLORS.primary, () => {
+    this.drawSummaryButton(cx - 75, 440, '🔄 再来一轮', COLORS.primary, () => {
       AudioEngine.click();
       this.scene.restart();
     });
-    this.drawSummaryButton(cx + 75, 520, '🏠 回家', COLORS.accent, () => {
+    this.drawSummaryButton(cx + 75, 440, '🏠 回家', COLORS.accent, () => {
       AudioEngine.click();
       this.scene.start('Home');
     });
