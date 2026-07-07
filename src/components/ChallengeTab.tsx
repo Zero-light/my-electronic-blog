@@ -4,7 +4,7 @@ import { useGameStore } from '../store/gameStore';
 import { getChallengeTier } from '../data/saveManager';
 
 type Mode = 'menu' | 'timed' | 'result';
-let bankCache: any[] | null = null;
+const chBank: any[] = []; let chDone = false;
 
 export const ChallengeTab: React.FC = () => {
   const { save, saveChallenge } = useGameStore();
@@ -24,7 +24,7 @@ export const ChallengeTab: React.FC = () => {
 
   useEffect(() => {
     fetch('/assets/words/wordbank.json').then(r => r.json()).then(d => {
-      bankCache = d.words;
+      chBank.push(...(d.words || [])); chDone = true;
     });
   }, []);
 
@@ -35,8 +35,8 @@ export const ChallengeTab: React.FC = () => {
   }, [mode, timeLeft]);
 
   const startTimed = () => {
-    if (!bankCache) return;
-    const batch = bankCache.sort(() => Math.random() - 0.5).slice(0, 50);
+    if (!chBank.length) return;
+    const batch = [...chBank].sort(() => Math.random() - 0.5).slice(0, 50);
     setWords(batch); setIndex(0); setScore(0); setCorrect(0); setStreak(0); setTimeLeft(60); setMode('timed');
   };
 
