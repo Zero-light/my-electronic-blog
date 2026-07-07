@@ -1,0 +1,486 @@
+{
+  "name": "CET-4 Core Vocabulary",
+  "description": "500 CET-4 high-frequency words",
+  "words": [
+    {
+      "id": "c4_0001",
+      "word": "abandon",
+      "phonetic": "/əˈbændən/",
+      "meaning": "放弃",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0002",
+      "word": "ability",
+      "phonetic": "/əˈbɪləti/",
+      "meaning": "能力",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0003",
+      "word": "abnormal",
+      "phonetic": "/æbˈnɔːml/",
+      "meaning": "不正常的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0004",
+      "word": "aboard",
+      "phonetic": "/əˈbɔːd/",
+      "meaning": "在船上",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0005",
+      "word": "abolish",
+      "phonetic": "/əˈbɒlɪʃ/",
+      "meaning": "废除",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0006",
+      "word": "abroad",
+      "phonetic": "/əˈbrɔːd/",
+      "meaning": "在国外",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0007",
+      "word": "absence",
+      "phonetic": "/ˈæbsəns/",
+      "meaning": "缺席",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0008",
+      "word": "absolute",
+      "phonetic": "/ˈæbsəluːt/",
+      "meaning": "绝对的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0009",
+      "word": "absorb",
+      "phonetic": "/əbˈzɔːb/",
+      "meaning": "吸收",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0010",
+      "word": "abstract",
+      "phonetic": "/ˈæbstrækt/",
+      "meaning": "抽象的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0011",
+      "word": "abundant",
+      "phonetic": "/əˈbʌndənt/",
+      "meaning": "丰富的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0012",
+      "word": "abuse",
+      "phonetic": "/əˈbjuːz/",
+      "meaning": "滥用",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0013",
+      "word": "academic",
+      "phonetic": "/ˌækəˈdemɪk/",
+      "meaning": "学术的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0014",
+      "word": "accelerate",
+      "phonetic": "/əkˈseləreɪt/",
+      "meaning": "加速",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0015",
+      "word": "access",
+      "phonetic": "/ˈækses/",
+      "meaning": "通道",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0016",
+      "word": "accommodate",
+      "phonetic": "/əˈkɒmədeɪt/",
+      "meaning": "容纳",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0017",
+      "word": "accompany",
+      "phonetic": "/əˈkʌmpəni/",
+      "meaning": "陪伴",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0018",
+      "word": "accomplish",
+      "phonetic": "/əˈkʌmplɪʃ/",
+      "meaning": "完成",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0019",
+      "word": "account",
+      "phonetic": "/əˈkaʊnt/",
+      "meaning": "账户",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0020",
+      "word": "accumulate",
+      "phonetic": "/əˈkjuːmjəleɪt/",
+      "meaning": "积累",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0021",
+      "word": "accurate",
+      "phonetic": "/ˈækjərət/",
+      "meaning": "精确的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0022",
+      "word": "accuse",
+      "phonetic": "/əˈkjuːz/",
+      "meaning": "指控",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0023",
+      "word": "achieve",
+      "phonetic": "/əˈtʃiːv/",
+      "meaning": "实现",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0024",
+      "word": "acknowledge",
+      "phonetic": "/əkˈnɒlɪdʒ/",
+      "meaning": "承认",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0025",
+      "word": "acquire",
+      "phonetic": "/əˈkwaɪər/",
+      "meaning": "获得",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0026",
+      "word": "adapt",
+      "phonetic": "/əˈdæpt/",
+      "meaning": "适应",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0027",
+      "word": "adequate",
+      "phonetic": "/ˈædɪkwət/",
+      "meaning": "足够的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0028",
+      "word": "adjust",
+      "phonetic": "/əˈdʒʌst/",
+      "meaning": "调整",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0029",
+      "word": "administration",
+      "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
+      "meaning": "管理",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0030",
+      "word": "admire",
+      "phonetic": "/ədˈmaɪər/",
+      "meaning": "钦佩",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0031",
+      "word": "admission",
+      "phonetic": "/ədˈmɪʃn/",
+      "meaning": "准许进入",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0032",
+      "word": "adopt",
+      "phonetic": "/əˈdɒpt/",
+      "meaning": "采纳",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0033",
+      "word": "advance",
+      "phonetic": "/ədˈvɑːns/",
+      "meaning": "前进",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0034",
+      "word": "advantage",
+      "phonetic": "/ədˈvɑːntɪdʒ/",
+      "meaning": "优势",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0035",
+      "word": "advertise",
+      "phonetic": "/ˈædvətaɪz/",
+      "meaning": "做广告",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0036",
+      "word": "affair",
+      "phonetic": "/əˈfeər/",
+      "meaning": "事务",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0037",
+      "word": "affect",
+      "phonetic": "/əˈfekt/",
+      "meaning": "影响",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0038",
+      "word": "afford",
+      "phonetic": "/əˈfɔːd/",
+      "meaning": "负担得起",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0039",
+      "word": "agency",
+      "phonetic": "/ˈeɪdʒənsi/",
+      "meaning": "代理机构",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0040",
+      "word": "aggressive",
+      "phonetic": "/əˈɡresɪv/",
+      "meaning": "侵略性的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0041",
+      "word": "aid",
+      "phonetic": "/eɪd/",
+      "meaning": "援助",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0042",
+      "word": "alarm",
+      "phonetic": "/əˈlɑːm/",
+      "meaning": "警报",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0043",
+      "word": "alert",
+      "phonetic": "/əˈlɜːt/",
+      "meaning": "警觉的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0044",
+      "word": "allocate",
+      "phonetic": "/ˈæləkeɪt/",
+      "meaning": "分配",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0045",
+      "word": "alter",
+      "phonetic": "/ˈɔːltər/",
+      "meaning": "改变",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0046",
+      "word": "alternative",
+      "phonetic": "/ɔːlˈtɜːnətɪv/",
+      "meaning": "替代的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0047",
+      "word": "amateur",
+      "phonetic": "/ˈæmətər/",
+      "meaning": "业余的",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    },
+    {
+      "id": "c4_0048",
+      "word": "ambition",
+      "phonetic": "/æmˈbɪʃn/",
+      "meaning": "雄心",
+      "tags": [
+        "cet4",
+        "高频"
+      ]
+    }
+  ]
+}
