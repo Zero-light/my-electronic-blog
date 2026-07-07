@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Apple, Hand } from 'lucide-react';
+import { Apple, Hand, MessageCircle } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
 import { Pet } from './Pet';
 import { ProgressBar } from './ProgressBar';
 import { getLevelInfo, getNextEvo } from '../data/saveManager';
 
 export const HomeTab: React.FC = () => {
-  const { save, doFeed, doPet } = useGameStore();
+  const { save, doFeed, doPet, openDialogue } = useGameStore();
   const [petState, setPetState] = useState<'idle' | 'eating'>('idle');
   const [showYum, setShowYum] = useState(false);
   const [petMsg, setPetMsg] = useState('');
@@ -116,6 +116,9 @@ export const HomeTab: React.FC = () => {
         </button>
         <button className="glass-btn" onClick={handlePet}>
           <Hand size={15} /> 摸头
+        </button>
+        <button className="glass-btn glass-btn-shop" onClick={openDialogue}>
+          <MessageCircle size={15} /> 对话
         </button>
       </div>
     </div>

@@ -1,7 +1,3 @@
-/**
- * App.tsx — WordPal with Tab Navigation
- * Tabs: Home | Learn | Review | Backpack | Shop
- */
 import React, { useEffect, useState } from 'react';
 import { useGameStore } from './store/gameStore';
 import { GradientBg } from './components/GradientBg';
@@ -9,13 +5,16 @@ import { TabBar, type TabId } from './components/TabBar';
 import { HomeTab } from './components/HomeTab';
 import { LearnTab } from './components/LearnTab';
 import { ReviewTab } from './components/ReviewTab';
-import { BackpackTab } from './components/BackpackTab';
+import { ChallengeTab } from './components/ChallengeTab';
 import { ShopTab } from './components/ShopTab';
+import { DialogueModal } from './components/DialogueModal';
+import { AchievementPopup } from './components/AchievementPopup';
 
 const App: React.FC = () => {
   const init = useGameStore(s => s.init);
   const streakReward = useGameStore(s => s.showStreakReward);
   const dismissStreak = useGameStore(s => s.dismissStreakReward);
+  const showDialogue = useGameStore(s => s.showDialogue);
   const [activeTab, setActiveTab] = useState<TabId>('home');
 
   useEffect(() => { init(); }, [init]);
@@ -35,22 +34,27 @@ const App: React.FC = () => {
             <p className="text-white/50 text-sm mb-2">
               连续 {useGameStore.getState().save.dailyStreak} 天打卡奖励!
             </p>
-            <div className="glass-chip mb-4">+{streakReward.tier * 5} 💎 钻石</div>
+            <div className="glass-chip mb-4">+{streakReward.tier * 5} 💎</div>
             <button className="glass-btn w-full" onClick={dismissStreak}>收下!</button>
           </div>
         </div>
       )}
+
+      {/* Dialogue modal */}
+      {showDialogue && <DialogueModal />}
+
+      {/* Achievement popup */}
+      <AchievementPopup />
 
       {/* Tab content */}
       <div className="absolute inset-0 pb-24 z-40 overflow-y-auto">
         {activeTab === 'home' && <HomeTab />}
         {activeTab === 'learn' && <LearnTab />}
         {activeTab === 'review' && <ReviewTab />}
-        {activeTab === 'backpack' && <BackpackTab />}
-        {activeTab === 'shop' && <ShopTab />}
+        {activeTab === 'challenge' && <ChallengeTab />}
+        {activeTab === 'backpack' && <ShopTab />}
       </div>
 
-      {/* Tab bar */}
       <TabBar active={activeTab} onChange={setActiveTab} />
     </div>
   );

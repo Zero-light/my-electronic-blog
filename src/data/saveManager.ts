@@ -28,6 +28,7 @@ function createDefault(): SaveData {
     ownedItems: [], equippedItems: {},
     weeklyStats: [], dailyWordBank: [], lastDailyRefresh: today,
     offlineRewards: null, streakRewards: [],
+    challengeRecords: [], dialogueIndex: 0, lastBossDate: '', bossHighScore: 0,
   };
 }
 
@@ -42,6 +43,10 @@ export function loadSave(): SaveData {
       if (!d.streakRewards) d.streakRewards = [];
       if (!d.pet.level || d.pet.level === 'adult') d.pet.level = recalcLevel(d);
       if (!d.totalWordsReviewed) d.totalWordsReviewed = 0;
+      if (!d.challengeRecords) d.challengeRecords = [];
+      if (!d.dialogueIndex) d.dialogueIndex = 0;
+      if (!d.bossHighScore) d.bossHighScore = 0;
+      if (!d.lastBossDate) d.lastBossDate = '';
       return d;
     }
   } catch {}
@@ -246,4 +251,150 @@ export function refreshDaily(save: SaveData): SaveData {
 export function getTodayStats(save: SaveData) {
   const today = new Date().toISOString().slice(0, 10);
   return save.weeklyStats.find(w => w.date === today) || { date: today, words: 0, correct: 0 };
+}
+
+// ── Challenge Records ─────────────────────────────────
+export function saveChallengeRecord(save: SaveData, score: number, timeUsed: number, correct: number, total: number) {
+  save.challengeRecords.push({ date: new Date().toISOString().slice(0, 10), score, time: timeUsed, correct, total });
+  if (save.challengeRecords.length > 50) save.challengeRecords.shift();
+  saveWrite(save);
+}
+
+export function getHighScore(save: SaveData): number {
+  return save.challengeRecords.reduce((max, r) => Math.max(max, r.score), 0);
+}
+
+// ── Achievements (comprehensive) ──────────────────────
+export interface AchievementCheck { id: string; name: string; desc: string; icon: string; unlocked: boolean; }
+export function checkAllAchievements(save: SaveData): AchievementCheck[] {
+  const checks: AchievementCheck[] = [];
+  const today = new Date().toISOString().slice(0, 10);
+  const todayStats = getTodayStats(save);
+  const highScore = getHighScore(save);
+
+  // Word milestones
+  const wordTiers = [50, 100, 200, 500, 800, 1000, 1500];
+  wordTiers.forEach(n => {
+    if (save.totalWordsLearned >= n && !save.achievements.includes(`words_${n}`)) {
+      checks.push({ id: `words_${n}`, name: `📚 词汇达人`, desc: `累计学习 ${n} 个单词`, icon: '📚', unlocked: false });
+    }
+  });
+
+  // Streak
+  [3, 7, 14, 30, 60].forEach(n => {
+    if (save.dailyStreak >= n && !save.achievements.includes(`streak_${n}`)) {
+      checks.push({ id: `streak_${n}`, name: `🔥 坚持之星`, desc: `连续打卡 ${n} 天`, icon: '🔥', unlocked: false });
+    }
+  });
+
+  // Challenge scores
+  const challengeTiers = [500, 1000, 2000, 5000, 10000];
+  challengeTiers.forEach(n => {
+    if (highScore >= n && !save.achievements.includes(`chal_${n}`)) {
+      checks.push({ id: `chal_${n}`, name: `⚡ 挑战王者`, desc: `挑战模式最高分达到 ${n}`, icon: '⚡', unlocked: false });
+    }
+  });
+
+  // Daily volume
+  if (todayStats.words >= 50 && !save.achievements.includes('daily_50')) {
+    checks.push({ id: 'daily_50', name: '📖 学霸日', desc: '单日学习 50 个单词', icon: '📖', unlocked: false });
+  }
+  if (todayStats.words >= 100 && !save.achievements.includes('daily_100')) {
+    checks.push({ id: 'daily_100', name: '📖 卷王日', desc: '单日学习 100 个单词', icon: '📖', unlocked: false });
+  }
+
+  // Perfect challenge
+  const perfectChallenges = save.challengeRecords.filter(r => r.correct === r.total && r.total >= 10);
+  if (perfectChallenges.length >= 1 && !save.achievements.includes('perfect_1')) {
+    checks.push({ id: 'perfect_1', name: '🎯 百发百中', desc: '完成一次满分挑战', icon: '🎯', unlocked: false });
+  }
+
+  // Total review count
+  if ((save.totalWordsReviewed || 0) >= 1000 && !save.achievements.includes('review_1k')) {
+    checks.push({ id: 'review_1k', name: '🔄 复习达人', desc: '累计复习 1000 次', icon: '🔄', unlocked: false });
+  }
+
+  // Evolution
+  if (save.pet.level === 'perfect' && !save.achievements.includes('evo_perfect')) {
+    checks.push({ id: 'evo_perfect', name: '🦄 完全体', desc: '宠物进化到完全体', icon: '🦄', unlocked: false });
+  }
+
+  return checks;
+}
+
+export function unlockAchievement(save: SaveData, id: string) {
+  if (!save.achievements.includes(id)) {
+    save.achievements.push(id);
+    addDiamonds(save, 3); // bonus for any achievement
+    saveWrite(save);
+    return true;
+  }
+  return false;
+}
+
+// ── Pet Dialogue Bank ─────────────────────────────────
+export const DIALOGUE_BANK = [
+  {
+    text: 'Do you like learning English?',
+    options: [
+      { text: 'Yes, I love it!', correct: true, response: 'Me too! Every word is a new adventure! 🌟' },
+      { text: 'It\'s okay, I guess.', correct: false, response: 'Keep going! Small steps lead to big progress 💪' },
+      { text: 'No, it\'s too hard.', correct: false, response: 'Don\'t give up! I\'m here to help you 🐾' },
+    ],
+  },
+  {
+    text: 'What\'s your favorite word you learned today?',
+    options: [
+      { text: 'I liked "perseverance"!', correct: true, response: 'Great choice! Perseverance is the key to mastery ✨' },
+      { text: 'I can\'t remember any.', correct: false, response: 'That\'s okay! Let\'s review together 📖' },
+      { text: 'All words are the same to me.', correct: false, response: 'Try to find beauty in each word, they all have stories! 📚' },
+    ],
+  },
+  {
+    text: 'How do you stay motivated to study?',
+    options: [
+      { text: 'I set small goals every day.', correct: true, response: 'That\'s smart! Small goals make big dreams come true 🎯' },
+      { text: 'I just force myself.', correct: false, response: 'Maybe try making it fun? Play some challenge games! ⚡' },
+      { text: 'I don\'t... that\'s why I\'m here.', correct: false, response: 'Then let me be your motivation! Study with me every day 🤝' },
+    ],
+  },
+  {
+    text: 'Do you believe practice makes perfect?',
+    options: [
+      { text: 'Absolutely!', correct: true, response: 'I agree 100%! Let\'s practice together right now 📝' },
+      { text: 'Maybe, but talent matters more.', correct: false, response: 'Talent helps, but hard work beats talent every time! 💪' },
+      { text: 'I\'m not sure.', correct: false, response: 'Try it and see! Practice this week, you\'ll surprise yourself 🌱' },
+    ],
+  },
+  {
+    text: 'What would you do if you met an English speaker?',
+    options: [
+      { text: 'I\'d try my best to talk!', correct: true, response: 'That\'s the spirit! Mistakes are just stepping stones 🪜' },
+      { text: 'I\'d run away!', correct: false, response: 'Haha! But they\'re probably friendly. Just say "Hello!" 👋' },
+      { text: 'I\'d use a translator app.', correct: false, response: 'Apps help, but your own words have magic in them! 🪄' },
+    ],
+  },
+  {
+    text: 'Isn\'t it amazing how words connect people?',
+    options: [
+      { text: 'Yes, language is beautiful!', correct: true, response: 'It truly is! Every word you learn connects you to millions more people 🌍' },
+      { text: 'I never thought about it that way.', correct: false, response: 'Now you know! Language is the bridge between hearts 💕' },
+      { text: 'I just want to pass my exam...', correct: false, response: 'Fair enough! But the skills last a lifetime, not just for exams 🎓' },
+    ],
+  },
+];
+
+export function getDialogue(index: number) {
+  return DIALOGUE_BANK[index % DIALOGUE_BANK.length];
+}
+
+export function saveBossResult(save: SaveData, score: number) {
+  if (score > save.bossHighScore) save.bossHighScore = score;
+  save.lastBossDate = new Date().toISOString().slice(0, 10);
+  addDiamonds(save, Math.floor(score / 50));
+  saveWrite(save);
+}
+
+export function canPlayBossToday(save: SaveData): boolean {
+  return save.lastBossDate !== new Date().toISOString().slice(0, 10);
 }

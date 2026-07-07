@@ -39,9 +39,20 @@ export interface OfflineReward {
 }
 
 export interface StreakReward {
-  tier: 1 | 2 | 3; // 3d flame, 7d chest, 30d legendary
-  claimed: boolean;
-  itemId?: string;
+  tier: 1 | 2 | 3; claimed: boolean; itemId?: string;
+}
+
+// New systems
+export interface ChallengeRecord {
+  date: string; score: number; time: number; correct: number; total: number;
+}
+export interface DialogueLine {
+  speaker: 'pet'; text: string;
+  options: { text: string; correct: boolean; response: string }[];
+}
+export interface AchievementDef {
+  id: string; name: string; desc: string; icon: string;
+  check: (s: SaveData) => boolean;
 }
 
 export interface SaveData {
@@ -63,6 +74,11 @@ export interface SaveData {
   lastDailyRefresh: string;
   offlineRewards: OfflineReward | null;
   streakRewards: StreakReward[];
+  // New gameplay systems
+  challengeRecords: ChallengeRecord[];
+  dialogueIndex: number; // rotate through dialogues
+  lastBossDate: string;
+  bossHighScore: number;
 }
 
 export type FoodType = 'normal' | 'silver' | 'gold' | 'comfort';
