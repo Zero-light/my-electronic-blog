@@ -15,10 +15,6 @@ export const LearnTab: React.FC = () => {
 
   useEffect(() => {
     loadWordPack('kaoyan_2').then(all => {
-      const today = new Date().toISOString().slice(0, 10);
-      const learnedIds = save.checkins
-        .filter(c => c.date === today)
-        .flatMap(() => []);
       const batch = shuffle(all).slice(0, 20);
       setWords(batch);
       setLoading(false);
@@ -41,6 +37,7 @@ export const LearnTab: React.FC = () => {
   }
 
   const word = words[index];
+
   const handleKnown = () => {
     const store = useGameStore.getState();
     store.answerQuestion(true);
@@ -48,9 +45,11 @@ export const LearnTab: React.FC = () => {
     setFlipped(false);
     setIndex(i => i + 1);
   };
+
   const handleUnknown = () => {
     setFlipped(true);
   };
+
   const handleNext = () => {
     const store = useGameStore.getState();
     store.answerQuestion(false);
@@ -69,17 +68,31 @@ export const LearnTab: React.FC = () => {
       </div>
 
       {/* Word card */}
-      <div className="glass-panel w-full max-w-md p-8 mb-4 min-h-[200px] flex flex-col items-center justify-center">
-        <h2 className="text-4xl font-extrabold text-white mb-3">{word.word}</h2>
-        <p className="text-white/45 text-sm font-mono mb-2">{word.phonetic}</p>
+      <div className="glass-panel w-full max-w-md p-8 mb-4 min-h-[220px] flex flex-col items-center justify-center">
+        <h2 className="text-4xl font-extrabold text-white mb-2">{word.word}</h2>
+        <p className="text-white/45 text-sm font-mono mb-3">{word.phonetic}</p>
 
+        {/* Example sentence (English only, no translation) */}
+        {word.example && (
+          <p className="text-white/30 text-xs italic text-center px-4 mb-2">
+            "{word.example}"
+          </p>
+        )}
+
+        {/* Flipped: show meaning + sentence meaning */}
         {flipped && (
-          <div className="text-center animate-fadeIn">
-            <p className="text-lg text-white/80 font-medium mb-3">{word.meaning}</p>
+          <div className="text-center animate-fadeIn w-full">
+            <div className="w-full h-px bg-white/10 mb-4" />
+            <p className="text-lg text-white/85 font-semibold mb-2">{word.meaning}</p>
+
             {word.example && (
-              <p className="text-xs text-white/40 italic">"{word.example}"</p>
+              <p className="text-xs text-white/50 italic mb-1">"{word.example}"</p>
             )}
-            <button className="glass-btn mt-4" onClick={handleNext}>
+            {word.exampleTranslation && (
+              <p className="text-xs text-white/40 mb-3">{word.exampleTranslation}</p>
+            )}
+
+            <button className="glass-btn mt-3" onClick={handleNext}>
               下一个 →
             </button>
           </div>
