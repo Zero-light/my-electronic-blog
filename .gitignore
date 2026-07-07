@@ -4,3 +4,4 @@ dist/
 .DS_Store
 Thumbs.db
 scripts/ecdict_part.csv
+scripts/google_5k.txt
