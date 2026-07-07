@@ -20,11 +20,12 @@ function add(word,phonetic,meaning,ex1,ex2,col1,col2,der1,der2){
   words.push({word,phonetic,meaning,examples:[ex1||'',ex2||''].filter(Boolean),collocations:[col1||'',col2||''].filter(Boolean),derivatives:[der1||'',der2||''].filter(Boolean)});
 }
 
-// 1. Load existing wordbank.json
+// 1. Load existing wordbank.json (hand-crafted examples)
+let handCrafted=0;
 try{
   const j=JSON.parse(fs.readFileSync(out,'utf8'));
-  j.words.forEach(w=>add(w.word,w.phonetic,w.meaning,w.examples[0],w.examples[1],w.collocations[0],w.collocations[1],w.derivatives[0],w.derivatives[1]));
-  console.log('Loaded wordbank:',j.words.length);
+  j.words.forEach(w=>{if(w.examples&&w.examples.length>0&&w.examples[0].length>20){add(w.word,w.phonetic,w.meaning,w.examples[0],w.examples[1],w.collocations[0],w.collocations[1],w.derivatives[0],w.derivatives[1]);handCrafted++;}});
+  console.log('Hand-crafted:',handCrafted,'of',j.words.length);
 }catch(e){console.log('No existing wordbank');}
 
 // 2. Load kaoyan words
@@ -80,6 +81,48 @@ try{
   });
   console.log('Extra words loaded:',extra.length);
 }catch(e){console.log('No extra words:',e.message);}
+
+// 4b. Load B2-C1 advanced vocabulary
+try{
+  const b2=require('./word_data/b2_c1.cjs');
+  b2.forEach(e=>{
+    const pos=e.pos==='v'?'v':e.pos==='a'?'a':'n';
+    const ex=genExamples(e.word,pos);
+    const col=genCol(e.word,pos);
+    add(e.word,'',e.meaning,ex[0],ex[1],col[0],col[1],'','');
+  });
+  console.log('B2-C1 loaded:',b2.length);
+}catch(e){console.log('No b2_c1:',e.message);}
+
+// 5. Load missing basic everyday words
+try{
+  const basic=require('./word_data/basic_missing.cjs');
+  basic.forEach(e=>{
+    const pos=e.pos==='v'?'v':e.pos==='a'?'a':'n';
+    const ex=genExamples(e.word,pos);
+    const col=genCol(e.word,pos);
+    add(e.word,'',e.meaning,ex[0],ex[1],col[0],col[1],'','');
+  });
+  console.log('Basic missing loaded:',basic.length);
+}catch(e){console.log('No basic_missing:',e.message);}
+
+// 6. Auto-load ALL .cjs files in word_data/ that aren't already loaded
+const loadedFiles=['a1','b2_c1','basic_missing'];
+try{
+  const dir=fs.readdirSync('./word_data');
+  dir.filter(f=>f.endsWith('.cjs')&&!loadedFiles.includes(f.replace('.cjs',''))).forEach(f=>{
+    try{
+      const data=require('./word_data/'+f);
+      data.forEach(e=>{
+        const pos=e.pos==='v'?'v':e.pos==='a'?'a':e.pos==='adv'?'adv':'n';
+        const ex=genExamples(e.word,pos);
+        const col=genCol(e.word,pos);
+        add(e.word,'',e.meaning,ex[0],ex[1],col[0],col[1],'','');
+      });
+      console.log('Auto-loaded',f,':',data.length);
+    }catch(e2){}
+  });
+}catch(e){}
 
 // Add IDs
 words=words.map((w,i)=>({...w,id:'w_'+String(i+1).padStart(5,'0')}));
