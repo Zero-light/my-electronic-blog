@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, BookmarkPlus, BookOpen, Brain, RotateCcw } from 'lucide-react';
+import { Search, BookmarkPlus, BookOpen, Brain, RotateCcw, Clock, X } from 'lucide-react';
 import { useGameStore } from '../store/gameStore';
 import { WordDetail } from './WordDetail';
 
@@ -11,6 +11,10 @@ async function loadBank(): Promise<any[]> {
   srDone = true; return sr;
 }
 
+const HIST_KEY = 'wordpal_search_history';
+function loadHistory(): string[] { try { return JSON.parse(localStorage.getItem(HIST_KEY)||'[]'); } catch { return []; } }
+function saveHistory(h: string[]) { localStorage.setItem(HIST_KEY, JSON.stringify(h.slice(0,6))); }
+
 export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ onNavigate }) => {
   const { save, search, addWord } = useGameStore();
   const [query, setQuery] = useState('');
@@ -18,14 +22,23 @@ export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ on
   const [bank, setBank] = useState<any[]>([]);
   const [added, setAdded] = useState<Set<string>>(new Set());
   const [detailWord, setDetailWord] = useState<any>(null);
+  const [history, setHistory] = useState<string[]>(loadHistory);
 
   useEffect(() => { loadBank().then(setBank); }, []);
   useEffect(() => { setAdded(new Set(save.wordbook.map(w => w.wordId))); }, [save.wordbook]);
 
-  const handleSearch = (q: string) => {
+  const doSearch = (q: string) => {
     setQuery(q);
     if (q.length < 2) { setResults([]); return; }
     setResults(bank.length ? search(q, bank) : []);
+    // Save to history
+    if (q.length >= 2) {
+      const h = loadHistory().filter(w => w !== q);
+      h.unshift(q);
+      const updated = h.slice(0, 6);
+      saveHistory(updated);
+      setHistory(updated);
+    }
   };
 
   return (
@@ -38,14 +51,31 @@ export const SearchTab: React.FC<{ onNavigate?: (tab: string) => void }> = ({ on
             className="flex-1 bg-transparent outline-none text-white text-base placeholder-white/30"
             placeholder="搜索单词..."
             value={query}
-            onChange={e => handleSearch(e.target.value)}
+            onChange={e => doSearch(e.target.value)}
             autoFocus
           />
           {query && (
-            <button className="text-white/30 hover:text-white/60 text-sm" onClick={() => handleSearch('')}>✕</button>
+            <button className="text-white/30 hover:text-white/60 text-sm" onClick={() => doSearch('')}>✕</button>
           )}
         </div>
       </div>
+
+      {/* History chips */}
+      {query.length < 2 && history.length > 0 && (
+        <div className="max-w-lg mx-auto w-full mb-4 flex items-center gap-2 flex-wrap">
+          <Clock size={14} className="text-white/20" />
+          {history.map((h, i) => (
+            <button key={i} className="glass-chip text-xs hover:bg-white/20 transition-colors"
+              onClick={() => doSearch(h)}>
+              {h}
+            </button>
+          ))}
+          <button className="text-white/20 hover:text-white/40 text-xs ml-auto"
+            onClick={() => { saveHistory([]); setHistory([]); }}>
+            <X size={12} /> 清除
+          </button>
+        </div>
+      )}
 
       {/* Results */}
       <div className="flex-1 overflow-y-auto max-w-lg mx-auto w-full space-y-2">
