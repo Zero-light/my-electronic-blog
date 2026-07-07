@@ -34,38 +34,38 @@ export const GradientBg: React.FC = () => {
       // Clear
       ctx.clearRect(0, 0, w, h);
 
-      // Base gradient
+      // Base gradient — dark theme for white text readability
       const bg = ctx.createLinearGradient(0, 0, w, h);
-      bg.addColorStop(0, '#D6EAFA');
-      bg.addColorStop(0.45, '#C5DDF5');
-      bg.addColorStop(1, '#FFE8EE');
+      bg.addColorStop(0, '#1a1a2e');
+      bg.addColorStop(0.5, '#16213e');
+      bg.addColorStop(1, '#0f3460');
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
-      // Ice blue spotlight — slow drift
+      // Blue spotlight
       const cx1 = w * 0.25 + Math.sin(t * 0.0007) * 40 + offset.current.px;
       const cy1 = h * 0.3 + Math.cos(t * 0.0005) * 30 + offset.current.py;
       const g1 = ctx.createRadialGradient(cx1, cy1, 0, cx1, cy1, Math.max(w, h) * 0.4);
-      g1.addColorStop(0, 'rgba(214,234,250,0.5)');
-      g1.addColorStop(1, 'rgba(214,234,250,0)');
+      g1.addColorStop(0, 'rgba(100,149,237,0.15)');
+      g1.addColorStop(1, 'rgba(100,149,237,0)');
       ctx.fillStyle = g1;
       ctx.fillRect(0, 0, w, h);
 
-      // Pink-purple glow — counter-drift
+      // Purple glow
       const cx2 = w * 0.75 - Math.sin(t * 0.00055) * 35 - offset.current.px * 0.7;
       const cy2 = h * 0.65 - Math.cos(t * 0.0006) * 28 - offset.current.py * 0.7;
       const g2 = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, Math.max(w, h) * 0.3);
-      g2.addColorStop(0, 'rgba(255,232,238,0.35)');
-      g2.addColorStop(1, 'rgba(255,232,238,0)');
+      g2.addColorStop(0, 'rgba(138,43,226,0.12)');
+      g2.addColorStop(1, 'rgba(138,43,226,0)');
       ctx.fillStyle = g2;
       ctx.fillRect(0, 0, w, h);
 
-      // Small mauve accent
+      // Teal accent
       const cx3 = w * 0.55 + Math.cos(t * 0.00045) * 50;
       const cy3 = h * 0.5 + Math.sin(t * 0.00055) * 35;
       const g3 = ctx.createRadialGradient(cx3, cy3, 0, cx3, cy3, Math.max(w, h) * 0.2);
-      g3.addColorStop(0, 'rgba(232,213,245,0.2)');
-      g3.addColorStop(1, 'rgba(232,213,245,0)');
+      g3.addColorStop(0, 'rgba(72,209,204,0.1)');
+      g3.addColorStop(1, 'rgba(72,209,204,0)');
       ctx.fillStyle = g3;
       ctx.fillRect(0, 0, w, h);
 
