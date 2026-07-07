@@ -57,8 +57,8 @@ export interface AchievementDef {
 
 export interface SaveData {
   version: number; createdAt: number; lastLogin: number;
-  totalWordsLearned: number; totalWordsReviewed: number; foodCount: number;
-  diamonds: number; // rare currency from achievements/streaks
+  totalWordsLearned: number; totalWordsReviewed: number;
+  foodCount: number; gold: number; diamonds: number;
   dailyStreak: number; lastCheckin: string;
   currentPet: string; unlockedPets: string[];
   cosmetics: { petId?: string; hat?: string; tie?: string; color?: string; background?: string }[];
@@ -76,9 +76,13 @@ export interface SaveData {
   streakRewards: StreakReward[];
   // New gameplay systems
   challengeRecords: ChallengeRecord[];
-  dialogueIndex: number; // rotate through dialogues
+  dialogueIndex: number;
   lastBossDate: string;
   bossHighScore: number;
+  // House system
+  houseTier: number; // 0=empty, 1=平房, 2=小康, 3=二层, 4=别墅
+  furniture: string[]; // owned furniture ids
+  placedFurniture: string[]; // currently placed furniture ids
 }
 
 export type FoodType = 'normal' | 'silver' | 'gold' | 'comfort';

@@ -19,7 +19,7 @@ function createDefault(): SaveData {
   return {
     version: 3, createdAt: Date.now(), lastLogin: Date.now(),
     totalWordsLearned: 0, totalWordsReviewed: 0,
-    foodCount: 10, diamonds: 0,
+    foodCount: 10, gold: 20, diamonds: 0,
     dailyStreak: 1, lastCheckin: today,
     currentPet: 'cloudy', unlockedPets: ['cloudy'],
     cosmetics: [{}], studyProgress: [], achievements: [], checkins: [],
@@ -29,6 +29,7 @@ function createDefault(): SaveData {
     weeklyStats: [], dailyWordBank: [], lastDailyRefresh: today,
     offlineRewards: null, streakRewards: [],
     challengeRecords: [], dialogueIndex: 0, lastBossDate: '', bossHighScore: 0,
+    houseTier: 0, furniture: [], placedFurniture: [],
   };
 }
 
@@ -47,6 +48,10 @@ export function loadSave(): SaveData {
       if (!d.dialogueIndex) d.dialogueIndex = 0;
       if (!d.bossHighScore) d.bossHighScore = 0;
       if (!d.lastBossDate) d.lastBossDate = '';
+      if (!d.gold && d.gold !== 0) d.gold = 20;
+      if (!d.houseTier && d.houseTier !== 0) d.houseTier = 0;
+      if (!d.furniture) d.furniture = [];
+      if (!d.placedFurniture) d.placedFurniture = [];
       return d;
     }
   } catch {}
@@ -397,4 +402,65 @@ export function saveBossResult(save: SaveData, score: number) {
 
 export function canPlayBossToday(save: SaveData): boolean {
   return save.lastBossDate !== new Date().toISOString().slice(0, 10);
+}
+
+// ── Gold Economy ──────────────────────────────────────
+export function addGold(save: SaveData, amount: number) { save.gold += amount; saveWrite(save); }
+
+// ── House System ──────────────────────────────────────
+export const HOUSE_TIERS = [
+  { tier: 0, name: '空地', cost: 0, emoji: '🏕️', desc: '一片空地，什么都没有' },
+  { tier: 1, name: '平房', cost: 200, emoji: '🏠', desc: '简朴的小屋，遮风挡雨' },
+  { tier: 2, name: '小康房', cost: 800, emoji: '🏡', desc: '温馨舒适，有院子' },
+  { tier: 3, name: '二层楼', cost: 3000, emoji: '🏘️', desc: '二层小楼，宽敞明亮' },
+  { tier: 4, name: '别墅', cost: 8000, emoji: '🏰', desc: '豪华别墅，带花园泳池' },
+];
+
+export const FURNITURE_CATALOG = [
+  { id: 'rug_red', name: '红地毯', icon: '🟥', cost: 50, type: 'floor' },
+  { id: 'rug_blue', name: '蓝地毯', icon: '🟦', cost: 50, type: 'floor' },
+  { id: 'bed_simple', name: '小木床', icon: '🛏️', cost: 100, type: 'furniture' },
+  { id: 'bed_double', name: '双人床', icon: '🛌', cost: 300, type: 'furniture' },
+  { id: 'table_wood', name: '木桌', icon: '🪑', cost: 80, type: 'furniture' },
+  { id: 'desk_study', name: '书桌', icon: '📚', cost: 120, type: 'furniture' },
+  { id: 'lamp_floor', name: '落地灯', icon: '💡', cost: 60, type: 'light' },
+  { id: 'lamp_chandelier', name: '吊灯', icon: '✨', cost: 200, type: 'light' },
+  { id: 'plant_potted', name: '盆栽', icon: '🪴', cost: 40, type: 'decor' },
+  { id: 'plant_flower', name: '花瓶', icon: '💐', cost: 60, type: 'decor' },
+  { id: 'window_curtain', name: '窗帘', icon: '🪟', cost: 70, type: 'window' },
+  { id: 'bookshelf', name: '书架', icon: '📚', cost: 150, type: 'furniture' },
+  { id: 'sofa', name: '沙发', icon: '🛋️', cost: 250, type: 'furniture' },
+  { id: 'painting', name: '挂画', icon: '🖼️', cost: 90, type: 'decor' },
+  { id: 'clock_wall', name: '挂钟', icon: '🕐', cost: 45, type: 'decor' },
+];
+
+export function upgradeHouse(save: SaveData): { ok: boolean; tier: number; cost: number } {
+  const current = save.houseTier;
+  if (current >= 4) return { ok: false, tier: current, cost: 0 };
+  const next = HOUSE_TIERS[current + 1];
+  if (save.gold < next.cost) return { ok: false, tier: current, cost: next.cost };
+  save.gold -= next.cost;
+  save.houseTier = current + 1;
+  saveWrite(save);
+  return { ok: true, tier: current + 1, cost: next.cost };
+}
+
+export function buyFurniture(save: SaveData, itemId: string): boolean {
+  if (save.furniture.includes(itemId)) return false;
+  const item = FURNITURE_CATALOG.find(f => f.id === itemId);
+  if (!item || save.gold < item.cost) return false;
+  save.gold -= item.cost;
+  save.furniture.push(itemId);
+  saveWrite(save);
+  return true;
+}
+
+export function placeFurniture(save: SaveData, itemId: string) {
+  if (!save.placedFurniture.includes(itemId)) save.placedFurniture.push(itemId);
+  saveWrite(save);
+}
+
+export function removeFurniture(save: SaveData, itemId: string) {
+  save.placedFurniture = save.placedFurniture.filter(id => id !== itemId);
+  saveWrite(save);
 }
