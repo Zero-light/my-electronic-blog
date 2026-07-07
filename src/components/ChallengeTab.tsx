@@ -8,9 +8,9 @@ import { useGameStore } from '../store/gameStore';
 import { loadWordPack } from '../data/wordBank';
 import type { WordEntry } from '../data/types';
 import { shuffle } from '../utils/helpers';
-import { getHighScore } from '../data/saveManager';
+import { getHighScore, getChallengeTier } from '../data/saveManager';
 
-type Mode = 'menu' | 'timed' | 'spelling' | 'boss';
+type Mode = 'menu' | 'timed' | 'spelling' | 'boss' | 'result';
 
 export const ChallengeTab: React.FC = () => {
   const { save, saveChallenge, saveBoss, canBoss } = useGameStore();
@@ -26,6 +26,8 @@ export const ChallengeTab: React.FC = () => {
   const [correctAns, setCorrectAns] = useState(0);
   const [spellingInput, setSpellingInput] = useState('');
   const [spellingResult, setSpellingResult] = useState('');
+  const [lastDiamonds, setLastDiamonds] = useState(0);
+  const [lastAccuracy, setLastAccuracy] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval>>();
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(true);
@@ -106,9 +108,20 @@ export const ChallengeTab: React.FC = () => {
   const finishChallenge = () => {
     clearInterval(timerRef.current);
     const timeUsed = mode === 'timed' ? 60 - timeLeft : 0;
-    if (mode === 'timed') saveChallenge(score, timeUsed, correct, index);
-    if (mode === 'boss') saveBoss(score);
-    setMode('menu');
+    const totalQuestions = Math.max(index, 1);
+    const acc = correct / totalQuestions;
+    if (mode === 'timed') {
+      const diamonds = saveChallenge(score, timeUsed, correct, totalQuestions);
+      setLastDiamonds(diamonds);
+      setLastAccuracy(Math.round(acc * 100));
+      setMode('result');
+    } else if (mode === 'boss') {
+      saveBoss(score);
+      setLastAccuracy(Math.round(acc * 100));
+      setMode('result');
+    } else {
+      setMode('menu');
+    }
   };
 
   const startTimed = () => { setMode('timed'); setScore(0); setIndex(0); setCorrect(0); setStreak(0); setTimeLeft(60); };
@@ -240,7 +253,32 @@ export const ChallengeTab: React.FC = () => {
     );
   }
 
-  // Menu
+  // ── Result Screen ───────────────────────────────────
+  if (mode === 'result') {
+    const tier = getChallengeTier(lastAccuracy / 100);
+    return (
+      <div className="flex flex-col items-center w-full h-full pt-10 px-4">
+        <div className="glass-panel w-full max-w-sm p-8 text-center">
+          <span className="text-5xl block mb-4">
+            {lastAccuracy >= 100 ? '🏆' : lastAccuracy >= 85 ? '🌟' : lastAccuracy >= 75 ? '✨' : lastAccuracy >= 60 ? '👍' : '💪'}
+          </span>
+          <h2 className="text-2xl font-bold text-white mb-2">挑战结束!</h2>
+          <div className="text-white/70 text-lg mb-1">正确率 {lastAccuracy}%</div>
+          <div className="glass-chip text-lg mb-4">{tier}</div>
+
+          <div className="text-xs text-white/40 mb-6">
+            <p>60%+ → 💎10 · 75%+ → 💎20 · 85%+ → 💎40 · 100% → 💎100</p>
+          </div>
+
+          <button className="glass-btn w-full" onClick={() => setMode('menu')}>
+            返回菜单
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Menu ─────────────────────────────────────────────
   if (loading) return <div className="flex items-center justify-center h-full text-white/50">加载中...</div>;
 
   const todayRecords = save.challengeRecords.filter(r => r.date === new Date().toISOString().slice(0, 10));
@@ -251,10 +289,21 @@ export const ChallengeTab: React.FC = () => {
       <h2 className="text-lg font-bold text-white mb-4">⚡ 挑战模式</h2>
 
       {/* Stats */}
-      <div className="flex gap-3 mb-6">
+      <div className="flex gap-3 mb-4">
         <div className="glass-chip">🏆 最高 {highScore} 分</div>
         <div className="glass-chip">📊 今日 {todayBest} 分</div>
         <div className="glass-chip">💎 {save.diamonds}</div>
+      </div>
+
+      {/* Accuracy reward tiers */}
+      <div className="glass-panel w-full max-w-md p-4 mb-4">
+        <p className="text-xs text-white/50 mb-3 text-center">钻石奖励阶梯 (按正确率)</p>
+        <div className="grid grid-cols-4 gap-2 text-center">
+          <div className="text-xs text-white/30">60%+<br /><span className="text-white/60 font-bold">💎10</span></div>
+          <div className="text-xs text-white/30">75%+<br /><span className="text-white/60 font-bold">💎20</span></div>
+          <div className="text-xs text-white/30">85%+<br /><span className="text-white/60 font-bold">💎40</span></div>
+          <div className="text-xs text-white/30">100%<br /><span className="text-yellow-300 font-bold">💎100</span></div>
+        </div>
       </div>
 
       {/* Mode cards */}

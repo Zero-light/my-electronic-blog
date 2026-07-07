@@ -32,7 +32,7 @@ interface GameState {
   openDialogue: () => void;
   answerDialogue: (idx: number) => void;
   closeDialogue: () => void;
-  saveChallenge: (score: number, timeUsed: number, correct: number, total: number) => void;
+  saveChallenge: (score: number, timeUsed: number, correct: number, total: number) => number;
   saveBoss: (score: number) => void;
   canBoss: () => boolean;
   checkAchievements: () => void;
@@ -118,7 +118,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     set({ save: { ...save }, dialogueResponse: opt.response });
   },
   closeDialogue: () => set({ showDialogue: false, dialogueResponse: '' }),
-  saveChallenge: (score, timeUsed, correct, total) => { const { save } = get(); saveChallengeRecord(save, score, timeUsed, correct, total); set({ save: { ...save } }); get().checkAchievements(); },
+  saveChallenge: (score, timeUsed, correct, total) => { const { save } = get(); const diamonds = saveChallengeRecord(save, score, timeUsed, correct, total); set({ save: { ...save } }); get().checkAchievements(); return diamonds; },
   saveBoss: (score) => { const { save } = get(); saveBossResult(save, score); set({ save: { ...save } }); },
   canBoss: () => canPlayBossToday(get().save),
   checkAchievements: () => { const { save } = get(); const checks = checkAllAchievements(save); if (checks.length > 0) set({ newAchievements: [...get().newAchievements, ...checks] }); },

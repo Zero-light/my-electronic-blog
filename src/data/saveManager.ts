@@ -262,7 +262,28 @@ export function getTodayStats(save: SaveData) {
 export function saveChallengeRecord(save: SaveData, score: number, timeUsed: number, correct: number, total: number) {
   save.challengeRecords.push({ date: new Date().toISOString().slice(0, 10), score, time: timeUsed, correct, total });
   if (save.challengeRecords.length > 50) save.challengeRecords.shift();
+  const diamonds = getChallengeDiamonds(correct, total);
+  addDiamonds(save, diamonds);
   saveWrite(save);
+  return diamonds;
+}
+
+export function getChallengeDiamonds(correct: number, total: number): number {
+  if (total === 0) return 0;
+  const acc = correct / total;
+  if (acc >= 1) return 100;      // 100% perfect
+  if (acc >= 0.85) return 40;    // 85%+
+  if (acc >= 0.75) return 20;    // 75%+
+  if (acc >= 0.6) return 10;     // 60%+
+  return 0;                       // below 60%
+}
+
+export function getChallengeTier(acc: number): string {
+  if (acc >= 1) return '💎 完美! +100';
+  if (acc >= 0.85) return '💎 优秀 +40';
+  if (acc >= 0.75) return '💎 良好 +20';
+  if (acc >= 0.6) return '💎 及格 +10';
+  return '未达标，再试一次!';
 }
 
 export function getHighScore(save: SaveData): number {
