@@ -12,7 +12,6 @@ import { skillCategories } from '@/content/data/skills';
 import {
   ArrowRight,
   BookOpen,
-  Coffee,
   FileText,
   FolderGit2,
   Wrench,
@@ -55,7 +54,7 @@ export default function HomePage() {
           </p>
           <p className="max-w-xl text-[0.92rem] leading-relaxed text-slate-600 dark:text-[#8b949e]">
             具备软硬件一体化开发能力的嵌入式工程师，专注于 STM32 嵌入式固件、高效电源闭环控制与精密信号链设计。
-            这里是我在学习与工程实践中的知识沉淀、项目复盘与生活记录。
+            这里是我在学习与工程实践中的知识沉淀与项目复盘。
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
             <Link href="/resume/" className="btn-primary">
@@ -107,20 +106,6 @@ export default function HomePage() {
             </Card>
           </Link>
 
-          <Link href="/life/">
-            <Card hover className="h-full">
-              <CardHeader>
-                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-400">
-                  <Coffee className="h-5 w-5" />
-                </div>
-                <CardTitle>生活记录</CardTitle>
-                <div className="my-2 h-px w-10 bg-border" />
-                <CardDescription>
-                  随笔日记、相册图库与爱好分享
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
         </div>
       </section>
 

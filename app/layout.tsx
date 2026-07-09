@@ -6,19 +6,19 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: '零光驿站',
-    template: '%s | 零光驿站',
+    default: 'Zerolight',
+    template: '%s | Zerolight',
   },
   description:
-    '面向电子信息/嵌入式工程师的个人网站，涵盖学习笔记、项目作品、生活随笔与在线简历。',
+    '面向电子信息/嵌入式工程师的个人网站，涵盖学习笔记、项目作品与在线简历。',
   keywords: ['嵌入式', '电子信息', '硬件设计', '作品集', '个人网站'],
   authors: [{ name: '任炳宇' }],
   creator: '任炳宇',
-  metadataBase: new URL('https://example.com'),
+  metadataBase: new URL('https://www.zerolight.fun'),
   openGraph: {
     type: 'website',
     locale: 'zh_CN',
-    siteName: '零光驿站',
+    siteName: 'Zerolight',
   },
 };
 
@@ -31,12 +31,11 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-/** 顶部导航栏配置（6 入口 + 搜索预留 + 主题切换） */
+/** 顶部导航栏配置（5 入口 + 搜索预留 + 主题切换） */
 const navItems = [
   { href: '/', label: '首页' },
   { href: '/notes/', label: '笔记' },
   { href: '/projects/', label: '项目' },
-  { href: '/life/', label: '生活' },
   { href: '/about/', label: '关于' },
   { href: '/resume/', label: '简历' },
 ];
@@ -54,8 +53,8 @@ export default function RootLayout({
           header={{
             logo: (
               <span className="tracking-tight">
-                <span className="text-primary">零光</span>
-                <span className="text-text">驿站</span>
+                <span className="text-primary">Zero</span>
+                <span className="text-text">light</span>
               </span>
             ),
             items: navItems,
