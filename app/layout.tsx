@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Layout } from '@/components/ui/layout';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { ReadingProgress } from '@/components/reading-progress';
-import { CursorSpotlight } from '@/components/cursor-spotlight';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -49,7 +48,6 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body>
-        <CursorSpotlight />
         <ReadingProgress />
         <Layout
           header={{
