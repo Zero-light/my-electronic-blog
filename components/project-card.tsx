@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
   Card,
@@ -23,10 +24,16 @@ export interface ProjectCardProps {
  */
 export function ProjectCard({ project, className }: ProjectCardProps) {
   return (
-    <Link
-      href={`/projects/${project.slug}/`}
-      className={className}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
     >
+      <Link
+        href={`/projects/${project.slug}/`}
+        className={className}
+      >
       <Card hover className="group h-full flex flex-col">
         {/* 封面图 */}
         {project.cover && (
@@ -75,5 +82,6 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         </CardContent>
       </Card>
     </Link>
+    </motion.div>
   );
 }

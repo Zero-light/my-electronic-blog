@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { NoteMeta } from '@/lib/mdx';
@@ -17,10 +18,16 @@ export interface NoteCardProps {
  */
 export function NoteCard({ note, className }: NoteCardProps) {
   return (
-    <Link
-      href={`/notes/${note.slug}/`}
-      className={className}
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.35, ease: 'easeOut' }}
     >
+      <Link
+        href={`/notes/${note.slug}/`}
+        className={className}
+      >
       <article className="group flex flex-col gap-3 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-sm sm:flex-row sm:items-start sm:gap-5">
         {/* 左侧日期区 */}
         <div className="flex shrink-0 flex-row items-center gap-2 sm:w-32 sm:flex-col sm:items-start sm:gap-1">
@@ -69,5 +76,6 @@ export function NoteCard({ note, className }: NoteCardProps) {
         </div>
       </article>
     </Link>
+    </motion.div>
   );
 }

@@ -45,7 +45,7 @@ export function GalleryGrid({ images, className }: GalleryGridProps) {
     <>
       <div
         className={cn(
-          'columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3',
+          'stagger-container columns-1 gap-4 space-y-4 sm:columns-2 lg:columns-3',
           className
         )}
       >
@@ -54,7 +54,7 @@ export function GalleryGrid({ images, className }: GalleryGridProps) {
             key={`${image.src}-${index}`}
             type="button"
             onClick={() => handleClick(index)}
-            className="block w-full break-inside-avoid rounded-xl border border-border bg-card p-1 transition-shadow hover:shadow-md"
+            className="stagger-item block w-full break-inside-avoid rounded-xl border border-border bg-card p-1 transition-shadow hover:shadow-md"
           >
             <img
               src={image.src}

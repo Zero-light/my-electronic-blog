@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
 
 /* ============================================================
    灯箱 UI 组件
@@ -69,67 +70,95 @@ export function ImageLightbox({
   if (!isOpen || images.length === 0) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
-      onClick={onClose}
-    >
-      {/* 关闭按钮 */}
-      <button
-        type="button"
-        onClick={onClose}
-        className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-        aria-label="关闭"
-      >
-        <X className="h-5 w-5" />
-      </button>
-
-      {/* 图片计数 */}
-      <div className="absolute left-4 top-4 rounded-full bg-white/10 px-3 py-1 text-sm text-white">
-        {currentIndex + 1} / {images.length}
-      </div>
-
-      {/* 上一张 */}
-      {images.length > 1 && (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            goPrev();
-          }}
-          className="absolute left-4 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-          aria-label="上一张"
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
+          onClick={onClose}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
         >
-          <ChevronLeft className="h-5 w-5" />
-        </button>
-      )}
+          {/* 关闭按钮 */}
+          <motion.button
+            type="button"
+            onClick={onClose}
+            className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+            aria-label="关闭"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.8, opacity: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <X className="h-5 w-5" />
+          </motion.button>
 
-      {/* 当前图片 */}
-      <div
-        className="max-h-[85vh] max-w-[90vw]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <img
-          src={images[currentIndex]}
-          alt={`图片 ${currentIndex + 1}`}
-          className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
-        />
-      </div>
+          {/* 图片计数 */}
+          <motion.div
+            className="absolute left-4 top-4 rounded-full bg-white/10 px-3 py-1 text-sm text-white"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+          >
+            {currentIndex + 1} / {images.length}
+          </motion.div>
 
-      {/* 下一张 */}
-      {images.length > 1 && (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            goNext();
-          }}
-          className="absolute right-4 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-          aria-label="下一张"
-        >
-          <ChevronRight className="h-5 w-5" />
-        </button>
+          {/* 上一张 */}
+          {images.length > 1 && (
+            <motion.button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goPrev();
+              }}
+              className="absolute left-4 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+              aria-label="上一张"
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -12 }}
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </motion.button>
+          )}
+
+          {/* 当前图片 */}
+          <motion.div
+            key={currentIndex}
+            className="max-h-[85vh] max-w-[90vw]"
+            onClick={(e) => e.stopPropagation()}
+            initial={{ scale: 0.92, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.95, opacity: 0 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+          >
+            <img
+              src={images[currentIndex]}
+              alt={`图片 ${currentIndex + 1}`}
+              className="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
+            />
+          </motion.div>
+
+          {/* 下一张 */}
+          {images.length > 1 && (
+            <motion.button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                goNext();
+              }}
+              className="absolute right-4 top-1/2 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+              aria-label="下一张"
+              initial={{ opacity: 0, x: 12 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 12 }}
+            >
+              <ChevronRight className="h-5 w-5" />
+            </motion.button>
+          )}
+        </motion.div>
       )}
-    </div>
+    </AnimatePresence>
   );
 }
 

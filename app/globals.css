@@ -21,6 +21,8 @@
     --card: #ffffff;
     --border: #e2e8f0;
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --glow-opacity: 0.06;
+    --glow-opacity-strong: 0.10;
   }
 
   .dark {
@@ -36,6 +38,8 @@
     --card: #161b22;
     --border: rgba(255, 255, 255, 0.06);
     --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --glow-opacity: 0.12;
+    --glow-opacity-strong: 0.18;
   }
 
   html {
@@ -52,6 +56,91 @@
   ::selection {
     background-color: rgba(91, 141, 239, 0.3);
     color: #e6edf3;
+  }
+}
+
+/* ============================================================
+   CSS 动画 Keyframes 与工具类（配合 framer-motion 使用）
+   ============================================================ */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 列表 stagger 入场容器：配合 .stagger-item 使用 */
+.stagger-container .stagger-item {
+  opacity: 0;
+  animation: fade-in 0.4s ease-out forwards;
+}
+.stagger-container .stagger-item:nth-child(1) { animation-delay: 0ms; }
+.stagger-container .stagger-item:nth-child(2) { animation-delay: 60ms; }
+.stagger-container .stagger-item:nth-child(3) { animation-delay: 120ms; }
+.stagger-container .stagger-item:nth-child(4) { animation-delay: 180ms; }
+.stagger-container .stagger-item:nth-child(5) { animation-delay: 240ms; }
+.stagger-container .stagger-item:nth-child(6) { animation-delay: 300ms; }
+.stagger-container .stagger-item:nth-child(7) { animation-delay: 360ms; }
+.stagger-container .stagger-item:nth-child(8) { animation-delay: 420ms; }
+.stagger-container .stagger-item:nth-child(9) { animation-delay: 480ms; }
+.stagger-container .stagger-item:nth-child(10) { animation-delay: 540ms; }
+.stagger-container .stagger-item:nth-child(11) { animation-delay: 600ms; }
+.stagger-container .stagger-item:nth-child(12) { animation-delay: 660ms; }
+
+/* 时间线竖线流动动画 */
+@keyframes timeline-line-grow {
+  from { max-height: 0; }
+  to { max-height: 100vh; }
+}
+
+/* HeroGlow 呼吸层：固定第二层光斑轻微明灭 */
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* 卡片悬停轻上浮（提升现有 card-hover） */
+.card-hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px -8px rgb(0 0 0 / 0.15);
+}
+.dark .card-hover-lift:hover {
+  box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.6),
+              0 0 0 1px rgba(123, 155, 255, 0.10);
+}
+
+/* prefers-reduced-motion：全局禁用入场动画 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .stagger-container .stagger-item {
+    opacity: 1 !important;
+    animation: none !important;
   }
 }
 

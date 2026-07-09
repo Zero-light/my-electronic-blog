@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
+import { motion, useMotionValue, useTransform, useSpring, useInView } from 'framer-motion';
 
 export interface SkillItem {
   /** 技能名称 */
@@ -27,6 +28,7 @@ export interface SkillBarProps {
  * - 按分类分组展示水平进度条
  * - 进度条颜色使用 CSS 变量 --primary，自动适配明暗主题
  * - 滚动到视口时进度条从 0% 动画展开到目标宽度
+ * - 数字从 0 滚动到目标值（framer-motion spring）
  * - 两列网格布局（移动端单列）
  */
 export function SkillBar({ categories, className }: SkillBarProps) {
@@ -41,25 +43,7 @@ export function SkillBar({ categories, className }: SkillBarProps) {
 
 function SkillCategory({ category }: { category: SkillCategory }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const isInView = useInView(ref, { once: true, margin: '-60px' });
 
   return (
     <div ref={ref}>
@@ -68,26 +52,40 @@ function SkillCategory({ category }: { category: SkillCategory }) {
       </h3>
       <div className="space-y-4">
         {category.items.map((item) => (
-          <div key={item.name}>
-            <div className="mb-1 flex items-center justify-between">
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                {item.name}
-              </span>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                {item.level}%
-              </span>
-            </div>
-            <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-              <div
-                className="h-full rounded-full transition-all duration-700 ease-out"
-                style={{
-                  width: visible ? `${item.level}%` : '0%',
-                  backgroundColor: 'var(--primary)',
-                }}
-              />
-            </div>
-          </div>
+          <SkillItemBar key={item.name} item={item} animate={isInView} />
         ))}
+      </div>
+    </div>
+  );
+}
+
+function SkillItemBar({ item, animate }: { item: SkillItem; animate: boolean }) {
+  const val = useMotionValue(0);
+  const springVal = useSpring(val, { stiffness: 60, damping: 18 });
+  const rounded = useTransform(springVal, (v) => Math.round(v));
+
+  useEffect(() => {
+    if (animate) val.set(item.level);
+  }, [animate, item.level, val]);
+
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between">
+        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+          {item.name}
+        </span>
+        <span className="text-xs tabular-nums text-slate-500 dark:text-slate-400">
+          <motion.span>{rounded}</motion.span>%
+        </span>
+      </div>
+      <div className="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+        <motion.div
+          className="h-full rounded-full"
+          style={{ backgroundColor: 'var(--primary)' }}
+          initial={{ width: '0%' }}
+          animate={animate ? { width: `${item.level}%` } : { width: '0%' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        />
       </div>
     </div>
   );

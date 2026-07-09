@@ -152,9 +152,9 @@ export default function HomePage() {
 
           {/* 最新笔记 */}
           {latestNotes.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="stagger-container grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {latestNotes.map((note) => (
-                <Card key={note.slug} hover className="h-full">
+                <Card key={note.slug} hover className="stagger-item h-full">
                   <CardHeader>
                     <div className="flex items-center gap-2 text-sm font-medium text-sky-600 dark:text-sky-400">
                       <FileText className="h-4 w-4" />

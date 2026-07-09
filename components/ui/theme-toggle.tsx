@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export interface ThemeToggleProps {
   className?: string;
@@ -13,6 +14,7 @@ export interface ThemeToggleProps {
  * 明暗模式切换按钮
  * - 挂载前显示占位，防止 hydration 不匹配
  * - 点击切换 light / dark / system
+ * - 图标切换时带旋转+缩放形变过渡（framer-motion）
  */
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme, setTheme } = useTheme();
@@ -45,11 +47,29 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       aria-label={isDark ? '切换到浅色模式' : '切换到深色模式'}
       title={isDark ? '切换到浅色模式' : '切换到深色模式'}
     >
-      {isDark ? (
-        <Sun className="h-5 w-5" />
-      ) : (
-        <Moon className="h-5 w-5" />
-      )}
+      <AnimatePresence mode="wait" initial={false}>
+        {isDark ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, scale: 0.6, opacity: 0 }}
+            animate={{ rotate: 0, scale: 1, opacity: 1 }}
+            exit={{ rotate: 90, scale: 0.6, opacity: 0 }}
+            transition={{ duration: 0.3, type: 'spring', stiffness: 300, damping: 20 }}
+          >
+            <Sun className="h-5 w-5" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, scale: 0.6, opacity: 0 }}
+            animate={{ rotate: 0, scale: 1, opacity: 1 }}
+            exit={{ rotate: -90, scale: 0.6, opacity: 0 }}
+            transition={{ duration: 0.3, type: 'spring', stiffness: 300, damping: 20 }}
+          >
+            <Moon className="h-5 w-5" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </button>
   );
 }

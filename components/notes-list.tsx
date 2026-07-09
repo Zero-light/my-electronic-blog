@@ -156,9 +156,9 @@ export function NotesList({
       {/* 笔记列表 */}
       {visible.length > 0 ? (
         <>
-          <div className="flex flex-col gap-3">
+          <div className="stagger-container flex flex-col gap-3">
             {visible.map((note) => (
-              <NoteCard key={note.slug} note={note} />
+              <NoteCard key={note.slug} note={note} className="stagger-item" />
             ))}
           </div>
 

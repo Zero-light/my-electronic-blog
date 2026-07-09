@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
 
 export interface NavItem {
   href: string;
@@ -30,9 +31,27 @@ export interface HeaderProps {
 export function Header({ logo, items, right, className }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const [isVisible, setIsVisible] = useState(true);
+  const { scrollY } = useScroll();
+
+  useEffect(() => {
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReduced) setIsVisible(true);
+  }, []);
+
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    const prev = scrollY.getPrevious() ?? 0;
+    if (latest < 60) {
+      setIsVisible(true);
+    } else if (latest > prev + 5) {
+      setIsVisible(false);
+    } else if (latest < prev - 5) {
+      setIsVisible(true);
+    }
+  });
 
   return (
-    <header
+    <motion.header
       className={cn(
         'sticky top-0 z-50 border-b border-border backdrop-blur-md',
         'bg-[var(--bg)]/80 transition-colors',
@@ -40,6 +59,9 @@ export function Header({ logo, items, right, className }: HeaderProps) {
         'shadow-[0_1px_0_0_rgba(123,155,255,0.12)]',
         className
       )}
+      initial={false}
+      animate={{ y: isVisible ? 0 : -56 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
     >
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
         {/* Logo */}
@@ -116,6 +138,6 @@ export function Header({ logo, items, right, className }: HeaderProps) {
           </nav>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 }
