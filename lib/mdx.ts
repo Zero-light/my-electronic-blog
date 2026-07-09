@@ -71,14 +71,16 @@ function slugFromFilename(filename: string): string {
   return filename.replace(/\.mdx$/, '');
 }
 
-/** 安全提取字符串字段 */
+/** 安全提取字符串字段（兼容 gray-matter 把 date 解析为 Date 对象的情况） */
 function strField(
   data: Record<string, unknown>,
   key: string,
   fallback: string
 ): string {
   const val = data[key];
-  return typeof val === 'string' ? val : fallback;
+  if (typeof val === 'string') return val;
+  if (val instanceof Date) return val.toISOString().slice(0, 10);
+  return fallback;
 }
 
 /** 安全提取字符串数组 */
