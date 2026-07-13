@@ -12,7 +12,7 @@ export default function ProjectsPage() {
           项目作品
         </h1>
         <p className="text-slate-600 dark:text-slate-400">
-          硬件项目全流程展示：需求分析 → 架构设计 → PCB Layout → 固件开发 → 调试验证。
+          嵌入式 · 硬件 · Vibe coding — 项目全流程展示：需求分析 → 架构设计 → 开发实现 → 调试验证。
         </p>
       </div>
       <ProjectsList projects={projects} allTags={allTags} />
