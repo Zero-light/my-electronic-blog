@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { NoteMeta } from '@/lib/mdx';
 import { NoteCard } from './note-card';
 import { cn } from '@/lib/utils';
-import { ChevronDown, Cpu, CircuitBoard, Search } from 'lucide-react';
+import { ChevronDown, Cpu, CircuitBoard, Search, FileQuestion } from 'lucide-react';
 
 export interface NotesListProps {
   notes: NoteMeta[];
@@ -14,6 +14,7 @@ export interface NotesListProps {
 }
 
 const mainCategories = [
+  { key: '测试题', label: '测试题', icon: <FileQuestion className="h-4 w-4" /> },
   { key: '软件', label: '软件', icon: <Cpu className="h-4 w-4" /> },
   { key: '硬件', label: '硬件', icon: <CircuitBoard className="h-4 w-4" /> },
 ] as const;
