@@ -28,8 +28,8 @@ export default function HomePage() {
   return (
     <div className="animate-fade-in space-y-16">
       {/* Hero */}
-      <HeroGlow className="rounded-2xl border border-border/30 py-10 md:py-12">
-        <div className="space-y-5 md:space-y-6">
+      <HeroGlow className="rounded-2xl border border-border/30 py-10 text-center md:py-12">
+        <div className="mx-auto max-w-2xl space-y-5 md:space-y-6">
           <h1 className="text-[2.5rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
             你好，我是{' '}
             <span
@@ -48,7 +48,7 @@ export default function HomePage() {
             具备软硬件一体化开发能力的嵌入式工程师，专注于 STM32 嵌入式固件、高效电源闭环控制与精密信号链设计。
             这里是我在学习与工程实践中的知识沉淀与项目复盘。
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <Link href="/resume/" className="btn-primary">
               下载简历
               <ArrowRight className="h-4 w-4" />
