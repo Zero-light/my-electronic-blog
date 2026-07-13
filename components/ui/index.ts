@@ -1,5 +1,5 @@
 export { Header, type NavItem, type HeaderProps } from './header';
-export { Footer, type FooterLink, type FooterProps } from './footer';
+export { Footer, type FooterProps } from './footer';
 export { Layout, type LayoutProps } from './layout';
 export { ThemeToggle, type ThemeToggleProps } from './theme-toggle';
 export { CodeBlock, type CodeBlockProps } from './code-block';
