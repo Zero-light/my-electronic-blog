@@ -5,10 +5,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { HeroGlow } from '@/components/hero-glow';
-import { SkillBar } from '@/components/skill-bar';
 import { getAllNotes, getAllProjects, sortByDate } from '@/lib/mdx';
 import { formatDate } from '@/lib/utils';
-import { skillCategories } from '@/content/data/skills';
 import {
   ArrowRight,
   BookOpen,
@@ -107,16 +105,6 @@ export default function HomePage() {
           </Link>
 
         </div>
-      </section>
-
-      {/* ----------------------------------------------------------
-         技能可视化
-         ---------------------------------------------------------- */}
-      <section>
-        <h2 className="mb-6 text-xl font-bold text-slate-900 dark:text-slate-100">
-          专业技能
-        </h2>
-        <SkillBar categories={skillCategories} />
       </section>
 
       {/* ----------------------------------------------------------
