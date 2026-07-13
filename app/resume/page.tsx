@@ -28,30 +28,37 @@ export default function ResumePage() {
       {/* 简历内容 */}
       <div className="space-y-10 print:text-black">
         {/* 头部信息 */}
-        <header className="space-y-3 border-b border-border pb-6 print:border-gray-300">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 print:text-black">
-            {profile.name}
-          </h1>
-          <p className="text-primary font-medium">{profile.title}</p>
-          <div className="flex flex-wrap gap-4 text-sm text-text-muted print:text-gray-600">
-            <span className="inline-flex items-center gap-1">
-              <Phone className="h-4 w-4" />
-              {profile.phone}
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <Mail className="h-4 w-4" />
-              {profile.email}
-            </span>
-            {profile.github && (
+        <header className="flex items-start gap-5 border-b border-border pb-6 print:border-gray-300">
+          <img
+            src="/images/avatar.jpg"
+            alt={profile.name}
+            className="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-border print:hidden"
+          />
+          <div className="space-y-3">
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 print:text-black">
+              {profile.name}
+            </h1>
+            <p className="text-primary font-medium">{profile.title}</p>
+            <div className="flex flex-wrap gap-4 text-sm text-text-muted print:text-gray-600">
               <span className="inline-flex items-center gap-1">
-                <Github className="h-4 w-4" />
-                {profile.github.replace('https://', '')}
+                <Phone className="h-4 w-4" />
+                {profile.phone}
               </span>
-            )}
-            <span className="inline-flex items-center gap-1">
-              <MapPin className="h-4 w-4" />
-              {profile.location}
-            </span>
+              <span className="inline-flex items-center gap-1">
+                <Mail className="h-4 w-4" />
+                {profile.email}
+              </span>
+              {profile.github && (
+                <span className="inline-flex items-center gap-1">
+                  <Github className="h-4 w-4" />
+                  {profile.github.replace('https://', '')}
+                </span>
+              )}
+              <span className="inline-flex items-center gap-1">
+                <MapPin className="h-4 w-4" />
+                {profile.location}
+              </span>
+            </div>
           </div>
         </header>
 

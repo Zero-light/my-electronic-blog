@@ -30,6 +30,11 @@ export default function HomePage() {
       {/* Hero */}
       <HeroGlow className="rounded-2xl border border-border/30 py-10 text-center md:py-12">
         <div className="mx-auto max-w-2xl space-y-5 md:space-y-6">
+          <img
+            src="/images/avatar.jpg"
+            alt="任炳宇"
+            className="mx-auto h-24 w-24 rounded-full object-cover ring-2 ring-border/50"
+          />
           <h1 className="text-[2.5rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
             你好，我是{' '}
             <span
