@@ -13,6 +13,9 @@ import {
   FileText,
   FolderGit2,
   Wrench,
+  Cpu,
+  CircuitBoard,
+  GraduationCap,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -32,7 +35,6 @@ export default function HomePage() {
          Banner 区域
          ---------------------------------------------------------- */}
       <HeroGlow className="flex flex-col items-center gap-6 rounded-2xl py-8 text-center md:flex-row md:text-left md:py-10">
-        {/* 头像占位（CSS 首字母） */}
         <div
           className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full text-3xl font-bold text-white"
           style={{ backgroundColor: 'var(--primary)' }}
@@ -67,107 +69,132 @@ export default function HomePage() {
       </HeroGlow>
 
       {/* ----------------------------------------------------------
-         三大功能快捷入口
+         方向标签
          ---------------------------------------------------------- */}
-      <section>
-        <h2 className="mb-6 text-xl font-bold text-slate-900 dark:text-slate-100">
-          探索
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Link href="/notes/">
-            <Card hover className="h-full">
-              <CardHeader>
-                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-400">
-                  <BookOpen className="h-5 w-5" />
-                </div>
-                <CardTitle>知识库</CardTitle>
-                <div className="my-2 h-px w-10 bg-border" />
-                <CardDescription>
-                  嵌入式笔记、电源设计复盘、模电数电与工具教程
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-
-          <Link href="/projects/">
-            <Card hover className="h-full">
-              <CardHeader>
-                <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-lg bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-400">
-                  <Wrench className="h-5 w-5" />
-                </div>
-                <CardTitle>作品集</CardTitle>
-                <div className="my-2 h-px w-10 bg-border" />
-                <CardDescription>
-                  硬件项目全流程展示：需求 → 架构 → PCB → 固件 → 测试
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-
-        </div>
+      <section className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+        {[
+          { icon: <Cpu className="h-4 w-4" />, text: '嵌入式固件' },
+          { icon: <CircuitBoard className="h-4 w-4" />, text: '硬件与电源设计' },
+          { icon: <BookOpen className="h-4 w-4" />, text: 'PCB 与信号完整性' },
+          { icon: <GraduationCap className="h-4 w-4" />, text: '学习笔记与复盘' },
+        ].map((item) => (
+          <span
+            key={item.text}
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-bg-soft px-3 py-1.5 text-sm text-text-muted"
+          >
+            {item.icon}
+            {item.text}
+          </span>
+        ))}
       </section>
 
       {/* ----------------------------------------------------------
-         最新动态
+         最新项目
+         ---------------------------------------------------------- */}
+      {latestProject && (
+        <section>
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+              最新项目
+            </h2>
+            <Link
+              href="/projects/"
+              className="text-sm text-text-muted transition-colors hover:text-primary"
+            >
+              查看全部 →
+            </Link>
+          </div>
+          <Card hover>
+            <CardHeader>
+              <div className="flex items-center gap-2 text-sm font-medium text-sky-600 dark:text-sky-400">
+                <FolderGit2 className="h-4 w-4" />
+                <span>{formatDate(latestProject.date)}</span>
+              </div>
+              <CardTitle className="mt-2">
+                <Link
+                  href={`/projects/${latestProject.slug}/`}
+                  className="transition-colors hover:text-primary"
+                >
+                  {latestProject.title}
+                </Link>
+              </CardTitle>
+              <CardDescription>
+                {latestProject.description || '暂无描述'}
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </section>
+      )}
+
+      {/* ----------------------------------------------------------
+         学习笔记
          ---------------------------------------------------------- */}
       <section>
-        <h2 className="mb-6 text-xl font-bold text-slate-900 dark:text-slate-100">
-          最新动态
-        </h2>
-        <div className="space-y-4">
-          {/* 最新项目 */}
-          {latestProject && (
-            <Card hover>
-              <CardHeader>
-                <div className="flex items-center gap-2 text-sm font-medium text-sky-600 dark:text-sky-400">
-                  <FolderGit2 className="h-4 w-4" />
-                  <span>最新项目</span>
-                </div>
-                <CardTitle className="mt-2">
-                  <Link
-                    href={`/projects/${latestProject.slug}/`}
-                    className="transition-colors hover:text-primary"
-                  >
-                    {latestProject.title}
-                  </Link>
-                </CardTitle>
-                <CardDescription>
-                  {latestProject.description || '暂无描述'}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          )}
+        <div className="mb-6 flex items-center justify-between">
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+            学习笔记
+          </h2>
+          <Link
+            href="/notes/"
+            className="text-sm text-text-muted transition-colors hover:text-primary"
+          >
+            查看全部 →
+          </Link>
+        </div>
+        {latestNotes.length > 0 ? (
+          <div className="stagger-container grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {latestNotes.map((note) => (
+              <Card key={note.slug} hover className="stagger-item h-full">
+                <CardHeader>
+                  <div className="flex items-center gap-2 text-sm font-medium text-sky-600 dark:text-sky-400">
+                    <FileText className="h-4 w-4" />
+                    <span>{formatDate(note.date)}</span>
+                  </div>
+                  <CardTitle className="mt-2 text-base">
+                    <Link
+                      href={`/notes/${note.slug}/`}
+                      className="transition-colors hover:text-primary"
+                    >
+                      {note.title}
+                    </Link>
+                  </CardTitle>
+                  <CardDescription className="line-clamp-2">
+                    {note.description || '暂无描述'}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            暂无笔记，精彩内容即将上线。
+          </p>
+        )}
+      </section>
 
-          {/* 最新笔记 */}
-          {latestNotes.length > 0 ? (
-            <div className="stagger-container grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {latestNotes.map((note) => (
-                <Card key={note.slug} hover className="stagger-item h-full">
-                  <CardHeader>
-                    <div className="flex items-center gap-2 text-sm font-medium text-sky-600 dark:text-sky-400">
-                      <FileText className="h-4 w-4" />
-                      <span>{formatDate(note.date)}</span>
-                    </div>
-                    <CardTitle className="mt-2 text-base">
-                      <Link
-                        href={`/notes/${note.slug}/`}
-                        className="transition-colors hover:text-primary"
-                      >
-                        {note.title}
-                      </Link>
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2">
-                      {note.description || '暂无描述'}
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              暂无笔记，精彩内容即将上线。
-            </p>
-          )}
+      {/* ----------------------------------------------------------
+         关于本站
+         ---------------------------------------------------------- */}
+      <section className="rounded-xl border border-border bg-bg-soft p-6 text-center">
+        <p className="text-sm leading-relaxed text-text-muted">
+          本站记录了我在嵌入式开发、电源设计与硬件调试中的学习笔记和项目实践。
+          所有内容仅供学习交流，转载请注明出处。
+        </p>
+        <div className="mt-4 flex items-center justify-center gap-4">
+          <Link
+            href="/notes/"
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary-dark"
+          >
+            <BookOpen className="h-4 w-4" />
+            浏览笔记
+          </Link>
+          <Link
+            href="/resume/"
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-primary-dark"
+          >
+            <ArrowRight className="h-4 w-4" />
+            查看简历
+          </Link>
         </div>
       </section>
     </div>
