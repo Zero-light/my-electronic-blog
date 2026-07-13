@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { NoteMeta } from '@/lib/mdx';
 import { NoteCard } from './note-card';
 import { cn } from '@/lib/utils';
-import { ChevronDown, Cpu, CircuitBoard, FileQuestion } from 'lucide-react';
+import { ChevronDown, Cpu, CircuitBoard } from 'lucide-react';
 
 export interface NotesListProps {
   notes: NoteMeta[];
@@ -16,14 +16,13 @@ export interface NotesListProps {
 const mainCategories = [
   { key: '软件', label: '软件', icon: <Cpu className="h-4 w-4" /> },
   { key: '硬件', label: '硬件', icon: <CircuitBoard className="h-4 w-4" /> },
-  { key: '测试题', label: '测试题', icon: <FileQuestion className="h-4 w-4" /> },
 ] as const;
 
 type MainCategory = (typeof mainCategories)[number]['key'];
 
 /**
  * 笔记列表客户端组件
- * - 按主分类（软件/硬件/测试题）分组展示
+ * - 按主分类（软件/硬件）分组展示
  * - 每个分类下支持子分类筛选
  * - 单列列表布局
  */

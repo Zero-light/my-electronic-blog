@@ -26,7 +26,7 @@ export interface BaseMeta {
 
 /** 学习笔记元数据 */
 export interface NoteMeta extends BaseMeta {
-  /** 主分类：软件 / 硬件 / 测试题 */
+  /** 主分类：软件 / 硬件 */
   mainCategory?: string;
   /** 子分类 */
   subCategory?: string;
