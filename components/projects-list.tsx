@@ -2,45 +2,32 @@
 
 import { useState } from 'react';
 import { ProjectMeta } from '@/lib/mdx';
-import { TagFilter } from './tag-filter';
+import { CategoryFilter } from './category-filter';
 import { ProjectCard } from './project-card';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
 
 export interface ProjectsListProps {
-  /** 全部项目元数据（已排序） */
   projects: ProjectMeta[];
-  /** 所有可用标签 */
-  allTags: string[];
+  categories: string[];
   className?: string;
-  /** 初始可见数量 */
   initialVisible?: number;
-  /** 每次加载更多增加的数量 */
   loadMoreStep?: number;
 }
 
-/**
- * 项目列表客户端组件
- * - 标签多选筛选
- * - 加载更多（前端分页）
- * - 切换标签时重置可见数量
- */
 export function ProjectsList({
   projects,
-  allTags,
+  categories,
   className,
   initialVisible = 6,
   loadMoreStep = 6,
 }: ProjectsListProps) {
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [visibleCount, setVisibleCount] = useState(initialVisible);
 
-  // 按选中标签过滤（包含任一即匹配）
   const filtered =
-    selectedTags.length > 0
-      ? projects.filter((project) =>
-          selectedTags.some((tag) => project.tags.includes(tag))
-        )
+    selectedCategory
+      ? projects.filter((p) => p.category === selectedCategory)
       : projects;
 
   const visible = filtered.slice(0, visibleCount);
@@ -50,17 +37,17 @@ export function ProjectsList({
     setVisibleCount((v) => v + loadMoreStep);
   };
 
-  const handleTagChange = (tags: string[]) => {
-    setSelectedTags(tags);
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
     setVisibleCount(initialVisible);
   };
 
   return (
     <div className={cn('space-y-8', className)}>
-      <TagFilter
-        tags={allTags}
-        selected={selectedTags}
-        onChange={handleTagChange}
+      <CategoryFilter
+        categories={categories}
+        selected={selectedCategory}
+        onChange={handleCategoryChange}
       />
 
       {visible.length > 0 ? (
