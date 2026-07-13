@@ -1,0 +1,462 @@
+---
+title: 嵌入式面试测试题 — 中断与 DMA
+slug: embedded-test-interrupt-dma
+date: 2026-07-13
+tags: ["中断", "NVIC", "DMA", "优先级", "嵌套", "Cache一致性", "面试题"]
+mainCategory: 软件
+subCategory: 测试题
+description: 中断与 DMA 测试题：NVIC 优先级分组、中断嵌套与双栈、DMA 三种模式、半传输中断、Cache 一致性、IDLE 帧检测。约 17 题。
+---
+
+> **定位**：中断和 DMA 是嵌入式系统软件与硬件交互的核心机制，也是面试中区分"会用库"和"懂原理"的关键。
+> **互联**：01#Q07（volatile）→ 本文件（ISR 共享变量）；02#Q12（向量表）→ 本文件（NVIC）；04-外设 → 本文件（外设中断）；05-RTOS → 本文件（临界区）
+> **难度分布**：L1 ~40% / L2 ~50% / L3 ~10%
+
+---
+
+## 一、NVIC 与中断基础
+
+### Q01 — NVIC 的中断优先级与分组
+
+**📐 L1　💡 高频：是　🔗 关联：02#Q12、03#Q02、05#Q10**
+
+**场景**：你配置了多个中断，但高优先级中断没有抢占低优先级中断。
+
+**答案**：
+- STM32 使用 4 位优先级（16 个等级），但芯片厂商可能只实现部分位
+- 优先级分组（Priority Group）决定抢占优先级和子优先级的位数
+
+```c
+// 优先级分组设置（整个系统只能设置一次）
+HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);  // 4 位全为抢占优先级
+
+// 设置中断优先级（分组 4 下，值越小优先级越高）
+HAL_NVIC_SetPriority(USART1_IRQn, 5, 0);
+HAL_NVIC_SetPriority(TIM2_IRQn, 3, 0);   // TIM2 抢占优先级更高
+```
+
+**面试追问**：Priority Group 4 和 Group 0 的区别？
+> Group 4：16 级抢占，0 级子优先级（FreeRTOS 推荐）。
+> Group 0：0 级抢占，16 级子优先级（所有中断不可互相抢占）。
+
+---
+
+### Q02 — 中断优先级分组与 FreeRTOS 的冲突
+
+**📐 L2　💡 高频：是　🔗 关联：03#Q01、05#Q10**
+
+**场景**：FreeRTOS 的 `configLIBRARY_LOWEST_INTERRUPT_PRIORITY` 配置错误，导致系统崩溃。
+
+**答案**：
+- FreeRTOS 只能管理一定优先级范围内的中断
+- 高于此范围的中断（如最高优先级中断）不受 FreeRTOS 管理，不能调用 FreeRTOS API
+
+```c
+// FreeRTOSConfig.h
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY      15
+#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 5
+// 优先级 6-15 的中断可以调用 FreeRTOS API（FromISR 版本）
+// 优先级 0-5 的中断不受 FreeRTOS 管理，不能调用任何 FreeRTOS 功能
+```
+
+**工程实践**：将系统 Tick 和 PendSV 设置为最低优先级（15），确保上下文切换不会屏蔽其他中断。
+
+---
+
+### Q03 — 中断嵌套与双栈机制
+
+**📐 L1　💡 高频：是　🔗 关联：02#Q20（MSP/PSP）、05#Q04**
+
+**场景**：高优先级中断打断了低优先级中断，你需要理解栈的使用。
+
+**答案**：
+- Cortex-M 异常处理自动使用 MSP（主栈指针）
+- 进入异常时，硬件自动保存 R0-R3, R12, LR, PC, xPSR 到当前栈
+- 中断嵌套时，高优先级 ISR 使用与低优先级 ISR 相同的栈（MSP）
+- 在 RTOS 中，任务使用 PSP，ISR 使用 MSP
+
+```
+栈使用（中断嵌套）：
+┌─────────────┐
+│ ISR2 上下文 │ ← 高优先级进入，SP 指向这里
+├─────────────┤
+│ ISR1 上下文 │ ← 低优先级被打断
+├─────────────┤
+│ 任务上下文   │ ← 中断发生前
+└─────────────┘
+```
+
+---
+
+### Q04 — 中断延迟与零延迟中断
+
+**📐 L2　💡 高频：否　🔗 关联：03#Q01、03#Q03**
+
+**场景**：你的电机控制中断需要在 1μs 内响应，但 FreeRTOS 的临界区引入了延迟。
+
+**答案**：
+- 中断延迟 = 从信号到达至 ISR 第一条指令执行的时间
+- Cortex-M 硬件中断延迟：12 个时钟周期（无等待状态）
+- 软件延迟来源：
+  - `__disable_irq()` 关中断的临界区
+  - Flash 等待周期
+  - Cache 未命中（M7）
+  
+```c
+// FreeRTOS 临界区类型对比
+taskENTER_CRITICAL();       // 关中断（最大延迟）
+taskENTER_CRITICAL_FROM_ISR();  // 从中断中进入
+vTaskSuspendAll();          // 仅调度器挂起（中断仍可触发，延迟更低）
+```
+
+---
+
+### Q05 — 中断向量表与动态修改
+
+**📐 L2　💡 高频：是　🔗 关联：02#Q12、01#Q04**
+
+**场景**：你需要在运行时修改某个中断的处理函数。
+
+**答案**：
+```c
+// 方法 1：直接修改向量表（位于 Flash 或 RAM）
+// 向量表位于 0x0800_0000（Flash）或 RAM（如果重定位）
+#define USER_IRQn  57  // 假设是某个用户中断
+uint32_t *vector_table = (uint32_t *)SCB->VTOR;
+vector_table[USER_IRQn + 16] = (uint32_t)&my_new_handler;  // +16 跳过内核异常
+
+// 方法 2：使用 HAL 库的弱函数机制（推荐）
+// 在用户代码中重新定义弱函数即可覆盖
+void USART1_IRQHandler(void)
+{
+    // 自定义处理
+}
+```
+
+---
+
+### Q06 — 外部中断（EXTI）与 GPIO 中断
+
+**📐 L1　💡 高频：是　🔗 关联：04#Q01（GPIO）**
+
+**场景**：你需要通过按键触发一个外部中断来处理低功耗唤醒。
+
+**答案**：
+```c
+// GPIO 中断配置
+GPIO_InitTypeDef GPIO_InitStruct = {0};
+GPIO_InitStruct.Pin = GPIO_PIN_0;
+GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;  // 上升沿触发
+GPIO_InitStruct.Pull = GPIO_NOPULL;
+HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+// 使能中断
+HAL_NVIC_SetPriority(EXTI0_IRQn, 6, 0);
+HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+// ISR
+void EXTI0_IRQHandler(void)
+{
+    __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_0);
+    // 处理逻辑
+    button_pressed = 1;  // volatile 标志（需在外部定义 volatile uint8_t button_pressed）
+}
+
+// 注意：EXTI 是每个引脚一根线，EXTI0 对应所有 GPIO 的 Pin0
+// 在 ISR 中需要判断是哪个端口（通常设计中一个 Pin 只接一个端口）
+```
+
+---
+
+### Q07 — 中断中的"延迟处理"模式（Top-half / Bottom-half）
+
+**📐 L2　💡 高频：是　🔗 关联：05#Q18、06#Q01**
+
+**场景**：UART 收到大量数据，ISR 中处理太慢导致丢数据。
+
+**答案**：
+```c
+// Top-half（ISR 中）：仅做最低限度工作
+void USART1_IRQHandler(void)
+{
+    uint8_t data = (uint8_t)(huart1.Instance->DR & 0xFF);
+    ring_buf_write(&rx_buf, data);  // 快速存入环形缓冲（见 01#Q21）
+    // 不要在这里做协议解析！
+}
+
+// Bottom-half（任务中）：处理数据
+void uart_task(void *param)
+{
+    uint8_t data;
+    while (1) {
+        if (ring_buf_read(&rx_buf, &data)) {
+            protocol_parse(data);  // 协议解析
+        } else {
+            ulTaskNotifyTake(pdTRUE, portMAX_DELAY);  // 等待中断通知
+        }
+    }
+}
+```
+
+---
+
+## 二、DMA 原理
+
+### Q08 — DMA 的三种传输模式
+
+**📐 L1　💡 高频：是　🔗 关联：04#Q15（ADC+DMA）、06#Q01（UART+DMA）**
+
+**场景**：你需要选择 DMA 模式来采集 ADC 数据。
+
+**答案**：
+
+| 模式 | 特点 | 适用场景 |
+|------|------|---------|
+| 普通模式（Normal） | 传输完成后停止 | 单次 ADC 采集 |
+| 循环模式（Circular） | 传输完成后自动重新开始 | 连续 ADC 采集、音频流 |
+| 双缓冲（Double Buffer） | 两个缓冲区交替，CPU 处理一个时 DMA 写另一个 | 高速数据采集 |
+
+```c
+// 普通模式
+HAL_UART_Transmit_DMA(&huart1, data, len);
+
+// 循环模式（ADC 连续采集）
+HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_buf, ADC_BUF_SIZE);
+
+// 双缓冲模式（需要手动配置 DMA 的 DBM 位）
+ HAL_DMAEx_MultiBufferStart(&hdma_memtomem_dma2_stream0, src, dst0, dst1, len);
+```
+
+---
+
+### Q09 — DMA 传输完成中断与半传输中断
+
+**📐 L2　💡 高频：是　🔗 关联：03#Q08、04#Q15**
+
+**场景**：你需要在 DMA 传一半时就开始处理数据，同时 DMA 继续填充另一半。
+
+**答案**：
+```c
+// 使能半传输完成中断和传输完成中断
+HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc_buf, ADC_BUF_SIZE);
+
+void DMA2_Stream0_IRQHandler(void)
+{
+    // 半传输完成：前半缓冲区已满
+    if (__HAL_DMA_GET_IT_SOURCE(&hdma_adc1, DMA_IT_HT)) {
+        process_buffer(&adc_buf[0], ADC_BUF_SIZE / 2);
+    }
+    // 传输完成：后半缓冲区已满
+    if (__HAL_DMA_GET_IT_SOURCE(&hdma_adc1, DMA_IT_TC)) {
+        process_buffer(&adc_buf[ADC_BUF_SIZE / 2], ADC_BUF_SIZE / 2);
+    }
+}
+```
+
+---
+
+### Q10 — DMA 一致性与 Cache 问题（M7）
+
+**📐 L2　💡 高频：是　🔗 关联：01#Q07、02#Q01**
+
+**场景**：你在 STM32H7 上使用 DMA，但 CPU 看到的数据是旧值（Cache 一致性问题）。
+
+**答案**：
+- M7 有 D-Cache，DMA 直接访问内存，绕过 Cache
+- DMA 写入内存后，CPU 的 D-Cache 中可能还是旧数据
+- DMA 从内存读取时，CPU 的 D-Cache 中可能还有未写回的脏数据
+
+**解决方案**：
+```c
+// DMA 读取前：清理 Cache（将脏数据写回内存）
+SCB_CleanDCache_by_Addr((uint32_t*)buffer, len);
+
+// DMA 写入后：使 Cache 无效（强制 CPU 从内存重新读取）
+SCB_InvalidateDCache_by_Addr((uint32_t*)buffer, len);
+
+// 或者：将 DMA 缓冲区配置为非缓存区域（MPU）
+__attribute__((section(".sram_d3")))  // 放在非缓存的 SRAM 区域
+uint32_t dma_buffer[256];
+```
+
+---
+
+### Q11 — DMA 仲裁与优先级
+
+**📐 L2　💡 高频：否　🔗 关联：02#Q04（总线矩阵）**
+
+**场景**：你的 DMA 传输偶尔丢失数据（如 ADC 溢出）。
+
+**答案**：
+- 当多个 DMA 通道同时请求时，硬件优先级（通道号）决定顺序
+- 可通过软件配置 DMA 通道优先级（Low / Medium / High / Very High）
+- 当 DMA 和 CPU 冲突时，总线矩阵轮询仲裁
+
+```c
+// 配置 DMA 优先级
+DMA_HandleTypeDef hdma;
+hdma.Init.Priority = DMA_PRIORITY_VERY_HIGH;
+HAL_DMA_Init(&hdma);
+```
+
+---
+
+### Q12 — 中断中使用 FPU 的上下文保存
+
+**📐 L2　💡 高频：否　🔗 关联：02#Q03**
+
+**场景**：你的 FreeRTOS 任务使用了 FPU，但切换到另一个使用 FPU 的任务后浮点寄存器损坏。
+
+**答案**：
+- Cortex-M4F/M7 的 Lazy Stack Preservation：当任务首次使用 FPU 时才保存 FPU 上下文
+- 在 FreeRTOS 中，`configUSE_TASK_FPU_SUPPORT = 2` 会为每个任务保存 FPU 上下文
+- 中断中如果使用 FPU，需要确保 FPU 寄存器不被破坏
+
+```c
+// FreeRTOSConfig.h
+#define configUSE_TASK_FPU_SUPPORT  2  // 启用 FPU 上下文保存
+
+// 任务中安全使用 FPU
+void motor_control_task(void *param)
+{
+    float angle = 0.0f;
+    while (1) {
+        angle += calculate_pi_loop(angle);  // 浮点运算
+        vTaskDelay(1);
+    }
+}
+```
+
+---
+
+## 三、中断与 DMA 的协同设计
+
+### Q13 — UART DMA 接收 + IDLE 中断检测帧
+
+**📐 L2　💡 高频：是　🔗 关联：03#Q08、06#Q01**
+
+**场景**：你需要接收变长 UART 帧，不知道何时数据结束。
+
+**答案**：
+```c
+// UART DMA 接收 + IDLE 中断方案
+// 1. 启动 DMA 循环接收
+HAL_UART_Receive_DMA(&huart1, rx_buf, RX_BUF_SIZE);
+
+// 2. 使能 IDLE 中断
+__HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
+
+// 3. 在 UART 中断中检测 IDLE
+void USART1_IRQHandler(void)
+{
+    if (__HAL_UART_GET_FLAG(&huart1, UART_FLAG_IDLE)) {
+        __HAL_UART_CLEAR_IDLEFLAG(&huart1);
+        
+        // 计算接收到的数据长度
+        uint16_t dma_remaining = __HAL_DMA_GET_COUNTER(huart1.hdmarx);
+        uint16_t rx_len = RX_BUF_SIZE - dma_remaining;
+        
+        // 通知任务处理
+        rx_frame_ready = 1;
+        rx_frame_len = rx_len;
+    }
+}
+```
+
+**面试追问**：为什么不直接在 DMA 传输完成中断中处理？
+> 因为不知道帧何时结束。DMA 传输完成意味着缓冲区满，而 IDLE 表示线路空闲超过一个帧时间，更适合检测帧边界。
+
+---
+
+### Q14 — DMA 传输错误处理
+
+**📐 L2　💡 高频：否　🔗 关联：08#Q02（总线错误）**
+
+**场景**：你的 DMA 传输偶尔触发传输错误中断。
+
+**答案**：
+```c
+void DMA2_Stream0_IRQHandler(void)
+{
+    if (__HAL_DMA_GET_FLAG(&hdma, DMA_FLAG_TEIF)) {
+        // 传输错误：可能原因
+        // 1. 访问了无效地址
+        // 2. 地址未对齐
+        // 3. 写只读区域
+        __HAL_DMA_CLEAR_FLAG(&hdma, DMA_FLAG_TEIF);
+        
+        // 错误处理
+        dma_error_count++;
+        HAL_DMA_Abort(&hdma);
+        // 重新启动传输
+    }
+}
+```
+
+---
+
+### Q15 — SPI DMA 传输的时序问题
+
+**📐 L2　💡 高频：是　🔗 关联：04#Q16（SPI 通信）**
+
+**场景**：你用 HAL_SPI_TransmitReceive_DMA() 时，发现数据错位或丢失。
+
+**答案**：
+- SPI 是全双工，TX 和 RX 必须同时启动
+- DMA 的 TX 和 RX 通道必须正确配置
+- 使用 `HAL_SPI_TransmitReceive_DMA()` 而非分别调用 TX 和 RX
+
+```c
+// ✅ 正确：同时启动 TX 和 RX
+HAL_SPI_TransmitReceive_DMA(&hspi1, tx_buf, rx_buf, len);
+
+// ❌ 错误：分别调用可能导致时序错乱
+HAL_SPI_Transmit_DMA(&hspi1, tx_buf, len);
+HAL_SPI_Receive_DMA(&hspi1, rx_buf, len);  // TX 可能还没完成
+```
+
+---
+
+## 四、综合故障场景
+
+### Q16 — 中断中死锁的典型案例
+
+**📐 L2　💡 高频：是　🔗 关联：05#Q10、05#Q12**
+
+**场景**：你在中断中调用了一个需要等待某个资源的函数，但资源被低优先级代码持有。
+
+**答案**：
+```c
+// ❌ 严重错误：中断中阻塞
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+    xSemaphoreGiveFromISR(tx_sem, NULL);  // ✅ 正确：非阻塞
+    // xSemaphoreTake(tx_sem, portMAX_DELAY);  ❌ 死锁！中断中不能阻塞
+}
+
+// 正确做法：仅设置标志或释放信号量，将处理延迟到任务中
+```
+
+---
+
+### Q17 — 优先级翻转问题的硬件层面分析
+
+**📐 L3　💡 高频：否　🔗 关联：05#Q12、08#Q10**
+
+**场景**：高优先级中断被低优先级任务阻塞（通过互斥量）。
+
+**答案**：
+```
+低优先级任务 L：获取互斥量 M
+中优先级任务 M：抢占 L（因为 M 优先级高）
+高优先级任务 H：需要互斥量 M，被阻塞
+→ M 一直运行，L 无法释放 M，H 无限等待
+
+解决方案：优先级继承（Priority Inheritance）
+当 H 请求 L 持有的 M 时，L 的优先级临时提升到 H 的优先级
+L 执行完毕释放 M 后恢复原优先级
+```
+
+---
+
+> **本文件总结**：中断和 DMA 是"系统响应能力"的双刃剑。重点掌握：NVIC 优先级分组、DMA 三种模式、Cache 一致性、IDLE 中断帧检测、中断延迟处理。

@@ -228,7 +228,7 @@ collections:
       - { label: 简介, name: description, widget: text, required: false }
       - { label: 封面图URL, name: cover, widget: string, required: false }
       - { label: 主分类, name: mainCategory, widget: select, options: [软件, 硬件], required: false }
-      - { label: 子分类, name: subCategory, widget: string, required: false, hint: 如：嵌入式驱动、电源设计 }
+      - { label: 子分类, name: subCategory, widget: select, options: [测试题, 嵌入式驱动, 电源设计, PCB设计, 通信协议, 调试技巧], required: false }
       - { label: 正文, name: body, widget: markdown }
 
   # ----------------------------------------------------------

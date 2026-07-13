@@ -1,0 +1,874 @@
+---
+title: 嵌入式面试测试题 — C 语言核心
+slug: embedded-test-c-fundamentals
+date: 2026-07-13
+tags: ["C语言", "指针", "内存管理", "位操作", "volatile", "数据结构", "面试题"]
+mainCategory: 软件
+subCategory: 测试题
+description: 嵌入式 C 语言面试测试题：指针与数组、内存分区、位操作与寄存器编程、未定义行为、数据结构在嵌入式中的应用。L1/L2/L3 三层难度，约 30 题。
+---
+
+> **定位**：嵌入式面试中 C 语言是地基，80% 的"软+硬"交叉题都从这里出发。
+> **互联**：本文件是后续所有文件的语言基础。`volatile` → 03-中断；内存布局 → 02-启动流程；位操作 → 04-外设寄存器。
+> **难度分布**：L1 ~60% / L2 ~30% / L3 ~10%
+
+---
+
+## 一、指针与数组（最高频）
+
+### Q01 — `const char *p`、`char *const p`、`const char *const p` 的区别
+
+**📐 L1　💡 高频：是　🔗 关联：02#Q08（只读Flash区）、04#Q12（外设寄存器指针）**
+
+**场景**：你在写一个驱动库，需要把查找表放在 Flash 中，同时保证函数内部不会意外修改它。
+
+**答案**：
+
+| 声明 | 含义 | 指针可变？ | 指向内容可变？ |
+|------|------|-----------|--------------|
+| `const char *p` | 指向常量的指针 | ✅ | ❌ |
+| `char *const p` | 常量指针 | ❌ | ✅ |
+| `const char *const p` | 指向常量的常量指针 | ❌ | ❌ |
+
+**记忆口诀**：`const` 看它在 `*` 的哪一侧 — 在左边锁内容，在右边锁指针。
+
+**工程应用**：
+```c
+// 查找表放 Flash，编译器会将其放入 .rodata
+const uint8_t crc_table[256] = { /* ... */ };
+
+// 函数参数：承诺不修改传入的缓冲区
+uint16_t calculate_crc(const uint8_t *buf, uint16_t len);
+```
+
+---
+
+### Q02 — 数组名在什么情况下会"退化"为指针？
+
+**📐 L1　💡 高频：是　🔗 关联：01#Q03（sizeof 陷阱）、02#Q15（启动文件中 Stack_Size 符号）**
+
+**场景**：你写了一个调试宏打印数组长度，发现结果不对。
+
+**答案**：
+数组名在**大多数表达式**中会退化为指向首元素的指针，但以下情况**不退化**：
+1. 作为 `sizeof(arr)` 的操作数 — 返回整个数组的字节大小
+2. 作为 `&arr` 的操作数 — 返回整个数组的地址（类型为 `int (*)[N]`）
+3. 作为字符串字面量用于初始化字符数组时（`char s[] = "abc"`）
+
+**经典陷阱**：
+```c
+void foo(uint8_t arr[10])  // 这里的 10 是假的！实际退化为指针
+{
+    sizeof(arr);  // = 指针大小（4 或 8），不是 10
+}
+
+// 正确做法：额外传入长度
+void foo(uint8_t *arr, size_t len);
+```
+
+---
+
+### Q03 — `sizeof` 与指针的那些坑
+
+**📐 L1　💡 高频：是　🔗 关联：01#Q02、02#Q14（栈大小计算）**
+
+**场景**：你在 64 位 PC 上测试 `malloc(10 * sizeof(int*))` 得到 80 字节，移植到 32 位 MCU 上变成 40 字节。
+
+**答案**：
+- `sizeof(void*)` 在 32 位 MCU 上是 4 字节，在 64 位 PC 上是 8 字节
+- `sizeof(int)` 在大多数嵌入式平台是 4 字节，但某些 DSP 上是 2 字节
+- 嵌入式开发中应使用 `<stdint.h>` 中的 `uint32_t`、`int16_t` 等明确类型
+
+**高频面试追问**：
+```c
+int *p = malloc(10 * sizeof(int));
+// 如何安全地获取元素个数？
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))  // 仅对真实数组有效
+```
+
+---
+
+### Q04 — 函数指针与回调
+
+**📐 L1　💡 高频：是　🔗 关联：03#Q05（中断向量表）、04#Q08（HAL 回调机制）、05#Q02（任务函数）**
+
+**场景**：HAL 库中 `HAL_UART_Transmit_DMA()` 完成后会调用 `HAL_UART_TxCpltCallback()`，这是怎么实现的？
+
+**答案**：
+```c
+// 1. 定义函数指针类型
+typedef void (*UART_CallbackTypeDef)(UART_HandleTypeDef *huart);
+
+// 2. 结构体中存储回调
+struct __UART_HandleTypeDef {
+    // ...
+    UART_CallbackTypeDef TxCpltCallback;
+};
+
+// 3. 中断/DMA 完成时调用
+void HAL_UART_IRQHandler(UART_HandleTypeDef *huart)
+{
+    if (传输完成) {
+        huart->TxCpltCallback(huart);  // 回调
+    }
+}
+
+// 4. 用户实现弱函数（__weak），可被用户覆盖
+__weak void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {}
+```
+
+**面试追问**：函数指针的本质是什么？
+> 指向代码段（.text）中函数入口地址的指针。调用时 PC 跳转到该地址执行。
+
+---
+
+### Q05 — `void*` 与通用容器
+
+**📐 L1　💡 高频：是　🔗 关联：05#Q18（消息队列传递任意类型）、06#Q05（协议解析上下文）**
+
+**场景**：FreeRTOS 的 `xQueueSend()` 需要传递任意类型的数据，它的参数是 `const void *pvItemToQueue`。
+
+**答案**：
+- `void*` 是通用指针，可以指向任何数据类型
+- 不能直接解引用，必须先强制转换
+- 不能进行指针算术（因为 `void` 大小未知）
+
+```c
+// 通用缓冲区传递
+typedef struct {
+    uint8_t  type;
+    uint16_t len;
+    uint8_t  data[];  // 柔性数组
+} Message_t;
+
+void send_message(const void *msg, size_t len)
+{
+    HAL_UART_Transmit_DMA(&huart1, (uint8_t*)msg, len);
+}
+```
+
+---
+
+## 二、内存管理
+
+### Q06 — 嵌入式中的内存分区（BSS、Data、Stack、Heap）
+
+**📐 L1　💡 高频：是　🔗 关联：02#Q15（启动文件）、02#Q16（链接脚本）、08#Q03（栈溢出）**
+
+**场景**：你的程序在函数调用几层后 HardFault 了，可能是什么内存问题？
+
+**答案**：
+
+| 段 | 存储内容 | 初始化 | 生命周期 |
+|----|---------|--------|---------|
+| `.text` | 代码 + 常量 | Flash 加载 | 永久 |
+| `.data` | 已初始化的全局/静态变量 | Flash → RAM 拷贝 | 永久 |
+| `.bss` | 未初始化的全局/静态变量 | 启动时清零 | 永久 |
+| `.stack` | 局部变量、函数参数、返回地址 | 动态 | 函数作用域 |
+| `.heap` | `malloc` 分配的内存 | 动态 | 手动管理 |
+
+**启动文件中的关键操作**：
+```text
+; startup_stm32xxxx.s 中 Reset_Handler 会做：
+; 1. 从 Flash 拷贝 .data 到 RAM
+; 2. 将 .bss 段清零
+; 3. 调用 SystemInit()
+; 4. 调用 main()
+```
+
+---
+
+### Q07 — `volatile` 关键字（必考）
+
+**📐 L1　💡 高频：是　🔗 关联：03#Q01（ISR 共享变量）、03#Q02（DMA 标志）、04#Q01（寄存器访问）、05#Q10（临界区）、08#Q01（优化导致的异常）**
+
+**场景**：你在主循环中轮询一个标志位，但程序卡死 — 编译器把它优化成了一个死循环。
+
+**答案**：
+`volatile` 告诉编译器：**每次访问都必须从内存读取/写入**，不得优化掉或缓存到寄存器。
+
+**三种必须使用 volatile 的场景**：
+1. **中断服务程序修改的变量**（ISR ↔ 主循环共享）
+2. **内存映射的硬件寄存器**（外设寄存器随时被硬件改变）
+3. **多线程/多核共享变量**（RTOS 任务间共享）
+
+```c
+// ❌ 错误：编译器可能优化为只读一次
+while (rx_flag == 0) { }
+
+// ✅ 正确
+volatile uint8_t rx_flag = 0;
+while (rx_flag == 0) { }
+```
+
+**面试追问**：`volatile` 能保证原子性吗？
+> 不能。`volatile` 只防止编译器优化，不保证读-改-写操作的原子性。在 32 位 MCU 上读写 `uint32_t` 通常是原子的，但 `i++` 不是（读-改-写三步）。
+
+**面试追问**：`volatile` 在多层优化（如链接时代码生成）下还可靠吗？
+> 可靠。`volatile` 语义贯穿整个编译和链接过程，不是仅前端优化层的注解。
+
+---
+
+### Q08 — `static` 的三种用法
+
+**📐 L1　💡 高频：是　🔗 关联：01#Q09（信息隐藏）、05#Q03（任务局部存储）**
+
+**场景**：你在写一个模块化的驱动库，希望某些函数和变量只在本文件内可见。
+
+**答案**：
+
+| 用法 | 效果 |
+|------|------|
+| 函数内的 `static` 变量 | 持久存储，但作用域限于函数内（只初始化一次） |
+| 文件内的 `static` 函数 | 仅本文件可见（内部链接），实现信息隐藏 |
+| 文件内的 `static` 全局变量 | 仅本文件可见，其他文件无法 `extern` 引用 |
+
+```c
+// uart_driver.c
+static uint8_t tx_buffer[256];  // 外部不可见
+static void uart_dma_config(void) {}  // 外部不可调用
+
+uint32_t uart_get_error_count(void)
+{
+    static uint32_t error_count = 0;  // 持久，但只在此函数内可见
+    return error_count++;
+}
+```
+
+---
+
+### Q09 — `extern` 与多文件编译
+
+**📐 L1　💡 高频：是　🔗 关联：01#Q08、02#Q16（链接脚本符号）**
+
+**场景**：你在 `main.c` 中定义了一个全局变量 `system_tick`，想在 `uart.c` 中使用。
+
+**答案**：
+```c
+// main.c
+uint32_t system_tick = 0;  // 定义（分配存储）
+
+// uart.c
+extern uint32_t system_tick;  // 声明（引用外部定义）
+
+// uart.h
+extern uint32_t system_tick;  // 通常放在头文件中
+```
+
+**关键区别**：
+- `extern uint32_t x;` — 声明，不分配内存
+- `uint32_t x;` — 定义，分配内存
+- `extern uint32_t x = 0;` — 有初始化值时变成定义（C 标准规定）
+
+---
+
+### Q10 — 栈与堆的区别及嵌入式中的使用策略
+
+**📐 L1　💡 高频：是　🔗 关联：01#Q06、02#Q14、08#Q03**
+
+**场景**：你的 RTOS 任务中 `malloc()` 突然返回 `NULL`，但系统还有很多 RAM。
+
+**答案**：
+
+| 特性 | 栈 (Stack) | 堆 (Heap) |
+|------|-----------|----------|
+| 分配/释放 | 自动（函数进入/退出） | 手动（`malloc`/`free`） |
+| 速度 | 极快（SP 移动） | 较慢（查找空闲块） |
+| 大小 | 通常较小（几百字节~几KB） | 较大（取决于空闲 RAM） |
+| 碎片 | 无 | 有（长时间运行后严重） |
+| 溢出风险 | 有（递归/大局部变量） | 有（内存泄漏） |
+
+**嵌入式最佳实践**：
+1. **避免在 RTOS 任务中使用 `malloc`** — 使用静态分配或固定块内存池
+2. 如果必须用，使用 `pvPortMalloc()`（FreeRTOS 的线程安全版本）
+3. 栈大小在创建任务时指定，需考虑最大调用深度 + 局部变量 + 中断嵌套
+
+---
+
+### Q11 — 内存对齐（Memory Alignment）
+
+**📐 L2　💡 高频：是　🔗 关联：02#Q04（总线访问）、04#Q15（DMA 对齐要求）、06#Q03（协议帧解析）**
+
+**场景**：你用 DMA 从外设搬运数据到 `uint32_t` 数组，但偶尔出现数据错位。
+
+**答案**：
+- Cortex-M3/M4/M7 支持非对齐访问，但**性能降低**（硬件内部拆成多次访问）
+- Cortex-M0/M0+ **不支持非对齐访问**，会触发 HardFault
+- DMA 通常要求源/地址和长度与数据宽度对齐
+
+```c
+// ❌ 危险：结构体可能因填充导致大小不确定
+typedef struct {
+    uint8_t  id;     // 偏移 0
+    uint32_t data;   // 偏移 4（不是 1！）
+    uint8_t  crc;    // 偏移 8
+} Packet_t;          // sizeof = 12（不是 9）
+
+// ✅ 强制紧凑（仅当你确定要使用时）
+typedef struct __attribute__((packed)) {
+    uint8_t  id;
+    uint32_t data;
+    uint8_t  crc;
+} PacketPacked_t;    // sizeof = 9，但 data 可能非对齐
+```
+
+**面试追问**：如何查看结构体布局？
+> 使用 `offsetof()` 宏或编译时 `-Wpadded` 警告。
+
+---
+
+### Q12 — 大小端（Endianness）
+
+**📐 L1　💡 高频：是　🔗 关联：04#Q15（ADC 数据）、06#Q03（协议字节序）**
+
+**场景**：STM32 是小端模式，你通过 I2C 读取一个传感器的大端 16 位数据，直接赋值后数值不对。
+
+**答案**：
+- **小端（Little-Endian）**：低字节存低地址（ARM Cortex-M 默认）
+- **大端（Big-Endian）**：高字节存低地址（网络协议、部分传感器）
+
+```c
+// 传感器返回 [0x12, 0x34] 表示 0x1234（大端）
+uint8_t raw[2];
+HAL_I2C_Mem_Read(&hi2c1, addr, reg, 1, raw, 2, 100);
+
+// 正确做法：明确字节序转换
+uint16_t val = ((uint16_t)raw[0] << 8) | raw[1];  // 大端转主机序
+// 或使用宏
+#define BIG_ENDIAN_TO_U16(p) (((uint16_t)(p)[0] << 8) | (p)[1])
+```
+
+---
+
+## 三、位操作与寄存器级编程
+
+### Q13 — 位操作基本功（置位、清零、翻转、提取）
+
+**📐 L1　💡 高频：是　🔗 关联：04#Q01（GPIO 控制）、04#Q06（定时器配置）**
+
+**场景**：你需要在不影响其他位的情况下，设置 GPIOA 的第 5 位为高电平。
+
+**答案**：
+```c
+// 置位（bit set）
+GPIOA->ODR |= (1UL << 5);
+
+// 清零（bit clear）
+GPIOA->ODR &= ~(1UL << 5);
+
+// 翻转（bit toggle）
+GPIOA->ODR ^= (1UL << 5);
+
+// 提取（bit extract）
+uint32_t bit5 = (GPIOA->IDR >> 5) & 0x01;
+
+// 修改多位字段（先清零再写入）
+TIM2->CCMR1 &= ~(0x07 << 4);          // 清零位 [6:4]
+TIM2->CCMR1 |=  (0x06 << 4);          // 写入新值
+```
+
+**关键细节**：
+- 使用 `1UL` 而非 `1` 避免 64 位平台溢出
+- 读-改-写操作在并发场景下不安全（见 03#Q01）
+
+---
+
+### Q14 — 使用位域（Bit-field）操作寄存器
+
+**📐 L2　💡 高频：是　🔗 关联：04#Q01、04#Q12（外设寄存器结构体）**
+
+**场景**：你看到 STM32 头文件中 `GPIO_TypeDef` 的定义。
+
+**答案**：
+```c
+// CMSIS 头文件中的寄存器定义（简化）
+typedef struct {
+    __IO uint32_t MODER;    // 0x00  模式寄存器
+    __IO uint32_t OTYPER;   // 0x04  输出类型
+    __IO uint32_t OSPEEDR;  // 0x08  输出速度
+    __IO uint32_t PUPDR;    // 0x0C  上拉/下拉
+    __IO uint32_t IDR;      // 0x10  输入数据
+    __IO uint32_t ODR;      // 0x14  输出数据
+    __IO uint32_t BSRR;     // 0x18  位设置/复位（原子操作！）
+    __IO uint32_t LCKR;     // 0x1C  配置锁定
+    __IO uint32_t AFR[2];   // 0x20  复用功能
+} GPIO_TypeDef;
+
+// 使用 BSRR 实现原子置位/清零（无需读-改-写）
+GPIOA->BSRR = (1UL << 5);        // 置位 Pin5
+GPIOA->BSRR = (1UL << (5 + 16)); // 清零 Pin5（高 16 位是复位）
+```
+
+**面试追问**：`__IO` 是什么？
+> 就是 `volatile` 的宏定义。`#define __IO volatile`
+
+---
+
+### Q15 — 宏定义的陷阱与最佳实践
+
+**📐 L1　💡 高频：是　🔗 关联：01#Q13、04#Q01**
+
+**场景**：你写了一个宏 `#define SQUARE(x) x * x`，调用 `SQUARE(1+2)` 得到了 5 而不是 9。
+
+**答案**：
+```c
+// ❌ 错误：展开为 1+2 * 1+2 = 1+2+2 = 5
+#define SQUARE(x) x * x
+
+// ✅ 正确：每个参数和整体都加括号
+#define SQUARE(x) ((x) * (x))
+
+// ❌ 更隐蔽的陷阱
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+MAX(i++, j++);  // 副作用：i 或 j 被递增两次！
+
+// ✅ 嵌入式中安全的宏
+#define SET_BIT(reg, bit)     ((reg) |= (1UL << (bit)))
+#define CLEAR_BIT(reg, bit)   ((reg) &= ~(1UL << (bit)))
+#define READ_BIT(reg, bit)    ((reg) & (1UL << (bit)))
+```
+
+**最佳实践**：
+1. 宏参数和整体表达式都加括号
+2. 避免在宏参数中使用有副作用的表达式（`i++`）
+3. 多语句宏用 `do { ... } while(0)` 包裹
+4. 能用 `static inline` 函数替代时优先用函数（类型安全）
+
+---
+
+### Q16 — `static inline` vs 宏
+
+**📐 L2　💡 高频：是　🔗 关联：01#Q15**
+
+**答案**：
+
+| 特性 | 宏 | `static inline` |
+|------|-----|-----------------|
+| 类型检查 | ❌ 无 | ✅ 有 |
+| 副作用风险 | ✅ 有（参数多次求值） | ❌ 无 |
+| 调试 | ❌ 难（预处理器展开） | ✅ 可设断点 |
+| 代码体积 | 每处展开 | 编译器决定是否内联 |
+| 编译时计算 | ✅ 可用于常量表达式 | ❌ 不行 |
+
+```c
+// 推荐：嵌入式中优先使用 static inline
+static inline void gpio_write(GPIO_TypeDef *port, uint8_t pin, uint8_t val)
+{
+    if (val)
+        port->BSRR = (1UL << pin);
+    else
+        port->BSRR = (1UL << (pin + 16));
+}
+```
+
+---
+
+## 四、未定义行为与编译器优化
+
+### Q17 — 什么是未定义行为（UB）？嵌入式中常见的 UB
+
+**📐 L2　💡 高频：是　🔗 关联：08#Q01（HardFault 排查）**
+
+**场景**：你的代码在 `-O0` 下正常运行，开启 `-O2` 后 HardFault。
+
+**答案**：
+未定义行为是 C 标准未规定结果的行为，编译器可以做任何事（包括"正确"运行）。
+
+**嵌入式高频 UB**：
+
+| UB | 后果 | 修复 |
+|----|------|------|
+| 有符号整数溢出 | 编译器可能优化掉溢出检查 | 使用无符号类型或显式检查 |
+| 空指针解引用 | HardFault | 检查指针有效性 |
+| 数组越界 | 栈/堆损坏 | 边界检查 |
+| 使用未初始化变量 | 随机值 | 始终初始化 |
+| 数据竞争（无保护的多线程访问） | 数据损坏 | 使用临界区/原子操作 |
+| 违反严格别名规则 | 优化后数据错误 | 使用 `__attribute__((aligned))` 或 `memcpy` |
+
+---
+
+### Q18 — 严格别名规则（Strict Aliasing）
+
+**📐 L2　💡 高频：否　🔗 关联：01#Q17、06#Q03（协议解析）**
+
+**场景**：你用 `uint32_t*` 去访问一个 `uint8_t` 数组，编译器优化后数据顺序错了。
+
+**答案**：
+C 标准规定：只能通过兼容类型的指针访问对象。通过不兼容类型的指针访问是 UB。
+
+```c
+// ❌ UB：通过 uint32_t* 访问 uint8_t 数组
+uint8_t buf[8] = &#123;0x12, 0x34, 0x56, 0x78&#125;;
+uint32_t val = *(uint32_t*)&buf[0];  // 严格别名违规
+
+// ✅ 正确：使用 memcpy（编译器会优化为直接读取）
+uint32_t val;
+memcpy(&val, buf, sizeof(val));
+
+// ✅ 或使用 union（C99 允许通过 union 成员访问）
+union {
+    uint8_t  bytes[4];
+    uint32_t word;
+} converter;
+```
+
+---
+
+### Q19 — 有符号与无符号混用的陷阱
+
+**📐 L1　💡 高频：是　🔗 关联：04#Q07（ADC 采样值比较）、05#Q15（tick 比较）**
+
+**场景**：你写 `if (tick_diff > timeout)` 判断超时，但 `tick_diff` 是 `int32_t`，`timeout` 是 `uint32_t`，结果永远不成立。
+
+**答案**：
+当有符号和无符号混用时，C 会将有符号隐式转换为无符号。负数变成很大的正数。
+
+```c
+int32_t  a = -1;
+uint32_t b = 100;
+
+if (a < b) {
+    // 不会执行！因为 a 被转为 uint32_t 变成 0xFFFFFFFF
+}
+
+// ✅ 显式转换或统一类型
+if ((uint32_t)a < b) { }  // 明确意图
+```
+
+**嵌入式经典场景**：
+```c
+// 32 位 tick 计数器回绕处理
+uint32_t start = HAL_GetTick();
+// ... 执行操作 ...
+uint32_t elapsed = HAL_GetTick() - start;  // 无符号减法天然处理回绕
+if (elapsed >= timeout_ms) { /* 超时 */ }
+```
+
+---
+
+### Q20 — 编译优化等级对嵌入式代码的影响
+
+**📐 L2　💡 高频：是　🔗 关联：01#Q07（volatile）、08#Q01**
+
+**场景**：你在调试一个时序逻辑，发现单步执行正常，全速运行就出错。
+
+**答案**：
+
+| 优化等级 | 效果 | 嵌入式影响 |
+|---------|------|-----------|
+| `-O0` | 不优化，每条 C 指令对应多条汇编 | 调试友好，但代码大且慢 |
+| `-O1` | 基本优化 | 平衡 |
+| `-O2` | 积极优化 | 可能优化掉"看似无用"的 volatile 缺失访问 |
+| `-O3` | 激进优化 | 可能引入向量化，增加代码体积 |
+| `-Os` | 优化代码大小 | 嵌入式常用 |
+| `-Og` | 优化调试体验 | 调试版本推荐 |
+
+**关键原则**：
+- 硬件寄存器访问必须用 `volatile`
+- 延时循环必须用 `volatile` 或嵌入汇编
+- 调试时用 `-Og`，发布用 `-Os`
+
+---
+
+## 五、数据结构在嵌入式中的应用
+
+### Q21 — 环形缓冲区（Ring Buffer / Circular Buffer）
+
+**📐 L1　💡 高频：是　🔗 关联：03#Q06（UART 接收）、06#Q01（数据帧缓冲）**
+
+**场景**：UART 中断中接收字节，主循环中处理，需要一个缓冲区。
+
+**答案**：
+```c
+typedef struct {
+    uint8_t  *buffer;
+    uint16_t  head;       // 写入位置
+    uint16_t  tail;       // 读取位置
+    uint16_t  size;       // 缓冲区大小
+} RingBuffer_t;
+
+bool ring_buf_write(RingBuffer_t *rb, uint8_t data)
+{
+    uint16_t next = (rb->head + 1) % rb->size;
+    if (next == rb->tail)  // 满
+        return false;
+    rb->buffer[rb->head] = data;
+    rb->head = next;
+    return true;
+}
+
+bool ring_buf_read(RingBuffer_t *rb, uint8_t *data)
+{
+    if (rb->head == rb->tail)  // 空
+        return false;
+    *data = rb->buffer[rb->tail];
+    rb->tail = (rb->tail + 1) % rb->size;
+    return true;
+}
+```
+
+**面试追问**：如何判断满/空？
+> 两种方案：(1) 浪费一个单元：`(head+1)%size == tail` 为满；(2) 使用额外计数器。方案 1 更常见。
+
+---
+
+### Q22 — 链表在嵌入式中的使用
+
+**📐 L2　💡 高频：是　🔗 关联：05#Q04（RTOS 就绪链表）、05#Q18（消息队列）**
+
+**场景**：FreeRTOS 内部用链表管理就绪任务、阻塞任务、定时器。
+
+**答案**：
+```c
+// 双向链表节点（FreeRTOS 风格）
+typedef struct xLIST_ITEM {
+    uint32_t xItemValue;                 // 排序值（如阻塞时间）
+    struct xLIST_ITEM *pxNext;           // 下一个
+    struct xLIST_ITEM *pxPrevious;       // 上一个
+    void *pvOwner;                       // 所属对象（TCB）
+    void *pvContainer;                   // 所属链表
+} ListItem_t;
+```
+
+**嵌入式中链表的典型用途**：
+- 定时器管理（按到期时间排序）
+- 任务等待队列
+- 内存池管理
+- 协议重传队列
+
+---
+
+### Q23 — 状态机实现（switch-case vs 函数指针表）
+
+**📐 L2　💡 高频：是　🔗 关联：06#Q04（协议状态机）、07#Q08（Bootloader 状态机）**
+
+**场景**：你需要实现一个 UART 帧解析器，根据当前状态处理接收到的字节。
+
+**答案**：
+
+**方案 1：switch-case（最常见）**
+```c
+typedef enum {
+    STATE_IDLE,
+    STATE_HEADER,
+    STATE_LENGTH,
+    STATE_DATA,
+    STATE_CRC
+} ParserState_t;
+
+void parser_feed(ParserState_t *state, uint8_t byte)
+{
+    switch (*state) {
+        case STATE_IDLE:
+            if (byte == 0xAA) *state = STATE_HEADER;
+            break;
+        case STATE_HEADER:
+            /* ... */
+            break;
+        // ...
+    }
+}
+```
+
+**方案 2：函数指针表（高效，适合复杂状态机）**
+```c
+typedef void (*StateFunc_t)(uint8_t byte);
+
+void state_idle(uint8_t byte);
+void state_header(uint8_t byte);
+void state_length(uint8_t byte);
+
+static const StateFunc_t state_table[] = {
+    [STATE_IDLE]   = state_idle,
+    [STATE_HEADER] = state_header,
+    [STATE_LENGTH] = state_length,
+};
+
+// 调用
+state_table[current_state](received_byte);
+```
+
+---
+
+## 六、关键字与类型系统
+
+### Q24 — `typedef` vs `#define`
+
+**📐 L1　💡 高频：是**
+
+**答案**：
+
+| 特性 | `typedef` | `#define` |
+|------|-----------|-----------|
+| 处理阶段 | 编译时（语义分析） | 预处理器（文本替换） |
+| 类型安全 | ✅ 是 | ❌ 否 |
+| 作用域 | 遵循 C 作用域规则 | 文件作用域（从定义处到末尾） |
+| 指针行为 | `typedef int* PINT;` 中 `PINT a, b;` 两个都是指针 | `#define PINT int*` 中 `PINT a, b;` 只有 a 是指针 |
+
+```c
+// ❌ #define 的指针陷阱
+#define PINT int*
+PINT a, b;  // a 是 int*, b 是 int
+
+// ✅ typedef 正确
+typedef int* PINT;
+PINT a, b;  // a 和 b 都是 int*
+```
+
+---
+
+### Q25 — `union` 的用途
+
+**📐 L2　💡 高频：是　🔗 关联：04#Q15（ADC 多通道数据）、06#Q03（协议字节解析）**
+
+**场景**：你需要将一个 32 位寄存器值按字节或按位域访问。
+
+**答案**：
+```c
+// 方式 1：寄存器多视图访问
+typedef union {
+    uint32_t word;
+    uint8_t  bytes[4];
+    struct {
+        uint32_t enable : 1;
+        uint32_t mode   : 3;
+        uint32_t presc  : 8;
+        uint32_t rsvd   : 20;
+    } bits;
+} ControlReg_t;
+
+// 方式 2：协议字节序转换
+union {
+    uint32_t u32;
+    uint8_t  u8[4];
+} endian;
+endian.u32 = 0x12345678;
+// 在小端 MCU 上：u8[0]=0x78, u8[1]=0x56, u8[2]=0x34, u8[3]=0x12
+```
+
+---
+
+### Q26 — `restrict` 关键字
+
+**📐 L3　💡 高频：否　🔗 关联：01#Q18（严格别名）**
+
+**答案**：
+`restrict` 告诉编译器：该指针是访问其所指对象的唯一方式。编译器可以据此做更激进的优化。
+
+```c
+// 编译器可以假设 a 和 b 指向不重叠的内存
+void add_vectors(int *restrict a, const int *restrict b, int n)
+{
+    for (int i = 0; i < n; i++)
+        a[i] += b[i];  // 编译器可做向量化优化
+}
+```
+
+**嵌入式意义**：在 DSP 算法（FIR 滤波器、FFT）中使用 `restrict` 可显著提升性能。
+
+---
+
+### Q27 — 柔性数组（Flexible Array Member）
+
+**📐 L2　💡 高频：否　🔗 关联：01#Q05、05#Q18（消息队列）**
+
+**场景**：你需要一个变长数据包结构体，长度在运行时确定。
+
+**答案**：
+```c
+typedef struct {
+    uint8_t  type;
+    uint16_t len;
+    uint8_t  data[];  // 柔性数组：必须是最后一个成员，不占 sizeof 空间
+} Packet_t;
+
+// 动态分配
+Packet_t *pkt = malloc(sizeof(Packet_t) + payload_len);
+pkt->len = payload_len;
+memcpy(pkt->data, payload, payload_len);
+```
+
+---
+
+## 七、综合进阶
+
+### Q28 — 实现一个简化的 `printf` 格式化输出
+
+**📐 L2　💡 高频：否　🔗 关联：04#Q08（调试串口输出）**
+
+**场景**：在没有标准库的情况下，你需要通过串口输出调试信息。
+
+**答案**：
+```c
+void uart_printf(UART_HandleTypeDef *huart, const char *fmt, ...)
+{
+    char buf[128];
+    va_list args;
+    va_start(args, fmt);
+    int len = vsnprintf(buf, sizeof(buf), fmt, args);
+    va_end(args);
+    
+    if (len > 0)
+        HAL_UART_Transmit(huart, (uint8_t*)buf, len, 100);
+}
+```
+
+**面试追问**：`vsnprintf` 和 `sprintf` 的区别？
+> `vsnprintf` 有缓冲区大小限制，防止溢出。嵌入式中应始终使用 `snprintf` 系列。
+
+---
+
+### Q29 — 实现一个简化的断言宏
+
+**📐 L1　💡 高频：是　🔗 关联：08#Q01（HardFault 调试）**
+
+**场景**：你需要在参数错误时快速定位问题，但不想用标准 `assert`（可能触发不可控行为）。
+
+**答案**：
+```c
+#ifdef DEBUG
+    #define ASSERT(expr) \
+        do { \
+            if (!(expr)) { \
+                __disable_irq(); \
+                uart_printf(&huart1, "ASSERT FAIL: %s:%d %s\n", \
+                    __FILE__, __LINE__, #expr); \
+                while(1); \
+            } \
+        } while(0)
+#else
+    #define ASSERT(expr) ((void)0)
+#endif
+```
+
+---
+
+### Q30 — 实现一个带超时机制的标志等待
+
+**📐 L2　💡 高频：是　🔗 关联：03#Q01（ISR 共享变量）、05#Q10（RTOS 同步）**
+
+**场景**：你需要等待某个硬件标志位置位，但不能无限等待。
+
+**答案**：
+```c
+bool wait_for_flag(volatile uint32_t *flag, uint32_t timeout_ms)
+{
+    uint32_t start = HAL_GetTick();
+    while (*flag == 0) {
+        if ((HAL_GetTick() - start) >= timeout_ms) {
+            return false;  // 超时
+        }
+    }
+    return true;
+}
+
+// 使用
+if (!wait_for_flag(&adc_dma_done, 100)) {
+    // 超时处理
+    Error_Handler();
+}
+```
+
+---
+
+> **本文件总结**：C 语言是嵌入式的"空气" — 无处不在但容易被忽视。面试中 80% 的"为什么这样写"问题，答案都在本文件的某个知识点里。重点掌握：`volatile`、指针与数组、内存布局、位操作、`static` 语义。
