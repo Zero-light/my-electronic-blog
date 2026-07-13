@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { NoteMeta } from '@/lib/mdx';
 import { NoteCard } from './note-card';
 import { cn } from '@/lib/utils';
-import { ChevronDown, Cpu, CircuitBoard } from 'lucide-react';
+import { ChevronDown, Cpu, CircuitBoard, Search } from 'lucide-react';
 
 export interface NotesListProps {
   notes: NoteMeta[];
@@ -22,6 +22,7 @@ type MainCategory = (typeof mainCategories)[number]['key'];
 
 /**
  * 笔记列表客户端组件
+ * - 支持关键词搜索
  * - 按主分类（软件/硬件）分组展示
  * - 每个分类下支持子分类筛选
  * - 单列列表布局
@@ -32,6 +33,7 @@ export function NotesList({
   initialVisible = 6,
   loadMoreStep = 6,
 }: NotesListProps) {
+  const [keyword, setKeyword] = useState('');
   const [activeMainCategory, setActiveMainCategory] = useState<MainCategory | '全部'>('全部');
   const [activeSubCategory, setActiveSubCategory] = useState<string>('全部');
   const [visibleCount, setVisibleCount] = useState(initialVisible);
@@ -48,7 +50,6 @@ export function NotesList({
     return map;
   }, [notes]);
 
-  // 当前主分类下的子分类列表
   const currentSubCategories = useMemo(() => {
     if (activeMainCategory === '全部') {
       const set = new Set<string>();
@@ -60,12 +61,19 @@ export function NotesList({
 
   // 过滤笔记
   const filtered = useMemo(() => {
+    const q = keyword.toLowerCase().trim();
     return notes.filter((note) => {
       if (activeMainCategory !== '全部' && note.mainCategory !== activeMainCategory) return false;
       if (activeSubCategory !== '全部' && note.subCategory !== activeSubCategory) return false;
+      if (q) {
+        const inTitle = note.title.toLowerCase().includes(q);
+        const inDesc = note.description?.toLowerCase().includes(q) ?? false;
+        const inTags = note.tags.some((t) => t.toLowerCase().includes(q));
+        if (!inTitle && !inDesc && !inTags) return false;
+      }
       return true;
     });
-  }, [notes, activeMainCategory, activeSubCategory]);
+  }, [notes, keyword, activeMainCategory, activeSubCategory]);
 
   const visible = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
@@ -86,7 +94,19 @@ export function NotesList({
   };
 
   return (
-    <div className={cn('space-y-8', className)}>
+    <div className={cn('space-y-6', className)}>
+      {/* 搜索框 */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-text-muted" />
+        <input
+          type="text"
+          placeholder="搜索笔记标题、描述或标签..."
+          value={keyword}
+          onChange={(e) => { setKeyword(e.target.value); setVisibleCount(initialVisible); }}
+          className="w-full rounded-lg border border-border bg-bg-soft py-2 pl-10 pr-4 text-sm text-text placeholder:text-text-muted transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+        />
+      </div>
+
       {/* 主分类筛选 */}
       <div className="flex flex-wrap gap-2">
         <button

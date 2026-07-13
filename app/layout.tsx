@@ -67,6 +67,7 @@ export default function RootLayout({
           footer={{
             links: [
               { label: 'GitHub', href: 'https://github.com/Zero-light/my-electronic-blog' },
+              { label: '个人网站', href: 'https://www.zerolight.fun' },
               { label: '邮箱', href: 'mailto:16696536769@163.com' },
             ],
             center: (

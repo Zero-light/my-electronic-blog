@@ -4,19 +4,18 @@ import { ArrowLeft, Calendar, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getAllNotes, getNoteBySlug } from '@/lib/mdx';
 import { MdxContent } from '@/components/mdx-content';
+import { Toc } from '@/components/toc';
 import { formatDate } from '@/lib/utils';
 
 interface NotePageProps {
   params: { slug: string };
 }
 
-/** 静态导出：预渲染所有笔记详情页 */
 export function generateStaticParams() {
   const notes = getAllNotes();
   return notes.map((note) => ({ slug: note.slug }));
 }
 
-/** 动态页面标题 */
 export function generateMetadata({ params }: NotePageProps): Metadata {
   const note = getNoteBySlug(params.slug);
   return {
@@ -51,9 +50,10 @@ export default function NotePage({ params }: NotePageProps) {
             <Calendar className="h-4 w-4" />
             {formatDate(meta.date)}
           </span>
-          {meta.category && (
+          {meta.mainCategory && (
             <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
-              {meta.category}
+              {meta.mainCategory}
+              {meta.subCategory ? ` · ${meta.subCategory}` : ''}
             </span>
           )}
         </div>
@@ -79,8 +79,17 @@ export default function NotePage({ params }: NotePageProps) {
         )}
       </div>
 
-      {/* MDX 正文 */}
-      <MdxContent source={content} />
+      {/* 正文 + 侧边目录 */}
+      <div className="relative gap-10 lg:flex">
+        <div className="min-w-0 flex-1">
+          <MdxContent source={content} />
+        </div>
+
+        {/* 桌面端显示侧边目录 */}
+        <aside className="hidden lg:block w-56 shrink-0">
+          <Toc source={content} />
+        </aside>
+      </div>
     </article>
   );
 }
