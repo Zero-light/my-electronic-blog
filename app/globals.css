@@ -3,43 +3,55 @@
 @tailwind utilities;
 
 /* ============================================================
-   全局 CSS 变量与基础样式
-   配色快速修改：改 --primary / --text-muted 等变量即可
+   全局 CSS 变量 — 沉稳高级感配色
+   主色：深靛蓝 (indigo) | 强调：暖琥珀 (amber)
    ============================================================ */
 
 @layer base {
   :root {
-    --bg: #ffffff;
-    --bg-soft: #f8fafc;
-    --bg-elevated: #f1f5f9;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --text-subtle: #cbd5e1;
-    --primary: #0ea5e9;
-    --primary-dark: #0284c7;
-    --accent: #06b6d4;
+    --bg: #fafbfc;
+    --bg-soft: #f1f3f5;
+    --bg-elevated: #e9ecef;
+    --text: #1a1d23;
+    --text-muted: #6b7280;
+    --text-subtle: #d1d5db;
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-light: #818cf8;
+    --accent: #d97706;
+    --accent-light: #f59e0b;
     --card: #ffffff;
-    --border: #e2e8f0;
-    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    --glow-opacity: 0.06;
-    --glow-opacity-strong: 0.10;
+    --border: #e5e7eb;
+    --border-subtle: #f3f4f6;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+    --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+    --shadow-lg: 0 10px 25px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.04);
+    --glow-opacity: 0.04;
+    --glow-opacity-strong: 0.08;
   }
 
   .dark {
-    --bg: #0d1117;
-    --bg-soft: #161b22;
-    --bg-elevated: #1c2333;
-    --text: #e6edf3;
-    --text-muted: #8b949e;
-    --text-subtle: #484f58;
-    --primary: #7c9bff;
-    --primary-dark: #5b8def;
-    --accent: #d4a373;
-    --card: #161b22;
-    --border: rgba(255, 255, 255, 0.06);
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    --glow-opacity: 0.12;
-    --glow-opacity-strong: 0.18;
+    --bg: #0c0e14;
+    --bg-soft: #131620;
+    --bg-elevated: #1a1e2e;
+    --text: #e2e4e9;
+    --text-muted: #8b90a0;
+    --text-subtle: #3d4155;
+    --primary: #818cf8;
+    --primary-dark: #6366f1;
+    --primary-light: #a5b4fc;
+    --accent: #f59e0b;
+    --accent-light: #fbbf24;
+    --card: #131620;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-subtle: rgba(255, 255, 255, 0.04);
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+    --shadow: 0 2px 8px -2px rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 12px 32px -4px rgb(0 0 0 / 0.5);
+    --glow-opacity: 0.08;
+    --glow-opacity-strong: 0.14;
   }
 
   html {
@@ -50,89 +62,65 @@
   body {
     background-color: var(--bg);
     color: var(--text);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
-    background-color: rgba(91, 141, 239, 0.3);
-    color: #e6edf3;
+    background-color: rgba(99, 102, 241, 0.2);
+    color: var(--text);
   }
 }
 
 /* ============================================================
-   CSS 动画 Keyframes 与工具类（配合 framer-motion 使用）
+   动画 Keyframes
    ============================================================ */
 
 @keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* 列表 stagger 入场容器：配合 .stagger-item 使用 */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* Stagger 入场 */
 .stagger-container .stagger-item {
   opacity: 0;
-  animation: fade-in 0.4s ease-out forwards;
+  animation: fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 .stagger-container .stagger-item:nth-child(1) { animation-delay: 0ms; }
-.stagger-container .stagger-item:nth-child(2) { animation-delay: 60ms; }
-.stagger-container .stagger-item:nth-child(3) { animation-delay: 120ms; }
-.stagger-container .stagger-item:nth-child(4) { animation-delay: 180ms; }
-.stagger-container .stagger-item:nth-child(5) { animation-delay: 240ms; }
-.stagger-container .stagger-item:nth-child(6) { animation-delay: 300ms; }
-.stagger-container .stagger-item:nth-child(7) { animation-delay: 360ms; }
-.stagger-container .stagger-item:nth-child(8) { animation-delay: 420ms; }
-.stagger-container .stagger-item:nth-child(9) { animation-delay: 480ms; }
-.stagger-container .stagger-item:nth-child(10) { animation-delay: 540ms; }
-.stagger-container .stagger-item:nth-child(11) { animation-delay: 600ms; }
-.stagger-container .stagger-item:nth-child(12) { animation-delay: 660ms; }
+.stagger-container .stagger-item:nth-child(2) { animation-delay: 70ms; }
+.stagger-container .stagger-item:nth-child(3) { animation-delay: 140ms; }
+.stagger-container .stagger-item:nth-child(4) { animation-delay: 210ms; }
+.stagger-container .stagger-item:nth-child(5) { animation-delay: 280ms; }
+.stagger-container .stagger-item:nth-child(6) { animation-delay: 350ms; }
+.stagger-container .stagger-item:nth-child(7) { animation-delay: 420ms; }
+.stagger-container .stagger-item:nth-child(8) { animation-delay: 490ms; }
 
-/* 时间线竖线流动动画 */
-@keyframes timeline-line-grow {
-  from { max-height: 0; }
-  to { max-height: 100vh; }
-}
-
-/* HeroGlow 呼吸层：固定第二层光斑轻微明灭 */
+/* HeroGlow 呼吸 */
 @keyframes glow-breathe {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
 }
 
-/* 卡片悬停轻上浮（提升现有 card-hover） */
-.card-hover-lift {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.card-hover-lift:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 28px -8px rgb(0 0 0 / 0.15);
-}
-.dark .card-hover-lift:hover {
-  box-shadow: 0 14px 32px -8px rgba(0, 0, 0, 0.6),
-              0 0 0 1px rgba(123, 155, 255, 0.10);
-}
-
-/* prefers-reduced-motion：全局禁用入场动画 */
+/* prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -144,50 +132,60 @@
   }
 }
 
+/* ============================================================
+   组件样式
+   ============================================================ */
+
 @layer components {
-  /* ----------------------------------------------------------
-     通用卡片样式
-     ---------------------------------------------------------- */
+  /* 卡片 */
   .card {
     background-color: var(--card);
     border: 1px solid var(--border);
     border-radius: 0.75rem;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.3s ease;
   }
 
   .card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow:
-      0 10px 25px -5px rgb(0 0 0 / 0.1),
-      0 8px 10px -6px rgb(0 0 0 / 0.1);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(99, 102, 241, 0.2);
   }
 
   .dark .card-hover:hover {
-    box-shadow:
-      0 12px 32px -4px rgba(0, 0, 0, 0.6),
-      0 0 0 1px rgba(123, 155, 255, 0.08);
+    box-shadow: var(--shadow-md), 0 0 0 1px rgba(129, 140, 248, 0.08);
+    border-color: rgba(129, 140, 248, 0.15);
   }
 
-  /* ----------------------------------------------------------
-     通用按钮样式
-     ---------------------------------------------------------- */
+  /* 按钮 */
   .btn-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.25rem;
     border-radius: 0.5rem;
-    background-color: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: #ffffff;
     font-weight: 500;
     font-size: 0.875rem;
-    transition: background-color 0.15s ease;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
   }
 
   .btn-primary:hover {
-    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -2px rgba(79, 70, 229, 0.4);
+  }
+
+  .dark .btn-primary:hover {
+    box-shadow: 0 4px 16px -2px rgba(129, 140, 248, 0.3);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
   }
 
   .btn-ghost {
@@ -195,29 +193,31 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.25rem;
     border-radius: 0.5rem;
     color: var(--text-muted);
     font-size: 0.875rem;
-    transition: color 0.15s ease, background-color 0.15s ease;
+    border: 1px solid var(--border);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .btn-ghost:hover {
     color: var(--text);
     background-color: var(--bg-soft);
+    border-color: var(--border);
+    transform: translateY(-1px);
   }
 
-  /* ----------------------------------------------------------
-     代码块基础（Prism 主题由 rehype-prism-plus 注入 token class）
-     ---------------------------------------------------------- */
+  /* 代码块 */
   pre {
-    background-color: #1e1e1e !important;
+    background-color: #1e1e2e !important;
     border-radius: 0.5rem;
     padding: 1rem;
     overflow-x: auto;
     font-size: 0.875rem;
     line-height: 1.6;
     position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   code {
@@ -230,17 +230,17 @@
     padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
     font-size: 0.875em;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-subtle);
   }
 }
 
 /* ============================================================
-   Prism 代码高亮主题（One Dark 风格，适配明暗背景）
+   Prism 代码高亮 — Catppuccin Mocha 风格
    ============================================================ */
 
 code[class*='language-'],
 pre[class*='language-'] {
-  color: #abb2bf;
+  color: #cdd6f4;
   text-shadow: none;
   font-family: 'Fira Code', 'SF Mono', Menlo, Monaco, Consolas, monospace;
   direction: ltr;
@@ -257,22 +257,22 @@ pre[class*='language-'] {
 .token.prolog,
 .token.doctype,
 .token.cdata {
-  color: #5c6370;
+  color: #6c7086;
   font-style: italic;
 }
 
 .token.punctuation {
-  color: #abb2bf;
+  color: #bac2de;
 }
 
 .token.tag,
 .token.namespace,
 .token.deleted {
-  color: #e06c75;
+  color: #f38ba8;
 }
 
 .token.attr-name {
-  color: #d19a66;
+  color: #f9e2af;
 }
 
 .token.boolean,
@@ -280,7 +280,7 @@ pre[class*='language-'] {
 .token.constant,
 .token.symbol,
 .token.selector {
-  color: #d19a66;
+  color: #fab387;
 }
 
 .token.property,
@@ -289,7 +289,7 @@ pre[class*='language-'] {
 .token.char,
 .token.builtin,
 .token.inserted {
-  color: #98c379;
+  color: #a6e3a1;
 }
 
 .token.operator,
@@ -297,26 +297,26 @@ pre[class*='language-'] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  color: #56b6c2;
+  color: #89dceb;
 }
 
 .token.atrule,
 .token.keyword {
-  color: #c678dd;
+  color: #cba6f7;
 }
 
 .token.function,
 .token.class-name,
 .token.regex {
-  color: #61afef;
+  color: #89b4fa;
 }
 
 .token.important,
 .token.variable {
-  color: #e6c07b;
+  color: #f9e2af;
 }
 
 .line-highlight {
-  background-color: rgba(97, 175, 239, 0.15);
-  border-left: 3px solid #61afef;
+  background-color: rgba(137, 180, 250, 0.08);
+  border-left: 3px solid #89b4fa;
 }

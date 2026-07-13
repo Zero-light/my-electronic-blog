@@ -53,10 +53,9 @@ export function Header({ logo, items, right, className }: HeaderProps) {
   return (
     <motion.header
       className={cn(
-        'sticky top-0 z-50 border-b border-border backdrop-blur-md',
-        'bg-[var(--bg)]/80 transition-colors',
-        // 底部微光条：与 "zerolight" 光主题呼应
-        'shadow-[0_1px_0_0_rgba(123,155,255,0.12)]',
+        'sticky top-0 z-50 border-b border-border/50 backdrop-blur-xl',
+        'bg-[var(--bg)]/75 transition-all duration-300',
+        'shadow-[0_1px_0_0_var(--border-subtle)]',
         className
       )}
       initial={false}

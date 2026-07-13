@@ -20,14 +20,14 @@ export interface SkillBarProps {
 }
 
 function levelColor(level: number): string {
-  if (level >= 88) return 'bg-emerald-500/15 text-emerald-600 dark:bg-emerald-400/15 dark:text-emerald-400';
-  if (level >= 80) return 'bg-sky-500/15 text-sky-600 dark:bg-sky-400/15 dark:text-sky-400';
-  return 'bg-amber-500/15 text-amber-600 dark:bg-amber-400/15 dark:text-amber-400';
+  if (level >= 88) return 'bg-emerald-500/10 text-emerald-700 dark:bg-emerald-400/10 dark:text-emerald-400';
+  if (level >= 80) return 'bg-indigo-500/10 text-indigo-700 dark:bg-indigo-400/10 dark:text-indigo-400';
+  return 'bg-amber-500/10 text-amber-700 dark:bg-amber-400/10 dark:text-amber-400';
 }
 
 function levelDot(level: number): string {
   if (level >= 88) return 'bg-emerald-500';
-  if (level >= 80) return 'bg-sky-500';
+  if (level >= 80) return 'bg-indigo-500';
   return 'bg-amber-500';
 }
 

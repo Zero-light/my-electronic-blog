@@ -19,10 +19,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-/* ============================================================
-   页面
-   ============================================================ */
-
 export default function HomePage() {
   const notes = sortByDate(getAllNotes());
   const projects = sortByDate(getAllProjects());
@@ -31,25 +27,33 @@ export default function HomePage() {
 
   return (
     <div className="animate-fade-in space-y-16">
-      {/* ----------------------------------------------------------
-         Banner 区域
-         ---------------------------------------------------------- */}
-      <HeroGlow className="flex flex-col items-center gap-6 rounded-2xl py-8 text-center md:flex-row md:text-left md:py-10">
-        <div
-          className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full text-3xl font-bold text-white"
-          style={{ backgroundColor: 'var(--primary)' }}
-        >
-          任
+      {/* Hero */}
+      <HeroGlow className="flex flex-col items-center gap-6 rounded-2xl border border-border/30 py-10 text-center md:flex-row md:text-left md:py-12">
+        <div className="relative">
+          <div
+            className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl text-3xl font-bold text-white shadow-lg"
+            style={{
+              background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))',
+              boxShadow: '0 8px 24px -4px rgba(79, 70, 229, 0.3)',
+            }}
+          >
+            任
+          </div>
         </div>
 
         <div className="space-y-5 md:space-y-6">
           <h1 className="text-[2.5rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
             你好，我是{' '}
-            <span className="bg-gradient-to-r from-[#5b8def] to-[#d4a373] bg-clip-text text-transparent">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage: 'linear-gradient(135deg, var(--primary), var(--accent))',
+              }}
+            >
               任炳宇
             </span>
           </h1>
-          <p className="text-sm font-medium text-sky-600 dark:text-[#7c9bff]">
+          <p className="text-sm font-medium" style={{ color: 'var(--primary)' }}>
             电子信息工程 · 嵌入式系统与电源设计方向
           </p>
           <p className="max-w-xl text-[0.92rem] leading-relaxed text-slate-600 dark:text-[#8b949e]">
@@ -68,19 +72,17 @@ export default function HomePage() {
         </div>
       </HeroGlow>
 
-      {/* ----------------------------------------------------------
-         方向标签
-         ---------------------------------------------------------- */}
-      <section className="flex flex-wrap items-center justify-center gap-3 md:justify-start">
+      {/* 方向标签 */}
+      <section className="flex flex-wrap items-center justify-center gap-2.5 md:justify-start">
         {[
-          { icon: <Cpu className="h-4 w-4" />, text: '嵌入式固件' },
-          { icon: <CircuitBoard className="h-4 w-4" />, text: '硬件与电源设计' },
-          { icon: <BookOpen className="h-4 w-4" />, text: 'PCB 与信号完整性' },
-          { icon: <GraduationCap className="h-4 w-4" />, text: '学习笔记与复盘' },
+          { icon: <Cpu className="h-3.5 w-3.5" />, text: '嵌入式固件' },
+          { icon: <CircuitBoard className="h-3.5 w-3.5" />, text: '硬件与电源设计' },
+          { icon: <BookOpen className="h-3.5 w-3.5" />, text: 'PCB 与信号完整性' },
+          { icon: <GraduationCap className="h-3.5 w-3.5" />, text: '学习笔记与复盘' },
         ].map((item) => (
           <span
             key={item.text}
-            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-bg-soft px-3 py-1.5 text-sm text-text-muted"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-bg-soft/80 px-3.5 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-primary/20 hover:text-primary"
           >
             {item.icon}
             {item.text}
@@ -88,9 +90,7 @@ export default function HomePage() {
         ))}
       </section>
 
-      {/* ----------------------------------------------------------
-         最新项目
-         ---------------------------------------------------------- */}
+      {/* 最新项目 */}
       {latestProject && (
         <section>
           <div className="mb-6 flex items-center justify-between">
@@ -106,7 +106,7 @@ export default function HomePage() {
           </div>
           <Card hover>
             <CardHeader>
-              <div className="flex items-center gap-2 text-sm font-medium text-sky-600 dark:text-sky-400">
+              <div className="flex items-center gap-2 text-sm font-medium" style={{ color: 'var(--primary)' }}>
                 <FolderGit2 className="h-4 w-4" />
                 <span>{formatDate(latestProject.date)}</span>
               </div>
@@ -126,9 +126,7 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ----------------------------------------------------------
-         学习笔记
-         ---------------------------------------------------------- */}
+      {/* 学习笔记 */}
       <section>
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
@@ -146,7 +144,7 @@ export default function HomePage() {
             {latestNotes.map((note) => (
               <Card key={note.slug} hover className="stagger-item h-full">
                 <CardHeader>
-                  <div className="flex items-center gap-2 text-sm font-medium text-sky-600 dark:text-sky-400">
+                  <div className="flex items-center gap-2 text-sm font-medium" style={{ color: 'var(--primary)' }}>
                     <FileText className="h-4 w-4" />
                     <span>{formatDate(note.date)}</span>
                   </div>
@@ -172,10 +170,8 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* ----------------------------------------------------------
-         关于本站
-         ---------------------------------------------------------- */}
-      <section className="rounded-xl border border-border bg-bg-soft p-6 text-center">
+      {/* 关于本站 */}
+      <section className="rounded-xl border border-border/50 bg-bg-soft/50 p-6 text-center backdrop-sm">
         <p className="text-sm leading-relaxed text-text-muted">
           本站记录了我在嵌入式开发、电源设计与硬件调试中的学习笔记和项目实践。
           所有内容仅供学习交流，转载请注明出处。
