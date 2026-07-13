@@ -67,7 +67,7 @@ export function Toc({ source, className }: TocProps) {
   if (headings.length === 0) return null;
 
   return (
-    <nav className={cn('sticky top-24', className)}>
+    <nav className={cn('sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto', className)}>
       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-text-muted mb-3">
         <List className="h-3.5 w-3.5" />
         目录

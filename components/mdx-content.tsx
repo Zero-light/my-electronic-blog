@@ -1,8 +1,35 @@
+import { isValidElement, type ReactNode } from 'react';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import rehypePrismPlus from 'rehype-prism-plus';
 import { CodeBlock } from '@/components/ui/code-block';
 import { MdxImage } from './image-lightbox';
 import { cn } from '@/lib/utils';
+
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .replace(/[^\w一-鿿]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+const stripMd = (text: string) => text.replace(/\*\*|__|[*_`]/g, '').trim();
+
+function getTextContent(node: ReactNode): string {
+  if (typeof node === 'string') return node;
+  if (typeof node === 'number') return String(node);
+  if (Array.isArray(node)) return node.map(getTextContent).join('');
+  if (isValidElement(node)) {
+    const children = (node.props as { children?: ReactNode }).children;
+    return children ? getTextContent(children) : '';
+  }
+  return '';
+}
+
+function heading(Tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6', className: string) {
+  return ({ children, ...props }: React.ComponentPropsWithoutRef<'h2'>) => {
+    const id = slugify(stripMd(getTextContent(children)));
+    return <Tag id={id} className={cn(className, 'scroll-mt-20')} {...props}>{children}</Tag>;
+  };
+}
 
 /* ============================================================
    工具：从 MDX 源码中提取所有图片 URL
@@ -59,61 +86,12 @@ const baseComponents = {
     );
   },
 
-  // 标题（自动注入 id，支持锚点）
-  h1: ({ children, id, ...props }: React.ComponentPropsWithoutRef<'h1'>) => (
-    <h1
-      id={id}
-      className="mt-8 mb-4 text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 scroll-mt-20"
-      {...props}
-    >
-      {children}
-    </h1>
-  ),
-  h2: ({ children, id, ...props }: React.ComponentPropsWithoutRef<'h2'>) => (
-    <h2
-      id={id}
-      className="mt-8 mb-4 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 scroll-mt-20"
-      {...props}
-    >
-      {children}
-    </h2>
-  ),
-  h3: ({ children, id, ...props }: React.ComponentPropsWithoutRef<'h3'>) => (
-    <h3
-      id={id}
-      className="mt-6 mb-3 text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100 scroll-mt-20"
-      {...props}
-    >
-      {children}
-    </h3>
-  ),
-  h4: ({ children, id, ...props }: React.ComponentPropsWithoutRef<'h4'>) => (
-    <h4
-      id={id}
-      className="mt-6 mb-2 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100 scroll-mt-20"
-      {...props}
-    >
-      {children}
-    </h4>
-  ),
-  h5: ({ children, id, ...props }: React.ComponentPropsWithoutRef<'h5'>) => (
-    <h5
-      id={id}
-      className="mt-4 mb-2 text-base font-bold tracking-tight text-slate-900 dark:text-slate-100 scroll-mt-20"
-      {...props}
-    >
-      {children}
-    </h5>
-  ),
-  h6: ({ children, id, ...props }: React.ComponentPropsWithoutRef<'h6'>) => (
-    <h6
-      id={id}
-      className="mt-4 mb-2 text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100 scroll-mt-20"
-      {...props}
-    >
-      {children}
-    </h6>
-  ),
+  h1: heading('h1', 'mt-8 mb-4 text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100'),
+  h2: heading('h2', 'mt-8 mb-4 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100'),
+  h3: heading('h3', 'mt-6 mb-3 text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100'),
+  h4: heading('h4', 'mt-6 mb-2 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100'),
+  h5: heading('h5', 'mt-4 mb-2 text-base font-bold tracking-tight text-slate-900 dark:text-slate-100'),
+  h6: heading('h6', 'mt-4 mb-2 text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100'),
 
   // 段落
   p: (props: React.ComponentPropsWithoutRef<'p'>) => (

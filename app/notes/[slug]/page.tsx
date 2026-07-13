@@ -79,16 +79,16 @@ export default function NotePage({ params }: NotePageProps) {
         )}
       </div>
 
-      {/* 正文 + 侧边目录 */}
+      {/* 左侧目录 + 正文 */}
       <div className="relative gap-10 lg:flex">
-        <div className="min-w-0 flex-1">
-          <MdxContent source={content} />
-        </div>
-
-        {/* 桌面端显示侧边目录 */}
+        {/* 左侧目录 */}
         <aside className="hidden lg:block w-56 shrink-0">
           <Toc source={content} />
         </aside>
+
+        <div className="min-w-0 flex-1">
+          <MdxContent source={content} />
+        </div>
       </div>
     </article>
   );
