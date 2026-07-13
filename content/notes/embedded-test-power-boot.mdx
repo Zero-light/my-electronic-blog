@@ -334,7 +334,7 @@ volatile shared_data_t shared_data;
 
 **答案**：
 1. **BOR（Brown-Out Reset）欠压复位** — 当 VDD 低于阈值时自动复位 MCU，防止不可预测行为
-2. **阈值等级（STM32F4）** — Level 1：2.1V；Level 2：2.4V；Level 3：2.7V；BOR off：无欠压保护（仅用于 <2.7V 电源）
+2. **阈值等级（STM32F4）** — Level 1：2.1V；Level 2：2.4V；Level 3：2.7V；BOR off：无欠压保护（仅用于 &lt;2.7V 电源）
 3. **与 POR 区别** — POR 上电时检测；BOR 运行时电压跌落后检测
 4. **复位标志** — RCC_CSR 中的 PORRSTF 标志
 5. **配置** — 通过选项字节（Option Bytes）设置 BOR 等级
