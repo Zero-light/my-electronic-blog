@@ -1,100 +1,43 @@
----
-title: 嵌入式面试测试题 — RTOS 核心原理
+﻿---
+title: 嵌入式面试测试题 �?RTOS 核心原理
 slug: embedded-test-rtos-principles
 date: 2026-07-13
 tags: ["FreeRTOS", "任务调度", "信号量", "互斥量", "消息队列", "优先级翻转", "面试题"]
-mainCategory: 软件
-subCategory: 测试题
-description: RTOS 核心原理测试题（FreeRTOS）：任务状态与调度、二值信号量 vs 互斥量、优先级翻转与继承、消息队列、栈溢出检测、Tickless 低功耗。约 23 题。
+mainCategory: 测试题
+subCategory: 软件
+description: RTOS 核心原理测试题（FreeRTOS）：任务状态与调度、二值信号量 vs 互斥量、优先级翻转与继承、消息队列、栈溢出检测。
 ---
-
-> **定位**：RTOS 是嵌入式中高层岗位的分水岭，理解任务调度、同步机制、内存管理是必备能力。
-> **互联**：01-C 语言 → 本文件（内存管理）；02-中断 → 本文件（临界区）；03-DMA → 本文件（异步通信）
+﻿> **定位**：RTOS 是嵌入式中高层岗位的分水岭，理解任务调度、同步机制、内存管理是必备能力�?
+> **互联**�?1-C 语言 �?本文件（内存管理）；02-中断 �?本文件（临界区）�?3-DMA �?本文件（异步通信�?
 > **难度分布**：L1 ~50% / L2 ~40% / L3 ~10%
 
----
+### Q02 �?任务的四种状�?
 
-## 一、任务与调度
+**📐 L1　💡 高频：是　🔗 关联�?5#Q03�?5#Q04**
 
-### Q01 — 任务（Task）与控制块（TCB）
+**场景**：你的任务在某些时刻不运行，你需要分析它的状态�?
 
-**📐 L1　💡 高频：是　🔗 关联：01#Q04、02#Q14**
-
-**场景**：你创建了一个任务，需要了解 FreeRTOS 内部如何管理它。
-
-**答案**：
-```
-TCB（Task Control Block）包含：
-- 栈指针（pxTopOfStack）
-- 任务状态链表节点（xStateListItem）
-- 任务优先级（uxPriority）
-- 任务栈起始地址（pxStack）
-- 任务名称（pcTaskName）
-- 其他标志（如是否使用 FPU、是否被挂起等）
-```
-
-```c
-typedef struct tskTaskControlBlock {
-    volatile StackType_t *pxTopOfStack;
-    ListItem_t xStateListItem;
-    ListItem_t xEventListItem;
-    UBaseType_t uxPriority;
-    StackType_t *pxStack;
-    char pcTaskName[configMAX_TASK_NAME_LEN];
-    // ...
-} tskTCB;
-```
-
----
-
-### Q02 — 任务的四种状态
-
-**📐 L1　💡 高频：是　🔗 关联：05#Q03、05#Q04**
-
-**场景**：你的任务在某些时刻不运行，你需要分析它的状态。
-
-**答案**：
+**答案**�?
 
 ```
-运行态 (Running)：正在占用 CPU
-    ↓ 时间片用完/被抢占/主动让出
-就绪态 (Ready)：已经准备好运行，等待调度
-    ↓ 调用阻塞 API（如 xQueueReceive）
-阻塞态 (Blocked)：等待某个事件（时间/信号量/队列）
-    ↓ vTaskSuspend()
-挂起态 (Suspended)：被显式挂起，无法被唤醒（只能通过 vTaskResume）
+运行�?(Running)：正在占�?CPU
+    �?时间片用�?被抢�?主动让出
+就绪�?(Ready)：已经准备好运行，等待调�?
+    �?调用阻塞 API（如 xQueueReceive�?
+阻塞�?(Blocked)：等待某个事件（时间/信号�?队列�?
+    �?vTaskSuspend()
+挂起�?(Suspended)：被显式挂起，无法被唤醒（只能通过 vTaskResume�?
 ```
 
----
+### Q04 �?空闲任务（Idle Task�?
 
-### Q03 — 协作式调度 vs 抢占式调度
-
-**📐 L1　💡 高频：是　🔗 关联：05#Q02**
-
-**场景**：你的高优先级任务没有按时运行。
-
-**答案**：
-
-| 策略 | 特点 | 配置 |
-|------|------|------|
-| 抢占式 | 高优先级任务可随时抢占低优先级 | `configUSE_PREEMPTION = 1` |
-| 协作式 | 任务必须主动让出 CPU（`taskYIELD()`） | `configUSE_PREEMPTION = 0` |
-| 时间片 | 同优先级任务轮流运行一个时间片 | `configUSE_TIME_SLICING = 1` |
-
-**面试追问**：时间片长度是多少？
-> 等于 SysTick 周期。通常为 1ms（`configTICK_RATE_HZ = 1000`）。
-
----
-
-### Q04 — 空闲任务（Idle Task）
-
-**📐 L1　💡 高频：是　🔗 关联：05#Q02、07#Q01**
+**📐 L1　💡 高频：是　🔗 关联�?5#Q02�?7#Q01**
 
 **场景**：当所有任务都阻塞时，CPU 在做什么？
 
-**答案**：
-- 空闲任务是最低优先级任务（优先级 0），当没有其他任务可运行时执行
-- 空闲任务中执行低功耗模式（WFI/WFE）
+**答案**�?
+- 空闲任务是最低优先级任务（优先级 0），当没有其他任务可运行时执�?
+- 空闲任务中执行低功耗模式（WFI/WFE�?
 - 可以注册空闲钩子函数执行后台工作
 
 ```c
@@ -103,33 +46,22 @@ void vApplicationIdleHook(void)
     // 低功耗：进入 Sleep 模式
     __asm volatile("wfi");
     
-    // 后台工作：垃圾回收、看门狗喂狗等
+    // 后台工作：垃圾回收、看门狗喂狗�?
 }
 
 // 空闲任务的栈大小
 #define configMINIMAL_STACK_SIZE  128  // 单位：字
 ```
 
----
-
-### Q05 — 任务通知（Task Notification）vs 信号量
-
-**📐 L2　💡 高频：是　🔗 关联：05#Q06、05#Q07**
-
-**场景**：你只需要通知一个特定任务某个事件已发生，不需要传递数据。
-
-**答案**：
-
-| 特性 | 任务通知 | 二进制信号量 |
-|------|---------|-------------|
-| 速度 | 快（无需额外对象） | 稍慢 |
-| 内存 | 无额外开销（在 TCB 中） | 需要额外的信号量对象 |
-| 方向 | 1 对 1（发送到一个任务） | 1 对 N（任何任务都可获取） |
-| 数据 | 可携带一个 32 位值 | 无数据 |
-| 覆盖 | 可选择覆盖或累加 | 只能 Give 一次 |
+|-|
+| 速度 | 快（无需额外对象�?| 稍慢 |
+| 内存 | 无额外开销（在 TCB 中） | 需要额外的信号量对�?|
+| 方向 | 1 �?1（发送到一个任务） | 1 �?N（任何任务都可获取） |
+| 数据 | 可携带一�?32 位�?| 无数�?|
+| 覆盖 | 可选择覆盖或累�?| 只能 Give 一�?|
 
 ```c
-// 使用任务通知从 ISR 通知任务
+// 使用任务通知�?ISR 通知任务
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     vTaskNotifyGiveFromISR(huart_task_handle, NULL);
@@ -145,27 +77,14 @@ void uart_task(void *param)
 }
 ```
 
----
-
-## 二、同步机制
-
-### Q06 — 二值信号量 vs 互斥量
-
-**📐 L1　💡 高频：是　🔗 关联：05#Q05、05#Q12**
-
-**场景**：你需要保护一个共享资源（如 SPI 总线）。
-
-**答案**：
-
-| 特性 | 二值信号量 | 互斥量 |
-|------|-----------|--------|
-| 初始值 | 0（先 Take 再 Give） | 1（先可用） |
-| 优先级继承 | ❌ 无 | ✅ 有（防优先级翻转） |
-| 递归获取 | ❌ 不支持 | ✅ 支持（Recursive Mutex） |
-| 用途 | 任务间/ISR 同步 | 共享资源保护 |
+--|--|
+| 初始�?| 0（先 Take �?Give�?| 1（先可用�?|
+| 优先级继�?| �?�?| �?有（防优先级翻转�?|
+| 递归获取 | �?不支�?| �?支持（Recursive Mutex�?|
+| 用�?| 任务�?ISR 同步 | 共享资源保护 |
 
 ```c
-// 互斥量保护 SPI 总线
+// 互斥量保�?SPI 总线
 SemaphoreHandle_t spi_mutex;
 
 void spi_transmit(uint8_t *data, uint16_t len)
@@ -179,35 +98,13 @@ void spi_transmit(uint8_t *data, uint16_t len)
 }
 ```
 
----
+### Q08 �?事件组（Event Group�?
 
-### Q07 — 计数信号量（Counting Semaphore）
+**📐 L2　💡 高频：否　🔗 关联�?5#Q05**
 
-**📐 L2　💡 高频：否　🔗 关联：05#Q06**
+**场景**：你需要等待多个事件中的任意一个发生�?
 
-**场景**：你需要限制同时访问某个资源的任务数量。
-
-**答案**：
-```c
-// 创建计数信号量（最大计数 3，初始计数 3）
-SemaphoreHandle_t sem = xSemaphoreCreateCounting(3, 3);
-
-// 任务中获取
-if (xSemaphoreTake(sem, pdMS_TO_TICKS(1000)) == pdTRUE) {
-    // 使用资源（最多 3 个任务同时使用）
-    xSemaphoreGive(sem);
-}
-```
-
----
-
-### Q08 — 事件组（Event Group）
-
-**📐 L2　💡 高频：否　🔗 关联：05#Q05**
-
-**场景**：你需要等待多个事件中的任意一个发生。
-
-**答案**：
+**答案**�?
 ```c
 #define EVENT_UART_READY  (1 << 0)
 #define EVENT_CAN_RX      (1 << 1)
@@ -215,14 +112,14 @@ if (xSemaphoreTake(sem, pdMS_TO_TICKS(1000)) == pdTRUE) {
 
 EventGroupHandle_t events = xEventGroupCreate();
 
-// ISR 中设置事件
+// ISR 中设置事�?
 xEventGroupSetBitsFromISR(events, EVENT_UART_READY, NULL);
 
-// 任务中等待
+// 任务中等�?
 EventBits_t bits = xEventGroupWaitBits(
     events,
-    EVENT_UART_READY | EVENT_CAN_RX,  // 等待的事件
-    pdTRUE,                            // 清除位
+    EVENT_UART_READY | EVENT_CAN_RX,  // 等待的事�?
+    pdTRUE,                            // 清除�?
     pdFALSE,                           // 等待任意一个（非全部）
     pdMS_TO_TICKS(100)                 // 超时
 );
@@ -232,59 +129,30 @@ if (bits & EVENT_UART_READY) {
 }
 ```
 
----
+## 三、临界区与中�?
 
-### Q09 — 递归互斥量
+### Q10 �?进入临界区的三种方式
 
-**📐 L2　💡 高频：否　🔗 关联：05#Q06**
+**📐 L1　💡 高频：是　🔗 关联�?1#Q07�?3#Q01**
 
-**场景**：你的函数 A 获取了互斥量，然后调用函数 B，函数 B 也需要获取同一个互斥量。
+**场景**：你需要保护一段代码不被中断打断�?
 
-**答案**：
-```c
-// ❌ 使用普通互斥量会导致死锁
-MutexHandle_t mutex = xSemaphoreCreateMutex();
-void funcA(void) {
-    xSemaphoreTake(mutex, portMAX_DELAY);
-    funcB();  // funcB 也尝试 Take → 死锁！
-    xSemaphoreGive(mutex);
-}
-
-// ✅ 使用递归互斥量
-SemaphoreHandle_t rmutex = xSemaphoreCreateRecursiveMutex();
-void funcA(void) {
-    xSemaphoreTakeRecursive(rmutex, portMAX_DELAY);
-    funcB();  // funcB 可以再次 Take
-    xSemaphoreGiveRecursive(rmutex);
-}
-```
-
----
-
-## 三、临界区与中断
-
-### Q10 — 进入临界区的三种方式
-
-**📐 L1　💡 高频：是　🔗 关联：01#Q07、03#Q01**
-
-**场景**：你需要保护一段代码不被中断打断。
-
-**答案**：
+**答案**�?
 
 | 方式 | API | 效果 | 适用场景 |
-|------|-----|------|---------|
-| 关中断 | `taskENTER_CRITICAL()` | 屏蔽所有可管理中断 | 极短临界区（几条指令） |
-| 挂起调度器 | `vTaskSuspendAll()` | 不关中断，禁止调度 | 稍长的操作（可能被中断触发） |
-| 互斥量 | `xSemaphoreTake()` | 仅屏蔽同优先级任务 | 仅用于任务间，ISR 不能获取 |
+|||
+| 关中�?| `taskENTER_CRITICAL()` | 屏蔽所有可管理中断 | 极短临界区（几条指令�?|
+| 挂起调度�?| `vTaskSuspendAll()` | 不关中断，禁止调�?| 稍长的操作（可能被中断触发） |
+| 互斥�?| `xSemaphoreTake()` | 仅屏蔽同优先级任�?| 仅用于任务间，ISR 不能获取 |
 
 ```c
-// ❌ 错误：ISR 中获取互斥量
+// �?错误：ISR 中获取互斥量
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
     xSemaphoreTake(mutex, 0);  // 错误！ISR 不能阻塞
 }
 
-// ✅ 正确：ISR 中使用 taskENTER_CRITICAL_FROM_ISR()
+// �?正确：ISR 中使�?taskENTER_CRITICAL_FROM_ISR()
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
     UBaseType_t uxSavedInterruptStatus = taskENTER_CRITICAL_FROM_ISR();
@@ -293,125 +161,50 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 }
 ```
 
----
+### Q12 �?优先级翻转（Priority Inversion�?
 
-### Q11 — FreeRTOS 中断优先级配置
+**📐 L2　💡 高频：是　🔗 关联�?5#Q06�?8#Q10**
 
-**📐 L2　💡 高频：是　🔗 关联：03#Q01、03#Q02**
+**场景**：你的高优先级任务被低优先级任务阻塞了很长时间�?
 
-**场景**：你正确配置了 FreeRTOS 的中断优先级，但系统仍然崩溃。
-
-**答案**：
-```c
-// FreeRTOSConfig.h 中的关键配置
-#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY      15
-#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 5
-
-// 优先级 > 5 的中断：不受 FreeRTOS 管理，不能调用 FromISR 函数
-// 优先级 ≤ 5 的中断：受 FreeRTOS 管理，可以调用 FromISR 函数
-
-// 正确配置示例
-HAL_NVIC_SetPriority(USART1_IRQn, 6, 0);  // 可以调用 FromISR
-HAL_NVIC_SetPriority(TIM2_IRQn, 12, 0);   // 不受 FreeRTOS 管理，不能调用 FromISR
+**答案**�?
 ```
-
----
-
-### Q12 — 优先级翻转（Priority Inversion）
-
-**📐 L2　💡 高频：是　🔗 关联：05#Q06、08#Q10**
-
-**场景**：你的高优先级任务被低优先级任务阻塞了很长时间。
-
-**答案**：
-```
-场景：
-- 低优先级任务 L 获取互斥量 M
-- 高优先级任务 H 就绪，抢占 L
-- H 尝试获取 M，但 M 被 L 持有 → H 阻塞
-- 中优先级任务 M 就绪，抢占 L
-- L 无法运行，无法释放 M → H 无限等待
+场景�?
+- 低优先级任务 L 获取互斥�?M
+- 高优先级任务 H 就绪，抢�?L
+- H 尝试获取 M，但 M �?L 持有 �?H 阻塞
+- 中优先级任务 M 就绪，抢�?L
+- L 无法运行，无法释�?M �?H 无限等待
 
 解决方案：优先级继承
-- H 请求 M 时，L 的优先级临时提升到 H 的优先级
-- L 可以运行，释放 M 后恢复原优先级
+- H 请求 M 时，L 的优先级临时提升�?H 的优先级
+- L 可以运行，释�?M 后恢复原优先�?
 - M 无法抢占提升后的 L
 
 FreeRTOS 实现：使用互斥量（带优先级继承），不用二值信号量
 ```
 
----
+## 四、内存管�?
 
-### Q13 — FreeRTOS 中的 volatile 在 ISR 共享变量中的应用
+### Q14 �?FreeRTOS 的五种内存分配方�?
 
-**📐 L2　💡 高频：是　🔗 关联：01#Q07、03#Q01**
+**📐 L2　💡 高频：是　🔗 关联�?1#Q10**
 
-**场景**：你在 ISR 中设置一个标志，任务中等待它。
+**场景**：你需要选择合适的内存管理方案�?
 
-**答案**：
-```c
-// ISR ↔ 任务共享变量必须用 volatile
-volatile uint8_t data_ready = 0;
-
-void ADC_IRQHandler(void)
-{
-    adc_value = ADC1->DR;
-    data_ready = 1;  // volatile 确保写入内存
-}
-
-// 方法 1：轮询（不推荐，浪费 CPU）
-while (!data_ready);
-process(adc_value);
-
-// 方法 2：任务通知（推荐，阻塞等待）
-// ISR 中：
-xTaskNotifyGiveFromISR(adc_task_handle, NULL);
-// 任务中：
-ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
-process(adc_value);
-```
-
----
-
-## 四、内存管理
-
-### Q14 — FreeRTOS 的五种内存分配方案
-
-**📐 L2　💡 高频：是　🔗 关联：01#Q10**
-
-**场景**：你需要选择合适的内存管理方案。
-
-**答案**：
+**答案**�?
 
 | 方案 | 特点 | 适用场景 |
-|------|------|---------|
-| heap_1 | 只分配不释放 | 系统启动后不再动态分配 |
-| heap_2 | 分配+释放，不合并碎片 | 每次分配相同大小的对象 |
-| heap_3 | 包装标准 malloc/free（线程安全） | 系统已有可靠 malloc 实现 |
-| heap_4 | 分配+释放+合并相邻碎片 | 通用场景（推荐） |
-| heap_5 | 支持不连续内存区域 | 多块不连续的 RAM |
+|||### Q15 �?栈溢出检�?
 
-```c
-// 推荐方案：heap_4
-#define configTOTAL_HEAP_SIZE  (30 * 1024)  // 30KB 堆
+**📐 L2　💡 高频：是　🔗 关联�?2#Q14�?8#Q03**
 
-void *ptr = pvPortMalloc(1024);
-// ...
-vPortFree(ptr);
-```
+**场景**：你的任务偶�?HardFault，怀疑是栈溢出�?
 
----
-
-### Q15 — 栈溢出检测
-
-**📐 L2　💡 高频：是　🔗 关联：02#Q14、08#Q03**
-
-**场景**：你的任务偶尔 HardFault，怀疑是栈溢出。
-
-**答案**：
+**答案**�?
 ```c
 // FreeRTOSConfig.h
-#define configCHECK_FOR_STACK_OVERFLOW  2  // 方法 2：检查栈底模式
+#define configCHECK_FOR_STACK_OVERFLOW  2  // 方法 2：检查栈底模�?
 
 // 溢出钩子函数
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
@@ -421,138 +214,70 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
     HAL_NVIC_SystemReset();
 }
 
-// 获取任务剩余栈大小
+// 获取任务剩余栈大�?
 UBaseType_t remaining = uxTaskGetStackHighWaterMark(task_handle);
 printf("Task '%s' remaining: %lu words\n", pcTaskName, remaining);
 ```
 
 **面试追问**：High Water Mark 是什么？
-> 是一个任务从创建到现在，栈指针到达过的最低位置（即最大栈使用量）与栈顶之间的剩余空间。数值越小说明栈使用越接近上限。
+> 是一个任务从创建到现在，栈指针到达过的最低位置（即最大栈使用量）与栈顶之间的剩余空间。数值越小说明栈使用越接近上限�?
 
----
+## 五、消息队�?
 
-### Q16 — Tickless 低功耗模式
+### Q17 �?消息队列的工作原�?
 
-**📐 L2　💡 高频：是　🔗 关联：04#Q04、07#Q01**
+**📐 L1　💡 高频：是　🔗 关联�?5#Q05�?5#Q06**
 
-**场景**：你的电池供电设备需要降低功耗，在空闲时关闭 SysTick。
+**场景**：你需要从一个任务向另一个任务发送数据�?
 
-**答案**：
-```c
-// FreeRTOSConfig.h
-#define configUSE_TICKLESS_IDLE  1
-#define configEXPECTED_IDLE_TIME_BEFORE_SLEEP  2
-
-// Tickless 空闲钩子（FreeRTOS 实际使用的回调）
-void vApplicationIdleHook(void)
-{
-    // 在空闲任务中执行低功耗 __WFI()
-    __asm volatile("wfi");
-}
-
-// Tickless 进入前的处理（手动实现，非标准 FreeRTOS 钩子）
-void pre_sleep_processing(TickType_t xExpectedIdleTime)
-{
-    // 准备进入低功耗：关闭不必要的外设时钟
-    HAL_SuspendTick();  // 停止 SysTick
-}
-
-// Tickless 唤醒后的处理（手动实现，非标准 FreeRTOS 钩子）
-void post_sleep_processing(TickType_t xIdleTimeSleep)
-{
-    HAL_ResumeTick();  // 恢复 SysTick
-    SystemCoreClockUpdate();  // 更新系统时钟（如果时钟源变化）
-}
-
-// 注意：FreeRTOS 的 Tickless 模式使用
-// configPRE_SLEEP_PROCESSING() 和 configPOST_SLEEP_PROCESSING() 宏
-// 需要在 FreeRTOSConfig.h 中定义这两个宏来指向上述函数
+**答案**�?
 ```
-
----
-
-## 五、消息队列
-
-### Q17 — 消息队列的工作原理
-
-**📐 L1　💡 高频：是　🔗 关联：05#Q05、05#Q06**
-
-**场景**：你需要从一个任务向另一个任务发送数据。
-
-**答案**：
-```
-消息队列结构：
-- 存储区域（环形缓冲区）
-- 头指针（写入位置）
-- 尾指针（读取位置）
-- 队列长度（项目数）
+消息队列结构�?
+- 存储区域（环形缓冲区�?
+- 头指针（写入位置�?
+- 尾指针（读取位置�?
+- 队列长度（项目数�?
 - 项目大小
 
-操作：
+操作�?
 - xQueueSend()：写入队列（覆盖队尾），队列满时阻塞
 - xQueueReceive()：从队列读取（从队首），队列空时阻塞
 - xQueueSendFromISR()：从 ISR 写入
 ```
 
 ```c
-// 创建队列（10 个元素，每个 4 字节）
+// 创建队列�?0 个元素，每个 4 字节�?
 QueueHandle_t queue = xQueueCreate(10, sizeof(uint32_t));
 
-// 任务 A：发送
+// 任务 A：发�?
 uint32_t data = sensor_read();
 xQueueSend(queue, &data, pdMS_TO_TICKS(100));
 
-// 任务 B：接收
+// 任务 B：接�?
 uint32_t received;
 xQueueReceive(queue, &received, portMAX_DELAY);
 ```
 
----
-
-### Q18 — 队列集（Queue Set）
-
-**📐 L3　💡 高频：否　🔗 关联：05#Q08、05#Q17**
-
-**场景**：你需要等待多个队列中的任意一个可用。
-
-**答案**：
-```c
-// 将信号量和队列添加到队列集
-QueueSetHandle_t qs = xQueueCreateSet(20);
-xQueueAddToSet(queue1, qs);
-xQueueAddToSet(sem1, qs);
-
-// 等待任意一个可用
-QueueSetMemberHandle_t member = xQueueSelectFromSet(qs, portMAX_DELAY);
-if (member == queue1) {
-    xQueueReceive(queue1, &data, 0);
-} else if (member == sem1) {
-    xSemaphoreTake(sem1, 0);
-}
-```
-
----
-
 ## 六、软件定时器
 
-### Q19 — 软件定时器 vs 硬件定时器
+### Q19 �?软件定时�?vs 硬件定时�?
 
-**📐 L2　💡 高频：否　🔗 关联：04#Q04、05#Q16**
+**📐 L2　💡 高频：否　🔗 关联�?4#Q04�?5#Q16**
 
-**场景**：你需要实现一个周期性的数据采集任务。
+**场景**：你需要实现一个周期性的数据采集任务�?
 
-**答案**：
+**答案**�?
 
-| 特性 | 软件定时器 | 硬件定时器 |
-|------|-----------|-----------|
-| 精度 | 受 SysTick 和调度延迟影响 | 精确到时钟周期 |
-| 回调上下文 | 在定时器守护任务中执行 | 在中断中执行 |
-| 资源消耗 | 占用 RAM | 占用硬件通道 |
-| 最大数量 | 仅受 RAM 限制 | MCU 外设数量限制 |
-| 功耗 | 需保持 SysTick 运行 | 可独立于 CPU 运行 |
+| 特�?| 软件定时�?| 硬件定时�?|
+||--|
+| 精度 | �?SysTick 和调度延迟影�?| 精确到时钟周�?|
+| 回调上下�?| 在定时器守护任务中执�?| 在中断中执行 |
+| 资源消�?| 占用 RAM | 占用硬件通道 |
+| 最大数�?| 仅受 RAM 限制 | MCU 外设数量限制 |
+| 功�?| 需保持 SysTick 运行 | 可独立于 CPU 运行 |
 
 ```c
-// 创建软件定时器
+// 创建软件定时�?
 TimerHandle_t timer = xTimerCreate(
     "sample",
     pdMS_TO_TICKS(10),  // 10ms 周期
@@ -563,98 +288,47 @@ TimerHandle_t timer = xTimerCreate(
 xTimerStart(timer, 0);
 ```
 
----
+## 七、综合进�?
 
-### Q20 — 软件定时器回调中不能调用阻塞 API
+### Q21 �?FreeRTOS 的双栈机制（MSP + PSP�?
 
-**📐 L2　💡 高频：是　🔗 关联：05#Q10、05#Q19**
+**📐 L2　💡 高频：是　🔗 关联�?2#Q20�?5#Q02**
 
-**场景**：你在定时器回调中调用 `xQueueReceive()`，系统卡死。
+**场景**：你需要理�?FreeRTOS 上下文切换时栈的使用�?
 
-**答案**：
-```c
-// ❌ 错误：定时器回调在守护任务中执行，不能阻塞
-void sample_callback(TimerHandle_t xTimer)
-{
-    uint32_t data;
-    xQueueReceive(queue, &data, portMAX_DELAY);  // 导致守护任务阻塞
-}
-
-// ✅ 正确：不阻塞接收
-void sample_callback(TimerHandle_t xTimer)
-{
-    uint32_t data;
-    if (xQueueReceive(queue, &data, 0) == pdTRUE) {
-        process(data);
-    }
-}
-```
-
----
-
-## 七、综合进阶
-
-### Q21 — FreeRTOS 的双栈机制（MSP + PSP）
-
-**📐 L2　💡 高频：是　🔗 关联：02#Q20、05#Q02**
-
-**场景**：你需要理解 FreeRTOS 上下文切换时栈的使用。
-
-**答案**：
+**答案**�?
 ```
 复位后：使用 MSP（主栈指针）
-进入第一个任务后：
-  - 任务使用 PSP（进程栈指针）
+进入第一个任务后�?
+  - 任务使用 PSP（进程栈指针�?
   - 中断使用 MSP（主栈指针）
 
-这意味着：
-- 每个任务有独立的栈（通过 PSP 指向）
-- 所有中断共享一个栈（MSP）
-- 中断栈大小需考虑最大嵌套深度
+这意味着�?
+- 每个任务有独立的栈（通过 PSP 指向�?
+- 所有中断共享一个栈（MSP�?
+- 中断栈大小需考虑最大嵌套深�?
 
- FreeRTOS 的 Port 层（port.c）：
-  - 启动调度器时配置 PSP 指向任务栈
-  - 中断时自动使用 MSP
+ FreeRTOS �?Port 层（port.c）：
+  - 启动调度器时配置 PSP 指向任务�?
+  - 中断时自动使�?MSP
   - PendSV 异常中执行上下文切换
 ```
 
----
+### Q23 �?在中断中使用 FreeRTOS API 的注意事�?
 
-### Q22 — 上下文切换的完整过程
+**📐 L2　💡 高频：是　🔗 关联�?5#Q10�?5#Q11**
 
-**📐 L2　💡 高频：否　🔗 关联：05#Q02、05#Q21**
+**场景**：你�?ISR 中调�?`xQueueSend()` 而不�?`xQueueSendFromISR()`�?
 
-**场景**：面试官让你描述任务切换的步骤。
-
-**答案**：
-```
-1. 触发切换（时间片中断、taskYIELD()、阻塞操作等）
-2. PendSV 异常被触发（最低优先级，延迟到所有其他中断执行完）
-3. PendSV Handler 中：
-   a. 保存当前任务的上下文（R4-R11, PSP 等）到任务栈
-   b. 更新 pxCurrentTCB 指向下一个任务
-   c. 恢复下一个任务的上下文
-   d. 更新 PSP 指向下一个任务栈
-4. 异常返回，使用 PSP 执行任务代码
-```
-
----
-
-### Q23 — 在中断中使用 FreeRTOS API 的注意事项
-
-**📐 L2　💡 高频：是　🔗 关联：05#Q10、05#Q11**
-
-**场景**：你在 ISR 中调用 `xQueueSend()` 而不是 `xQueueSendFromISR()`。
-
-**答案**：
+**答案**�?
 ```c
-// ❌ 错误：在 ISR 中使用非 FromISR 的 API
+// �?错误：在 ISR 中使用非 FromISR �?API
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    xQueueSend(queue, &data, 0);  // 错误！
+    xQueueSend(queue, &data, 0);  // 错误�?
 }
 
-// ✅ 正确
+// �?正确
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
@@ -665,4 +339,4 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 ---
 
-> **本文件总结**：RTOS 的核心是"资源管理 + 时序保证"。重点掌握：任务优先级与调度、互斥量 vs 信号量、优先级翻转与继承、消息队列、栈溢出检测、临界区选择。
+> **本文件总结**：RTOS 的核心是"资源管理 + 时序保证"。重点掌握：任务优先级与调度、互斥量 vs 信号量、优先级翻转与继承、消息队列、栈溢出检测、临界区选择�?
