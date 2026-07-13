@@ -28,19 +28,7 @@ export default function HomePage() {
   return (
     <div className="animate-fade-in space-y-16">
       {/* Hero */}
-      <HeroGlow className="flex flex-col items-center gap-6 rounded-2xl border border-border/30 py-10 text-center md:flex-row md:text-left md:py-12">
-        <div className="relative">
-          <div
-            className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl text-3xl font-bold text-white shadow-lg"
-            style={{
-              background: 'linear-gradient(135deg, var(--primary), var(--primary-dark))',
-              boxShadow: '0 8px 24px -4px rgba(79, 70, 229, 0.3)',
-            }}
-          >
-            任
-          </div>
-        </div>
-
+      <HeroGlow className="rounded-2xl border border-border/30 py-10 md:py-12">
         <div className="space-y-5 md:space-y-6">
           <h1 className="text-[2.5rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
             你好，我是{' '}
