@@ -23,16 +23,13 @@ description: STM32 架构与硬件基础测试题：Cortex-M 内核区别、总�
 **场景**：你的项目需要从 STM32F1（M3）迁移到 STM32F4（M4），需要评估哪些代码需要修改。
 
 **答案**：
-
-| 特性 | M3 | M4 | M7 |
-|------|----|----|-----|
-| 流水线 | 3 级 | 3 级 | 6 级（超标量） |
-| FPU | ❌ | ✅ 单精度 | ✅ 单+双精度 |
-| DSP 指令 | 基础 | ✅ 完整 | ✅ 完整 |
-| I-Cache/D-Cache | ❌ | ❌ | ✅ |
-| TCM | ❌ | ❌ | ✅ ITCM+DTCM |
-| 最大主频 | 72MHz | 180MHz | 480MHz+ |
-| 功耗 | 低 | 中 | 较高 |
+1. **流水线** — M3/M4 为 3 级（取指→解码→执行），M7 为 6 级超标量流水线
+2. **FPU** — M3 无 FPU，M4 支持单精度，M7 支持单+双精度
+3. **DSP 指令** — M3 为基础指令，M4/M7 为完整 DSP 指令集
+4. **I-Cache/D-Cache** — 仅 M7 支持指令/数据缓存
+5. **TCM** — 仅 M7 支持 ITCM + DTCM（紧耦合内存）
+6. **最大主频** — M3 72MHz，M4 180MHz，M7 480MHz+
+7. **功耗** — M3 最低，M4 中等，M7 较高
 
 **面试追问**：M4 的 FPU 默认是开启的吗？
 > 不是。默认是软件浮点。需要在 `SystemInit()` 中设置 `CPACR` 寄存器的 CP10/CP11 位来开启。
@@ -46,10 +43,9 @@ description: STM32 架构与硬件基础测试题：Cortex-M 内核区别、总�
 **场景**：你的延时循环在全速运行时比预期快了一倍。
 
 **答案**：
-- Cortex-M3/M4 是 3 级流水线：取指（Fetch）→ 解码（Decode）→ 执行（Execute）
-- 分支预测：M3/M4 对向后跳转（循环）有静态预测为"taken"
-- 分支预测失败会导致流水线刷新（3 个时钟周期浪费）
-- M7 的 6 级流水线预测失败惩罚更大（6 个周期）
+1. **流水线级数** — M3/M4 为 3 级：取指（Fetch）→ 解码（Decode）→ 执行（Execute），M7 为 6 级超标量
+2. **分支预测** — M3/M4 对向后跳转（循环）有静态预测为"taken"
+3. **预测失败惩罚** — M3/M4 刷新浪费 3 个时钟周期，M7 浪费 6 个周期
 
 **工程影响**：
 ```c
@@ -74,9 +70,9 @@ void delay_us(uint32_t us)
 **场景**：你在中断中做浮点运算，但主程序的浮点数据偶尔出错。
 
 **答案**：
-- M4/M7 的 FPU 有 32 个单精度寄存器（S0-S31）
-- 中断发生时，FPU 寄存器**不会自动保存**（仅当 Lazy Stack Preservation 开启时延迟保存）
-- 如果 ISR 和主程序都使用 FPU，需要确保上下文切换时保存/恢复 FPU 寄存器
+1. **FPU 寄存器** — M4/M7 的 FPU 有 32 个单精度寄存器（S0-S31）
+2. **自动保存** — 中断发生时 FPU 寄存器**不会自动保存**（仅当 Lazy Stack Preservation 开启时延迟保存）
+3. **ISR 与主程序共享 FPU** — 如果 ISR 和主程序都使用 FPU，需要确保上下文切换时保存/恢复 FPU 寄存器
 
 ```c
 // 开启 FPU（通常在 SystemInit 中）
@@ -94,20 +90,14 @@ SCB->CPACR |= ((3UL << 10*2) | (3UL << 11*2));  // CP10, CP11 全访问
 
 **场景**：你的 DMA 传输导致 CPU 访问外设变慢。
 
-**答案**：
-Cortex-M3/M4 使用多总线矩阵：
-
-| 总线 | 主设备 | 从设备 |
-|------|--------|--------|
-| I-Code | CPU 取指 | Flash |
-| D-Code | CPU 数据 | Flash |
-| System | CPU | SRAM、外设 |
-| AHB 矩阵 | DMA、USB | SRAM、外设 |
-
-**关键概念**：
-- **总线仲裁**：当 CPU 和 DMA 同时访问同一从设备时，总线矩阵进行轮询仲裁
-- **总线等待**：如果 DMA 正在使用 AHB 总线访问 SRAM，CPU 访问同一 SRAM 会被阻塞
-- **解决策略**：将 DMA 缓冲区和 CPU 频繁访问的数据放在不同 SRAM 块（如 SRAM1 vs SRAM2）
+**答案**：Cortex-M3/M4 使用多总线矩阵：
+1. **I-Code 总线** — 主设备：CPU 取指，从设备：Flash
+2. **D-Code 总线** — 主设备：CPU 数据，从设备：Flash
+3. **System 总线** — 主设备：CPU，从设备：SRAM、外设
+4. **AHB 矩阵** — 主设备：DMA、USB，从设备：SRAM、外设
+5. **总线仲裁** — 当 CPU 和 DMA 同时访问同一从设备时，总线矩阵进行轮询仲裁
+6. **总线等待** — 如果 DMA 正在使用 AHB 总线访问 SRAM，CPU 访问同一 SRAM 会被阻塞
+7. **解决策略** — 将 DMA 缓冲区和 CPU 频繁访问的数据放在不同 SRAM 块（如 SRAM1 vs SRAM2）
 
 ---
 
@@ -196,9 +186,9 @@ HAL_RCC_OscConfig(&RCC_OscInitStruct);
 **场景**：你的外部晶振失效，系统自动切换到内部 RC 振荡器并触发中断。
 
 **答案**：
-- CSS 监测 HSE 时钟，如果 HSE 失效，自动切换到 HSI 并触发 NMI
-- 这是硬件级别的故障保护，不需要软件干预
-- 在 CSS 中断中应执行安全状态转换（如停止 PWM 输出、记录故障）
+1. **CSS 监测** — 监测 HSE 时钟，如果 HSE 失效，自动切换到 HSI 并触发 NMI
+2. **硬件级保护** — 这是硬件级别的故障保护，不需要软件干预
+3. **中断响应** — 在 CSS 中断中应执行安全状态转换（如停止 PWM 输出、记录故障）
 
 ```c
 void NMI_Handler(void)
@@ -220,9 +210,9 @@ void NMI_Handler(void)
 **场景**：你发现某个未使用的外设仍在消耗功耗。
 
 **答案**：
-- 每个外设的时钟默认是关闭的（为了省电）
-- 使用前必须通过 RCC 使能对应外设时钟
-- 未使用外设的时钟应保持关闭
+1. **默认状态** — 每个外设的时钟默认是关闭的（为了省电）
+2. **使用前使能** — 使用前必须通过 RCC 使能对应外设时钟
+3. **省电原则** — 未使用外设的时钟应保持关闭
 
 ```c
 // 使能 GPIOA 时钟
@@ -269,12 +259,9 @@ __HAL_RCC_USART1_CLK_ENABLE();
 **场景**：你需要通过串口更新固件，如何进入系统 Bootloader？
 
 **答案**：
-
-| BOOT1 | BOOT0 | 启动区域 | 用途 |
-|-------|-------|---------|------|
-| 0 | 0 | Flash (0x0800_0000) | 正常启动 |
-| X | 1 | System Memory (0x1FFF_0000) | 串口 Bootloader |
-| 1 | 1 | SRAM (0x2000_0000) | 调试 |
+1. **BOOT1=0, BOOT0=0** — 从 Flash (0x0800_0000) 启动，正常启动模式
+2. **BOOT1=X, BOOT0=1** — 从 System Memory (0x1FFF_0000) 启动，串口 Bootloader
+3. **BOOT1=1, BOOT0=1** — 从 SRAM (0x2000_0000) 启动，调试模式
 
 **进入系统 Bootloader 的代码方式**：
 ```c
@@ -330,14 +317,11 @@ SCB->VTOR = (uint32_t)g_pfnVectors;  // 设置向量表偏移寄存器
 **场景**：你需要判断上次复位的原因，以决定是否进入安全模式。
 
 **答案**：
-
-| 复位源 | 标志位 | 特点 |
-|--------|--------|------|
-| 上电复位 | PORRSTF | 全部复位 |
-| 外部复位 | PINRSTF | NRST 引脚低电平 |
-| 软件复位 | SFTRSTF | 通过 AIRCR 寄存器 |
-| 看门狗复位 | IWDGRSTF/WWDGRSTF | 看门狗超时 |
-| 低功耗复位 | LPWRRSTF | 从低功耗唤醒 |
+1. **上电复位** — 标志位 PORRSTF，全部复位
+2. **外部复位** — 标志位 PINRSTF，NRST 引脚低电平
+3. **软件复位** — 标志位 SFTRSTF，通过 AIRCR 寄存器
+4. **看门狗复位** — 标志位 IWDGRSTF/WWDGRSTF，看门狗超时
+5. **低功耗复位** — 标志位 LPWRRSTF，从低功耗唤醒
 
 ```c
 void check_reset_source(void)
@@ -525,9 +509,9 @@ void mpu_config(void)
 **场景**：你在擦写 Flash 时，代码无法从 Flash 执行。
 
 **答案**：
-- Flash 擦写期间，CPU 取指会被暂停（Flash 处于 busy 状态）
-- 因此 Flash 擦写代码必须从 RAM 执行
-- 同样，高频执行的代码（如 DSP 算法）放入 RAM 可避免 Flash 等待周期
+1. **Flash 擦写限制** — Flash 擦写期间，CPU 取指会被暂停（Flash 处于 busy 状态）
+2. **RAM 执行要求** — Flash 擦写代码必须从 RAM 执行
+3. **性能优化** — 高频执行的代码（如 DSP 算法）放入 RAM 可避免 Flash 等待周期
 
 ```c
 // 将 Flash 操作函数放入 RAM
@@ -550,9 +534,9 @@ static FLASH_StatusTypeDef flash_erase_and_write(uint32_t addr, uint32_t *data, 
 **场景**：你的 STM32F4/F7 有双 Bank Flash，可以在不中断运行的情况下升级固件。
 
 **答案**：
-- Bank1 和 Bank2 可以独立擦写
-- 在 Bank1 运行时擦写 Bank2，然后切换启动地址
-- 这是 OTA（Over-The-Air）升级的基础
+1. **独立擦写** — Bank1 和 Bank2 可以独立擦写
+2. **运行中升级** — 在 Bank1 运行时擦写 Bank2，然后切换启动地址
+3. **OTA 基础** — 这是 OTA（Over-The-Air）升级的基础
 
 ---
 
@@ -561,15 +545,12 @@ static FLASH_StatusTypeDef flash_erase_and_write(uint32_t addr, uint32_t *data, 
 **📐 L1　💡 高频：是**
 
 **答案**：
-
-| 寄存器 | 用途 |
-|--------|------|
-| MSP | 主栈指针（复位默认） |
-| PSP | 进程栈指针（RTOS 任务使用） |
-| PRIMASK | 全局中断开关（1 = 关中断） |
-| FAULTMASK | 屏蔽所有异常（除 NMI） |
-| BASEPRI | 屏蔽优先级高于某阈值的中断 |
-| CONTROL | 选择 MSP/PSP、特权/非特权模式 |
+1. **MSP** — 主栈指针，复位默认使用
+2. **PSP** — 进程栈指针，RTOS 任务使用
+3. **PRIMASK** — 全局中断开关（1 = 关中断）
+4. **FAULTMASK** — 屏蔽所有异常（除 NMI）
+5. **BASEPRI** — 屏蔽优先级高于某阈值的中断
+6. **CONTROL** — 选择 MSP/PSP、特权/非特权模式
 
 ```c
 // 开关中断的标准方法

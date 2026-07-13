@@ -23,8 +23,8 @@ description: 中断与 DMA 测试题：NVIC 优先级分组、中断嵌套与双
 **场景**：你配置了多个中断，但高优先级中断没有抢占低优先级中断。
 
 **答案**：
-- STM32 使用 4 位优先级（16 个等级），但芯片厂商可能只实现部分位
-- 优先级分组（Priority Group）决定抢占优先级和子优先级的位数
+1. **4 位优先级** — STM32 使用 4 位优先级（16 个等级），但芯片厂商可能只实现部分位
+2. **优先级分组（Priority Group）** — 决定抢占优先级和子优先级的位数
 
 ```c
 // 优先级分组设置（整个系统只能设置一次）
@@ -48,8 +48,8 @@ HAL_NVIC_SetPriority(TIM2_IRQn, 3, 0);   // TIM2 抢占优先级更高
 **场景**：FreeRTOS 的 `configLIBRARY_LOWEST_INTERRUPT_PRIORITY` 配置错误，导致系统崩溃。
 
 **答案**：
-- FreeRTOS 只能管理一定优先级范围内的中断
-- 高于此范围的中断（如最高优先级中断）不受 FreeRTOS 管理，不能调用 FreeRTOS API
+1. **FreeRTOS 管理范围** — 只能管理一定优先级范围内的中断
+2. **超出范围的中断** — 高于此范围的中断（如最高优先级中断）不受 FreeRTOS 管理，不能调用 FreeRTOS API
 
 ```c
 // FreeRTOSConfig.h
@@ -70,10 +70,10 @@ HAL_NVIC_SetPriority(TIM2_IRQn, 3, 0);   // TIM2 抢占优先级更高
 **场景**：高优先级中断打断了低优先级中断，你需要理解栈的使用。
 
 **答案**：
-- Cortex-M 异常处理自动使用 MSP（主栈指针）
-- 进入异常时，硬件自动保存 R0-R3, R12, LR, PC, xPSR 到当前栈
-- 中断嵌套时，高优先级 ISR 使用与低优先级 ISR 相同的栈（MSP）
-- 在 RTOS 中，任务使用 PSP，ISR 使用 MSP
+1. **MSP（主栈指针）** — Cortex-M 异常处理自动使用 MSP
+2. **硬件自动保存** — 进入异常时，硬件自动保存 R0-R3, R12, LR, PC, xPSR 到当前栈
+3. **中断嵌套** — 高优先级 ISR 使用与低优先级 ISR 相同的栈（MSP）
+4. **RTOS 双栈** — 任务使用 PSP，ISR 使用 MSP
 
 ```
 栈使用（中断嵌套）：
@@ -95,12 +95,11 @@ HAL_NVIC_SetPriority(TIM2_IRQn, 3, 0);   // TIM2 抢占优先级更高
 **场景**：你的电机控制中断需要在 1μs 内响应，但 FreeRTOS 的临界区引入了延迟。
 
 **答案**：
-- 中断延迟 = 从信号到达至 ISR 第一条指令执行的时间
-- Cortex-M 硬件中断延迟：12 个时钟周期（无等待状态）
-- 软件延迟来源：
-  - `__disable_irq()` 关中断的临界区
-  - Flash 等待周期
-  - Cache 未命中（M7）
+1. **中断延迟定义** — 从信号到达至 ISR 第一条指令执行的时间
+2. **硬件延迟** — Cortex-M 硬件中断延迟：12 个时钟周期（无等待状态）
+3. **软件延迟来源** — `__disable_irq()` 关中断的临界区
+4. **软件延迟来源** — Flash 等待周期
+5. **软件延迟来源** — Cache 未命中（M7）
   
 ```c
 // FreeRTOS 临界区类型对比
@@ -209,12 +208,9 @@ void uart_task(void *param)
 **场景**：你需要选择 DMA 模式来采集 ADC 数据。
 
 **答案**：
-
-| 模式 | 特点 | 适用场景 |
-|------|------|---------|
-| 普通模式（Normal） | 传输完成后停止 | 单次 ADC 采集 |
-| 循环模式（Circular） | 传输完成后自动重新开始 | 连续 ADC 采集、音频流 |
-| 双缓冲（Double Buffer） | 两个缓冲区交替，CPU 处理一个时 DMA 写另一个 | 高速数据采集 |
+1. **普通模式（Normal）** — 传输完成后停止，适用于单次 ADC 采集
+2. **循环模式（Circular）** — 传输完成后自动重新开始，适用于连续 ADC 采集、音频流
+3. **双缓冲（Double Buffer）** — 两个缓冲区交替，CPU 处理一个时 DMA 写另一个，适用于高速数据采集
 
 ```c
 // 普通模式
@@ -262,9 +258,9 @@ void DMA2_Stream0_IRQHandler(void)
 **场景**：你在 STM32H7 上使用 DMA，但 CPU 看到的数据是旧值（Cache 一致性问题）。
 
 **答案**：
-- M7 有 D-Cache，DMA 直接访问内存，绕过 Cache
-- DMA 写入内存后，CPU 的 D-Cache 中可能还是旧数据
-- DMA 从内存读取时，CPU 的 D-Cache 中可能还有未写回的脏数据
+1. **D-Cache 与 DMA** — M7 有 D-Cache，DMA 直接访问内存，绕过 Cache
+2. **DMA 写入后** — CPU 的 D-Cache 中可能还是旧数据
+3. **DMA 读取时** — CPU 的 D-Cache 中可能还有未写回的脏数据
 
 **解决方案**：
 ```c
@@ -288,9 +284,9 @@ uint32_t dma_buffer[256];
 **场景**：你的 DMA 传输偶尔丢失数据（如 ADC 溢出）。
 
 **答案**：
-- 当多个 DMA 通道同时请求时，硬件优先级（通道号）决定顺序
-- 可通过软件配置 DMA 通道优先级（Low / Medium / High / Very High）
-- 当 DMA 和 CPU 冲突时，总线矩阵轮询仲裁
+1. **硬件优先级** — 当多个 DMA 通道同时请求时，硬件优先级（通道号）决定顺序
+2. **软件配置** — 可通过软件配置 DMA 通道优先级（Low / Medium / High / Very High）
+3. **总线仲裁** — 当 DMA 和 CPU 冲突时，总线矩阵轮询仲裁
 
 ```c
 // 配置 DMA 优先级
@@ -308,9 +304,9 @@ HAL_DMA_Init(&hdma);
 **场景**：你的 FreeRTOS 任务使用了 FPU，但切换到另一个使用 FPU 的任务后浮点寄存器损坏。
 
 **答案**：
-- Cortex-M4F/M7 的 Lazy Stack Preservation：当任务首次使用 FPU 时才保存 FPU 上下文
-- 在 FreeRTOS 中，`configUSE_TASK_FPU_SUPPORT = 2` 会为每个任务保存 FPU 上下文
-- 中断中如果使用 FPU，需要确保 FPU 寄存器不被破坏
+1. **Lazy Stack Preservation** — Cortex-M4F/M7 当任务首次使用 FPU 时才保存 FPU 上下文
+2. **FreeRTOS 配置** — `configUSE_TASK_FPU_SUPPORT = 2` 会为每个任务保存 FPU 上下文
+3. **中断中使用 FPU** — 需要确保 FPU 寄存器不被破坏
 
 ```c
 // FreeRTOSConfig.h
@@ -402,9 +398,9 @@ void DMA2_Stream0_IRQHandler(void)
 **场景**：你用 HAL_SPI_TransmitReceive_DMA() 时，发现数据错位或丢失。
 
 **答案**：
-- SPI 是全双工，TX 和 RX 必须同时启动
-- DMA 的 TX 和 RX 通道必须正确配置
-- 使用 `HAL_SPI_TransmitReceive_DMA()` 而非分别调用 TX 和 RX
+1. **全双工要求** — SPI 是全双工，TX 和 RX 必须同时启动
+2. **DMA 通道配置** — TX 和 RX 通道必须正确配置
+3. **推荐 API** — 使用 `HAL_SPI_TransmitReceive_DMA()` 而非分别调用 TX 和 RX
 
 ```c
 // ✅ 正确：同时启动 TX 和 RX

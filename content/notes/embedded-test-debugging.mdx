@@ -25,21 +25,21 @@ description: 调试与故障案例测试题：HardFault 分析方法、栈溢出
 **答案**：
 ```
 1. 在 HardFault_Handler 中抓取关键寄存器：
-   - MSP/PSP：确定是哪个栈
-   - LR（EXC_RETURN）：确定返回模式
-   - PC（通过栈帧定位）：确定Fault地址
-   - SCB->CFSR（Configurable Status Register）：确定Fault类别
+   1. **MSP/PSP** — 确定是哪个栈
+   2. **LR（EXC_RETURN）** — 确定返回模式
+   3. **PC（通过栈帧定位）** — 确定Fault地址
+   4. **SCB->CFSR** — 确定Fault类别
 
 2. 常见 Fault 类型：
-   - IACCVIOL：指令访问违规（跳到非法地址）
-   - DACCVIOL：数据访问违规（读/写非法地址）
-   - INVPC：无效 PC 加载（函数指针跳转错误）
-   - UNALIGN：非对齐访问（仅 M0 有效）
-   - STKOF：栈溢出
+   1. **IACCVIOL** — 指令访问违规（跳到非法地址）
+   2. **DACCVIOL** — 数据访问违规（读/写非法地址）
+   3. **INVPC** — 无效 PC 加载（函数指针跳转错误）
+   4. **UNALIGN** — 非对齐访问（仅 M0 有效）
+   5. **STKOF** — 栈溢出
 
 3. 定位代码行：
-   - 使用 addr2line 工具：arm-none-eabi-addr2line -e firmware.elf <PC>
-   - 或使用 GDB 的 list *<PC> 命令
+   1. **addr2line** — arm-none-eabi-addr2line -e firmware.elf <PC>
+   2. **GDB list** — list *<PC> 命令
 ```
 
 ---
@@ -104,10 +104,10 @@ void hard_fault_handler_c(uint32_t *stack_frame)
 4. 如果接近 0，增大任务栈大小
 
 常见原因：
-- 函数中定义大数组（如 uint8_t buf[1024]）
-- 递归调用
-- 嵌套调用太深
-- 局部大结构体（在函数内定义的结构体变量在栈上分配）
+1. **大局部数组** — 函数中定义大数组（如 uint8_t buf[1024]）
+2. **递归调用** — 函数递归调用消耗栈空间
+3. **嵌套调用太深** — 多层函数调用链过长
+4. **局部大结构体** — 在函数内定义的结构体变量在栈上分配
 
 // ❌ 危险：大局部数组
 void process_frame(void)
@@ -176,10 +176,10 @@ void fault_record(uint32_t type, uint32_t pc, uint32_t lr)
 **答案**：
 ```
 原因分析：
-- UART 波特率 = f_CK / (8 × (2 - OVER8) × USARTDIV)
-- 系统时钟越高，波特率计算中的分频系数需要调整
-- 如果 SystemClock_Config() 配置错误，外设时钟可能不对
-- 调试器可能强制 HSI 作为时钟源，掩盖了问题
+1. **波特率公式依赖时钟** — UART 波特率 = f_CK / (8 × (2 - OVER8) × USARTDIV)
+2. **分频系数需随时钟调整** — 系统时钟越高，波特率计算中的分频系数需要调整
+3. **SystemClock_Config 错误** — 如果 SystemClock_Config() 配置错误，外设时钟可能不对
+4. **调试器掩盖问题** — 调试器可能强制 HSI 作为时钟源，掩盖了问题
 
 排查：
 1. 在 main() 中尽早读取 SystemCoreClock 变量
@@ -199,8 +199,8 @@ void fault_record(uint32_t type, uint32_t pc, uint32_t lr)
 ```
 原因：M0/M0+ 不支持非对齐访问
 代码中可能有：
-- uint16_t val = *(uint16_t*)(buf+1);  // 奇数地址
-- uint32_t val = *(uint32_t*)(buf+1);  // 非 4 字节对齐
+1. **奇数地址访问** — `uint16_t val = *(uint16_t*)(buf+1)` 奇数地址
+2. **非4字节对齐访问** — `uint32_t val = *(uint32_t*)(buf+1)` 非 4 字节对齐
 
 解决：
 1. 使用 memcpy 替代直接指针访问
@@ -225,9 +225,9 @@ FreeRTOS 只管理优先级在 configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY
 该中断可以调用 FromISR 函数。如果该中断优先级太低
 （数值 < configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY），
 它不受 FreeRTOS 管理，调用 FromISR 函数会导致：
-- xTaskGetTickCountFromISR() 返回错误值
-- 临界区嵌套计数错误
-- 上下文切换在错误时机触发
+1. **xTaskGetTickCountFromISR** — 返回错误值
+2. **临界区嵌套计数** — 计数错误
+3. **上下文切换** — 在错误时机触发
 
 解决：
 1. 所有调用 FreeRTOS API 的中断优先级必须设置正确
@@ -372,9 +372,9 @@ end
 **答案**：
 ```
 故障现象：
-- 高优先级任务 H（电机控制，优先级 4）
-- 中优先级任务 M（数据处理，优先级 3）
-- 低优先级任务 L（传感器采集，优先级 2）
+1. **高优先级任务 H** — 电机控制，优先级 4
+2. **中优先级任务 M** — 数据处理，优先级 3
+3. **低优先级任务 L** — 传感器采集，优先级 2
 
 L 获取 SPI 互斥量 → M 抢占 L → H 请求 SPI 互斥量被阻塞
 → M 长时间运行 → H 超时未执行 → 电机故障
@@ -449,9 +449,9 @@ TIM2->CCMR1 |= TIM_CCMR1_OC1PE;  // CCR 预装载使能
 **答案**：
 ```
 场景：
-- ADC 通过 DMA 将数据写入缓冲区（SRAM_D1）
-- CPU 有 D-Cache 缓冲
-- CPU 读取时命中 Cache（旧值）而非内存
+1. **ADC DMA 写入** — ADC 通过 DMA 将数据写入缓冲区（SRAM_D1）
+2. **D-Cache 缓冲** — CPU 有 D-Cache 缓冲
+3. **Cache 命中旧值** — CPU 读取时命中 Cache（旧值）而非内存
 
 DMA 写入内存 → 新数据在内存中，但在 Cache 中是旧值
 
@@ -472,8 +472,8 @@ DMA 写入内存 → 新数据在内存中，但在 Cache 中是旧值
 **答案**：
 ```
 原因：
-- 按键抖动导致多次上升沿/下降沿触发
-- 或中断优先级太低，被打断后又重新进入
+1. **按键抖动** — 按键抖动导致多次上升沿/下降沿触发
+2. **中断优先级太低** — 中断优先级太低，被打断后又重新进入
 
 解决：
 1. 硬件去抖：RC 滤波电路
@@ -529,10 +529,10 @@ void button_task(void *param)
 4. 按键失灵 → 去抖不足或中断优先级配置
 
 实际案例：这些现象可能有一个共同根因 — 电源质量差！
-- 电池电压不稳 → ADC 参考电压变化 → ADC 值异常
-- 电压跌落到欠压阈值 → 看门狗复位
-- 电源噪声耦合到数字线路 → UART 误码
-- 电压不稳定导致 GPIO 检测不稳定
+1. **电池电压不稳** → ADC 参考电压变化 → ADC 值异常
+2. **电压跌落** → 跌落到欠压阈值 → 看门狗复位
+3. **电源噪声耦合** → 耦合到数字线路 → UART 误码
+4. **GPIO 不稳定** — 电压不稳定导致 GPIO 检测不稳定
 
 解决：
 1. 检查电源质量（示波器测纹波）
@@ -558,9 +558,9 @@ void button_task(void *param)
 3. 检查是否有只分配不释放的场景
 
 常见原因：
-- 在任务中动态分配内存但忘记释放
-- 使用第三方库（如 JSON 解析）后没有调用清理函数
-- 在中断中调用 pvPortMalloc（不允许）
+1. **只分配不释放** — 在任务中动态分配内存但忘记释放
+2. **第三方库清理遗漏** — 使用第三方库（如 JSON 解析）后没有调用清理函数
+3. **中断中调用 malloc** — 在中断中调用 pvPortMalloc（不允许）
 
 解决：
 1. 使用静态分配替代动态分配
@@ -614,16 +614,14 @@ void button_task(void *param)
 
 **答案**：
 
-| 工具 | 用途 | 适用场景 |
-|------|------|---------|
-| J-Link/ST-Link | 在线调试 | 断点、单步、寄存器查看 |
-| 逻辑分析仪 | 数字信号时序 | SPI/I2C/UART 波形分析 |
-| 示波器 | 模拟信号 | 电源纹波、信号完整性 |
-| 万用表 | 电压/电阻 | 基础电路检查 |
-| ITM/SWO | 高速日志 | 不影响系统时序的日志 |
-| DWT | 周期计数 | 精确测量代码执行时间 |
-| SystemView | RTOS 可视化 | 任务切换、中断时序 |
-| Ozone | 高级调试 | 实时变量追踪、代码覆盖率 |
+1. **J-Link/ST-Link** — 在线调试，断点、单步、寄存器查看
+2. **逻辑分析仪** — 数字信号时序，SPI/I2C/UART 波形分析
+3. **示波器** — 模拟信号，电源纹波、信号完整性
+4. **万用表** — 电压/电阻，基础电路检查
+5. **ITM/SWO** — 高速日志，不影响系统时序的日志
+6. **DWT** — 周期计数，精确测量代码执行时间
+7. **SystemView** — RTOS 可视化，任务切换、中断时序
+8. **Ozone** — 高级调试，实时变量追踪、代码覆盖率
 
 ---
 

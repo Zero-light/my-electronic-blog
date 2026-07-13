@@ -23,12 +23,9 @@ description: 电源管理与启动测试题：三种低功耗模式、看门狗�
 **场景**：你的电池供电设备需要休眠以节省功耗。
 
 **答案**：
-
-| 模式 | 唤醒时间 | 功耗 | 保留内容 | 唤醒源 |
-|------|---------|------|---------|--------|
-| Sleep | 最短 | 降低 | 全部保留 | 任何中断 |
-| Stop | 中等 | 很低 | SRAM/寄存器保留 | EXTI/RTC/外部事件 |
-| Standby | 较长 | 最低 | 仅备份域 | WKUP 引脚/RTC/外部复位 |
+1. **Sleep** — 唤醒时间最短，功耗降低，全部保留，唤醒源：任何中断
+2. **Stop** — 唤醒时间中等，功耗很低，SRAM/寄存器保留，唤醒源：EXTI/RTC/外部事件
+3. **Standby** — 唤醒时间较长，功耗最低，仅备份域，唤醒源：WKUP 引脚/RTC/外部复位
 
 ```c
 // Sleep 模式（WFI - Wait For Interrupt）
@@ -132,15 +129,12 @@ void HAL_RTCEx_WakeUpTimerEventCallback(RTC_HandleTypeDef *hrtc)
 **场景**：你的系统需要防飞死保护，应该如何选？
 
 **答案**：
-
-| 特性 | 独立看门狗 (IWDG) | 窗口看位狗 (WWDG) |
-|------|-------------------|-------------------|
-| 时钟源 | LSI（约 32kHz，独立） | PCLK1（APB1 总线时钟） |
-| 精度 | 低（LSI 频率偏差大） | 高（与系统时钟同步） |
-| 超时范围 | 4096×RLR / LSI ≈ 0.125ms ~ 32s | 与 APB1 时钟和计数器相关 |
-| 窗口 | 无（只要在超时前喂狗即可） | 有上下限（不能太早也不能太晚） |
-| 中断 | 仅有早期预警中断（EWI） | 有早期预警中断 |
-| 用途 | 系统级防飞死 | 任务时序监控 |
+1. **时钟源** — IWDG：LSI（约 32kHz，独立）；WWDG：PCLK1（APB1 总线时钟）
+2. **精度** — IWDG：低（LSI 频率偏差大）；WWDG：高（与系统时钟同步）
+3. **超时范围** — IWDG：4096×RLR / LSI ≈ 0.125ms ~ 32s；WWDG：与 APB1 时钟和计数器相关
+4. **窗口** — IWDG：无（只要在超时前喂狗即可）；WWDG：有上下限（不能太早也不能太晚）
+5. **中断** — IWDG：仅有早期预警中断（EWI）；WWDG：有早期预警中断
+6. **用途** — IWDG：系统级防飞死；WWDG：任务时序监控
 
 ```c
 // IWDG 配置（超时 1s）
@@ -326,23 +320,9 @@ volatile shared_data_t shared_data;
 **场景**：你的设备支持 OTA 升级，需要确保升级失败不砖机。
 
 **答案**：
-```
-方案 A：双 Bank Flash（硬件支持）
-- Bank1 和 Bank2 可独立擦写
-- 升级时写入空闲 Bank
-- 验证通过后切换 Bank
-
-方案 B：双区 A/B 升级（软件实现）
-- A 区：当前运行的固件
-- B 区：接收新固件
-- 升级完成后 Bootloader 切换启动地址
-- 失败则回退到 A 区
-
-方案 C：带恢复机制的升级
-- 接收新固件到临时区
-- 如果验证通过，拷贝到应用区
-- 如果验证失败，保留旧固件
-```
+1. **方案 A：双 Bank Flash（硬件支持）** — Bank1 和 Bank2 可独立擦写；升级时写入空闲 Bank；验证通过后切换 Bank
+2. **方案 B：双区 A/B 升级（软件实现）** — A 区当前运行的固件；B 区接收新固件；升级完成后 Bootloader 切换启动地址；失败则回退到 A 区
+3. **方案 C：带恢复机制的升级** — 接收新固件到临时区；验证通过则拷贝到应用区；验证失败则保留旧固件
 
 ---
 
@@ -353,22 +333,11 @@ volatile shared_data_t shared_data;
 **场景**：你的设备在电源电压缓慢下降时出现不可预测行为。
 
 **答案**：
-```
-BOR（Brown-Out Reset）欠压复位：
-- 当 VDD 低于阈值时自动复位 MCU，防止不可预测行为
-- 阈值等级（STM32F4）：
-  BOR Level 1：2.1V
-  BOR Level 2：2.4V  
-  BOR Level 3：2.7V
-  BOR off：无欠压保护（仅用于 <2.7V 电源）
-
-- 与 POR 区别：
-  POR（Power-On Reset）：上电时检测
-  BOR（Brown-Out Reset）：运行时电压跌落后检测
-
-- 复位标志：RCC_CSR 中的 PORRSTF 标志
-- 配置：通过选项字节（Option Bytes）设置 BOR 等级
-```
+1. **BOR（Brown-Out Reset）欠压复位** — 当 VDD 低于阈值时自动复位 MCU，防止不可预测行为
+2. **阈值等级（STM32F4）** — Level 1：2.1V；Level 2：2.4V；Level 3：2.7V；BOR off：无欠压保护（仅用于 <2.7V 电源）
+3. **与 POR 区别** — POR 上电时检测；BOR 运行时电压跌落后检测
+4. **复位标志** — RCC_CSR 中的 PORRSTF 标志
+5. **配置** — 通过选项字节（Option Bytes）设置 BOR 等级
 
 ```c
 // 在选项字节中配置 BOR 等级（使用 STM32CubeProgrammer 或代码）
@@ -473,14 +442,8 @@ void PVD_IRQHandler(void)
 **场景**：你的 Bootloader 中喂狗，跳转到 App 后不复位，但 App 卡死时 Bootloader 不再运行。
 
 **答案**：
-```
-错误做法：在 Bootloader 中开启看门狗，App 不再喂狗
-→ App 卡死时看门狗不复位，但 Bootloader 已经不在运行
-
-正确做法：
-- 在 App 中配置和喂狗
-- 或者在跳转前停止看门狗，App 独立配置
-```
+1. **错误做法** — 在 Bootloader 中开启看门狗，App 不再喂狗，App 卡死时看门狗不复位，但 Bootloader 已经不在运行
+2. **正确做法** — 在 App 中配置和喂狗；或者在跳转前停止看门狗，App 独立配置
 
 ---
 
