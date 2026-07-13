@@ -15,6 +15,21 @@ export interface ProjectCardProps {
   className?: string;
 }
 
+/** 技术关键词自动高亮 */
+const KEYWORDS = ['STM32', 'PyQt6', 'FreeRTOS', 'RTOS', 'PCB', 'ADC', 'DMA', 'SPI', 'UART', 'DCDC', 'LDO', 'TL431'];
+
+function highlightKeywords(text: string) {
+  const regex = new RegExp(`(${KEYWORDS.join('|')})`, 'g');
+  const parts = text.split(regex);
+  return parts.map((part, i) =>
+    KEYWORDS.includes(part) ? (
+      <span key={i} className="keyword-highlight">{part}</span>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
+
 /**
  * 项目卡片组件
  * - 展示封面图、标题、项目周期、标签、概述
@@ -49,16 +64,16 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         )}
 
         <CardHeader className="flex-1">
-          <CardTitle className="line-clamp-2 text-base">
-            {project.title}
+          <CardTitle className="line-clamp-2 text-base font-bold">
+            {highlightKeywords(project.title)}
           </CardTitle>
-          <CardDescription className="line-clamp-2">
+          <CardDescription className="line-clamp-2 text-[0.8rem]">
             {project.description || '暂无描述'}
           </CardDescription>
         </CardHeader>
 
         <CardContent className="pt-0">
-          <div className="flex flex-wrap items-center gap-3 text-xs text-text-muted">
+          <div className="flex flex-wrap items-center gap-2 text-[0.72rem] text-text-muted">
             {project.period && (
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
@@ -71,7 +86,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center rounded-full border border-white/[0.08] bg-white/[0.03] px-2 py-0.5 text-[0.78rem] text-text-muted backdrop-blur-sm transition-colors hover:border-primary/30 hover:text-primary"
+                    className="inline-flex items-center rounded-full border border-border bg-bg-soft px-2 py-0.5 text-[0.7rem] text-text-muted transition-colors hover:border-primary/30 hover:text-primary"
                   >
                     {tag}
                   </span>

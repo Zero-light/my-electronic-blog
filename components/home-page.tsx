@@ -68,14 +68,14 @@ export function HomePage({ notes, projects }: HomePageProps) {
   return (
     <div className="animate-fade-in space-y-12">
       {/* Hero */}
-      <HeroGlow className="hero-pattern rounded-2xl border border-border/30 py-12 text-center md:py-16">
-        <div className="mx-auto max-w-2xl space-y-6 px-4">
+      <HeroGlow className="hero-pattern rounded-2xl border border-border/30 py-8 text-center md:py-10">
+        <div className="mx-auto max-w-2xl space-y-4 px-4">
           <img
             src="/images/avatar.jpg"
             alt="任炳宇"
-            className="hero-avatar mx-auto h-28 w-28 rounded-full object-cover"
+            className="hero-avatar mx-auto h-24 w-24 rounded-full object-cover"
           />
-          <h1 className="text-[2.5rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
+          <h1 className="text-[2.2rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
             你好，我是{' '}
             <span
               className="bg-clip-text text-transparent"
@@ -89,13 +89,25 @@ export function HomePage({ notes, projects }: HomePageProps) {
           <p className="text-sm font-semibold tracking-wide" style={{ color: 'var(--primary)' }}>
             电子信息工程 ｜ 嵌入式系统 &amp; 电源设计方向
           </p>
-          <div className="mx-auto max-w-lg space-y-1.5 text-[0.82rem] leading-relaxed text-slate-600 dark:text-[#8b949e]">
-            <p>STM32 全栈固件开发（F1/H7/L0 系列、RTOS、DMA/ADC/SPI 外设）</p>
-            <p>DCDC/LDO 电源环路设计、TL431 反馈电路、硬件调试</p>
-            <p>PCB Layout、阻抗计算、趋肤效应、信号完整性仿真</p>
-            <p>PyQt6 上位机、波形发生器、串口数据交互开发</p>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <ul className="mx-auto max-w-lg space-y-1 text-left text-[0.82rem] leading-relaxed text-slate-600 dark:text-[#8b949e]">
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 shrink-0 text-green-500">✅</span>
+              <span><strong className="keyword-highlight">STM32</strong> 全栈固件开发：F1/H7/L0、<strong className="keyword-highlight">RTOS</strong>、DMA/ADC/SPI 外设驱动</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 shrink-0 text-green-500">✅</span>
+              <span>硬件电源设计：DCDC/LDO 环路、TL431 反馈、硬件调试</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 shrink-0 text-green-500">✅</span>
+              <span><strong className="keyword-highlight">PCB</strong> 信号完整性：Layout、阻抗计算、趋肤效应、EMC 仿真</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 shrink-0 text-green-500">✅</span>
+              <span>上位机开发：<strong className="keyword-highlight">PyQt6</strong> 波形发生器、串口数据交互、Excel 数据处理</span>
+            </li>
+          </ul>
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
             <Link href="/resume/" className="btn-primary">
               下载简历
               <ArrowRight className="h-4 w-4" />
