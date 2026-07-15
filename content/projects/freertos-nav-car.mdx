@@ -2,189 +2,265 @@
 title: 基于 FreeRTOS 的自主导航车
 slug: freertos-nav-car
 date: 2026-04-15
-tags: ['STM32', 'FreeRTOS', 'PID', '电机控制', '超声波', '语音交互']
+tags: ['STM32', 'FreeRTOS', 'PID', '电机控制', '超声波', '语音交互', '编码器']
 category: 嵌入式
-description: 基于 STM32 与 FreeRTOS 的多任务自主导航小车，集成循迹、避障、离线语音交互与电机闭环控制，采用串级 PID + 积分分离算法实现稳定巡迹。
+description: 基于 STM32F4xx 与 FreeRTOS 的自主导航小车，集成循迹、避障、离线语音交互与电机 PID 闭环控制，采用增量式 PID + 积分分离算法实现稳定运行。
 period: 2026.02 – 2026.04
 hardware:
-  - STM32F103C8T6
-  - L298N / TB6612 电机驱动
-  - HC-SR04 超声波模块 × 3
-  - 红外循迹传感器阵列
-  - 离线语音模块
-  - 编码器测速
+  - STM32F4xx @ 168MHz
+  - 双路直流减速电机 + 编码器测速
+  - HC-SR04 超声波测距模块
+  - I2C 红外循迹传感器阵列
+  - 离线语音识别模块（UART）
+  - 舵机控制
+  - DMA 串口数据传输
 software:
-  - Keil MDK
-  - FreeRTOS
-  - 标准库开发
-  - 串级 PID 控制器
+  - Keil MDK-ARM
+  - STM32CubeMX
+  - FreeRTOS V10.3.1（CMSIS-RTOS2 封装）
+  - HAL 库开发
+  - 增量式 PID + 积分分离
 cover: /images/projects/freertos-nav-car.jpg
 ---
 
 ## 项目概述
 
-本项目为校级嵌入式设计竞赛参赛作品，设计了一款基于 **STM32 + FreeRTOS** 的自主导航小车。系统集成了循迹、多方位超声波避障、离线语音交互与电机闭环控制功能，通过合理的 RTOS 任务划分与串级 PID 控制，实现了复杂场景下的稳定运行。
+本项目为校级嵌入式设计竞赛参赛作品，设计了一款基于 **STM32F4xx + FreeRTOS** 的自主导航小车。系统以 FreeRTOS 多任务为核心，集成了电机 PID 闭环控制、I2C 红外循迹、超声波测距避障、离线语音交互四大功能模块，实现了小车在复杂场景下的稳定自主运行。
 
-核心指标：
+### 核心指标
 
-- 控制周期：10 ms（100 Hz）
-- 循迹精度：中心线偏差 < 5 mm
-- 避障响应：检测距离 2 cm ~ 400 cm
-- 语音指令识别率：> 90%（安静环境）
+- 主控：STM32F4xx，主频 168 MHz（8 MHz HSE → PLL）
+- 控制周期：40 ms（25 Hz PID 闭环）
+- 编码器分辨率：11 PPR × 4 倍频 = 44 脉冲/转
+- 速度测量：一阶低通滤波平滑处理
+- 超声波测距范围：2 cm ~ 450 cm，超时保护 30 ms
+- 循迹方式：I2C 数字传感器（地址 0x12），单字节数据帧
+- 语音通信：UART4 115200bps，自定义协议帧 `AA 55 00 CMD FB`
 
-## 系统架构
+## 硬件架构
 
-```
-┌─────────────────────────────────────────────┐
-│              FreeRTOS 内核                    │
-│  ┌─────────┐ ┌─────────┐ ┌──────────────┐  │
-│  │ 循迹任务 │ │ 避障任务 │ │  语音交互任务 │  │
-│  │ 高优先级 │ │ 中优先级 │ │   中优先级    │  │
-│  └────┬────┘ └────┬────┘ └──────┬───────┘  │
-│       │           │             │           │
-│  ┌────┴────┐ ┌────┴────┐ ┌──────┴───────┐  │
-│  │ 电机控制 │ │ 状态机  │ │   指令解析    │  │
-│  │ 任务    │ │ 管理    │ │              │  │
-│  └────┬────┘ └────┬────┘ └──────┬───────┘  │
-│       └───────────┴─────────────┘           │
-│              消息队列 + 事件组               │
-└─────────────────────────────────────────────┘
-```
+### 引脚分配
+
+| 功能 | 引脚 | 说明 |
+|------|------|------|
+| 左电机 PWM | TIM1_CH3 (PB14) | Period=1999, PWM 调速 |
+| 右电机 PWM | TIM1_CH4 (PB15) | 左/右电机独立 PWM |
+| 舵机 PWM | TIM1_CH2 (PB11) | 50Hz, 50~250 对应 0°~180° |
+| 左电机方向 | PB8, PB9 | 正/反转 + 停止 |
+| 右电机方向 | PB10, PB11 | 正/反转 + 停止 |
+| 左编码器 | TIM4 (PA6, PA7) | 编码器模式 TI12 |
+| 右编码器 | TIM3 (PA6, PA7) | 编码器模式 TI12 |
+| 超声波 Trig | PB12 | 输出 10us 以上高脉冲 |
+| 超声波 Echo | PB13 | 输入高电平时间 |
+| 语音模块 | UART4 (PA0, PA1) | 115200, 8N1, 中断接收 |
+| 调试串口 | USART3 (PB10, PB11) | printf 日志输出 |
+| 循迹传感器 | I2C3 (PB8, PB9) | 100kHz, 7 位地址 0x12 |
+
+### 系统时钟
+
+- HSE: 8 MHz 外部晶振
+- PLL: M=4, N=168, P=2, Q=7 → SYSCLK = 168 MHz
+- APB1 = 42 MHz（定时器时钟 84 MHz）
+- APB2 = 84 MHz
+- FreeRTOS Tick = 1 ms
 
 ## FreeRTOS 多任务设计
 
 ### 任务划分
 
-| 任务 | 优先级 | 周期 | 职责 |
-|------|--------|------|------|
-| 循迹任务 | 3（高） | 10 ms | 读取红外阵列，计算偏差 |
-| 避障任务 | 2（中） | 50 ms | 超声波测距，决策避障策略 |
-| 语音交互任务 | 2（中） | 100 ms | 解析语音指令，发布控制事件 |
-| 电机控制任务 | 3（高） | 10 ms | 串级 PID 更新，输出 PWM |
-| 状态显示任务 | 1（低） | 200 ms | OLED 刷新、LED 指示 |
+系统共创建 5 个任务，通过 CMSIS-RTOS2 API 管理：
 
-### 消息队列与阻塞唤醒
+| 任务名 | 优先级 | 栈大小 | 周期 | 职责 |
+|--------|--------|--------|------|------|
+| `PID_DebugTask` | Normal | 2048 B | 40 ms | 核心控制：读编码器 → 计算速度 → PID → 输出 PWM |
+| `voiceRecvTask` | AboveNormal | 2048 B | 事件驱动 | 从消息队列取语音指令，解析并执行动作 |
+| `trackTask` | AboveNormal | 2048 B | 20 ms | 读 I2C 循迹传感器，根据路径偏差调整目标速度 |
+| `ultraTask` | Low | 2048 B | 80 ms | 超声波测距（周期性触发） |
+| `defaultTask` | Normal | 1024 B | 1 ms | 空闲任务，系统初始化后空转 |
 
-采用 **消息队列** 替代传统轮询，传感器数据通过队列投递至控制任务：
+### 任务间通信
 
-```c
-/* 传感器数据队列 */
-QueueHandle_t xSensorQueue;
-xSensorQueue = xQueueCreate(10, sizeof(SensorData_t));
+传感器数据通过 **消息队列**（`osMessageQueue`）投递，控制任务阻塞等待，避免轮询浪费 CPU：
 
-/* 循迹任务：采样后入队 */
-void TrackTask(void *pvParameters) {
-    SensorData_t data;
-    while (1) {
-        data.error = ReadTrackSensor();
-        xQueueSend(xSensorQueue, &data, portMAX_DELAY);
-        vTaskDelay(pdMS_TO_TICKS(10));
-    }
-}
-
-/* 电机控制任务：阻塞等待队列数据 */
-void MotorControlTask(void *pvParameters) {
-    SensorData_t data;
-    while (1) {
-        if (xQueueReceive(xSensorQueue, &data, portMAX_DELAY)) {
-            PID_Update(&pid, data.error);
-            SetMotorPWM(pid.output);
-        }
-    }
-}
+```
+┌────────────┐    ┌────────────────┐    ┌───────────────┐
+│  UART4 ISR  │───▶│ voiceCmdQueue  │───▶│ voiceRecvTask │
+└────────────┘    └────────────────┘    └───────┬───────┘
+                                                │ 设置 target_speed
+                                                ▼
+┌────────────┐                          ┌───────────────┐
+│   TIM4/3   │───▶ PID_DebugTask ◀──────│ target_speed  │
+│  编码器     │    │ 读编码器         │   └───────────────┘
+└────────────┘    │ 算速度           │
+                  │ PID 计算         │
+                  │ 输出 PWM         │
+                  └───────────────┘
 ```
 
-## 串级 PID 控制器
+## 电机 PID 闭环控制
 
-### 双环结构
+### 增量式 PID 算法
 
-- **外环（位置环）**：以循迹偏差为输入，输出目标速度
-- **内环（速度环）**：以编码器测速为反馈，输出 PWM 占空比
+系统采用 **增量式 PID** 分别控制左、右两路电机，以编码器反馈的实际速度作为闭环输入：
 
 ```c
 typedef struct {
-    float Kp, Ki, Kd;
-    float err, err_last;
-    float integral;
-    float output_max;
-    uint8_t integral_separate;  /* 积分分离标志 */
-} PID_Controller;
-
-float PID_Update(PID_Controller *pid, float setpoint, float feedback)
-{
-    float err = setpoint - feedback;
-
-    /* 积分分离：大偏差时不积分，消除超调 */
-    if (fabs(err) < INTEGRAL_THRESHOLD) {
-        pid->integral += err;
-    } else {
-        pid->integral = 0;
-    }
-
-    float output = pid->Kp * err
-                 + pid->Ki * pid->integral
-                 + pid->Kd * (err - pid->err_last);
-
-    pid->err_last = err;
-    return constrain(output, -pid->output_max, pid->output_max);
-}
+    float Kp;           // 比例增益
+    float Ki;           // 积分增益
+    float Kd;           // 微分增益
+    float err;          // 当前误差 = 目标 - 实际
+    float last_err;     // 上次误差
+    float last_real;    // 上次实际值（用于微分）
+    float integral;     // 积分累加
+    float out;          // PID 输出（PWM 占空比）
+    float max_out;      // 输出限幅（100%）
+} PID_TypeDef;
 ```
 
-### 积分分离效果
+### 积分分离
 
-| 工况 | 无积分分离 | 有积分分离 |
-|------|-----------|-----------|
-| 直道起步 | 超调 15% | 超调 3% |
-| 低速弯道 | 等幅振荡 | 稳定跟踪 |
-| 急弯切换 | 脱线率 20% | 脱线率 5% |
-
-## 避障与多指令冲突处理
-
-### 平滑调速策略
-
-避障时不是直接关断 PWM，而是采用 **渐进减速 + 转向绕行**：
+当误差绝对值大于阈值（0.2）时停止积分，防止大偏差下积分饱和导致超调；当误差减小时恢复积分，消除静差：
 
 ```c
-void ObstacleAvoidance(float distance) {
-    if (distance < 10.0f) {
-        target_speed *= 0.3f;   /* 急刹减速 */
-        steering = EMERGENCY_TURN;
-    } else if (distance < 30.0f) {
-        target_speed *= 0.6f;   /* 平滑减速 */
-        steering = GENTLE_TURN;
+if (fabs(pid->err) > 0.2f) {
+    // 大偏差：不积分，防止超调
+} else {
+    pid->integral += pid->err;
+}
+// 积分限幅 ±150
+if (pid->integral > 150)  pid->integral = 150;
+if (pid->integral < -150) pid->integral = -150;
+```
+
+### PID 参数
+
+左/右电机独立 PID 控制器：
+
+| 参数 | 左电机 | 右电机 |
+|------|--------|--------|
+| Kp | 0.30 | 0.30 |
+| Ki | 0.25 | 0.25 |
+| Kd | 0.08 | 0.08 |
+| max_out | 100% | 100% |
+| 积分分离阈值 | 0.2 | 0.2 |
+| 积分限幅 | ±150 | ±150 |
+
+### 编码器测速与滤波
+
+通过定时器编码器模式读取左/右编码器增量，计算实际速度：
+
+```c
+// 增量计算（处理溢出）
+int32_t inc = (int32_t)now - (int32_t)last;
+if (inc >  ENCODER_MAX/2) inc -= (ENCODER_MAX + 1);
+if (inc < -ENCODER_MAX/2) inc += (ENCODER_MAX + 1);
+
+// 速度换算：inc * 25.0 / (PPR * MULTI)
+float spd = (encoder * 25.0f) / (ENCODER_PPR * ENCODER_MULTI);
+
+// 一阶低通滤波
+speed_filt = speed_filt * 0.75f + spd * 0.25f;
+```
+
+## 循迹功能
+
+通过 I2C3 读取 8 路红外循迹传感器数据（1 字节），根据路径偏差调整左右轮目标速度实现循迹。控制逻辑如下：
+
+| sensor_data 位 | 含义 | 左轮目标 | 右轮目标 |
+|----------------|------|----------|----------|
+| bit3 = 1（左侧触发） | 偏右 → 向右修正 | 18 | 38 |
+| bit0 = 1（右侧触发） | 偏左 → 向左修正 | 38 | 18 |
+| bit1&bit2 = 1（中间触发） | 居中直行 | 35 | 35 |
+| 其他（微小偏移） | 低速直行微调 | 32 | 32 |
+
+循迹任务周期 20 ms，有使能开关（`track_enable`），可由语音指令开启/关闭。
+
+## 超声波测距
+
+### 测量原理
+
+1. Trig 引脚输出 12 us 高脉冲触发测量
+2. 等待 Echo 变高，开始计时
+3. 等待 Echo 变低，停止计时
+4. 距离 = 高电平时间 × 0.017（声速 340 m/s）
+
+### 滤波处理
+
+单次测量存在噪声，采用 **多次测量取中值平均**：
+
+```c
+float Get_Avg_Distance(uint8_t times) {
+    float buf[10];
+    uint8_t cnt = 0;
+    for (int i = 0; i < times; i++) {
+        float d = Get_Distance();
+        if (d > 0) buf[cnt++] = d;
+        osDelay(15);
     }
+    if (cnt < 3) return 999;  // 无效
+
+    // 冒泡排序
+    sort(buf, cnt);
+
+    // 去掉最大最小值后取平均
+    float sum = 0;
+    for (int i = 1; i < cnt - 1; i++) sum += buf[i];
+    return sum / (cnt - 2);
 }
 ```
 
-### 新指令覆盖策略
+测距范围：2 cm ~ 450 cm，超时返回 -1。
 
-语音指令与自动循迹/避障可能产生冲突，采用 **有限状态机（FSM）** 管理模式优先级：
+## 语音交互
+
+### 通信协议
+
+UART4 中断接收，自定义帧格式：
 
 ```
-        ┌─────────┐
-   ┌───▶│  待机   │◀───┐
-   │    └────┬────┘    │
-   │         │ 语音启动 │
-   │         ▼         │
-   │    ┌─────────┐    │
-   └────│  循迹   │────┘
-        └────┬────┘
-             │ 检测到障碍
-             ▼
-        ┌─────────┐
-   ┌───▶│  避障   │────┐
-   │    └─────────┘    │
-   │         │         │
-   └─────────┴─────────┘
+帧头    保留    命令字    校验
+0xAA    0x00    CMD      0xFB
+0x55
 ```
 
-- 语音指令具有最高优先级，可强制切换状态
-- 避障完成后自动恢复循迹
-- 新指令覆盖旧指令，避免队列堆积
+采用状态机逐字节解析，5 字节一帧，校验通过后入队消息队列。
+
+### 指令集
+
+| 命令字 | 功能 | 左轮速度 | 右轮速度 |
+|--------|------|----------|----------|
+| 0x01 | 前进 | 40 | 40 |
+| 0x02 | 停止 | 0 | 0 |
+| 0x03 | 加速 (+10) | target+10 | target+10 |
+| 0x04 | 减速 (-10) | target-10 | target-10 |
+| 0x05 | 开启循迹 | - | - |
+| 0x0A | 关闭循迹 + 停止 | 0 | 0 |
+| 0x0B | 后退 | -40 | -40 |
+| 0x0C | 左转 | 15 | 45 |
+| 0x0D | 右转 | 45 | 15 |
+
+### 串口错误恢复
+
+针对语音模块休眠时 RX 电平不稳触发 FE（帧错误）或 ORE（过载错误）导致接收锁死的问题，在 `HAL_UART_ErrorCallback` 中实现错误恢复：
+
+```c
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
+    if (huart->Instance == UART4) {
+        __HAL_UART_CLEAR_OREFLAG(huart);  // 清除 ORE
+        __HAL_UART_CLEAR_FEFLAG(huart);   // 清除 FE
+        __HAL_UART_CLEAR_PEFLAG(huart);   // 清除 PE
+        rx_state = 0;                      // 重置接收状态机
+        HAL_UART_Receive_IT(&huart4, &uart4_rx_data, 1); // 重启中断接收
+    }
+}
+```
 
 ## 项目成果
 
-- 小车支持离线语音控制（前进/后退/左转/右转/停止）
-- 三方位超声波实现多角度避障，无盲区
-- 循迹稳定，直道与弯道切换流畅
+- 支持 9 种离线语音指令控制小车运动
+- I2C 红外循迹传感器实现路径跟随
+- HC-SR04 超声波测距 + 中值滤波，2~450cm 有效范围
+- 双路电机独立 PID 闭环控制，编码器反馈 + 低通滤波
+- FreeRTOS 多任务调度，消息队列任务间通信
+- 串口错误自动恢复机制
 - **获校级嵌入式设计竞赛一等奖**
