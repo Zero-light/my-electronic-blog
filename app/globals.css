@@ -341,6 +341,11 @@
     border: 1px solid rgba(255, 255, 255, 0.06);
   }
 
+  /* 纯文本/ASCII 块（无 language- 类）需明确文字色，否则在深色背景上不可见 */
+  pre:not([class*='language-']) {
+    color: #cdd6f4;
+  }
+
   code {
     font-family: 'Fira Code', 'SF Mono', Menlo, Monaco, Consolas, monospace;
   }
