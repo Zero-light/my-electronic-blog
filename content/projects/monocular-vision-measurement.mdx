@@ -29,8 +29,6 @@ cover: /images/projects/mono-vision-1.webp
 - 整机数据稳定，重复性误差 < 3%
 - **获全国大学生电子设计竞赛河南省三等奖**
 
-![单目视觉测量装置-整体外观](/images/projects/mono-vision-1.webp)
-
 ## 硬件方案设计
 
 ### 电源架构
@@ -108,8 +106,6 @@ cover: /images/projects/mono-vision-1.webp
 
 整改后视频信号干净，测量精度恢复。
 
-![PCB 与硬件调试](/images/projects/mono-vision-2.webp)
-
 ## 串口屏 UI 开发
 
 使用串口屏厂商提供的上位机软件设计 UI 界面：
@@ -117,8 +113,6 @@ cover: /images/projects/mono-vision-1.webp
 - **主界面**：实时显示测距结果（mm）、物体长宽尺寸
 - **校准界面**：输入标准参照物尺寸，自动计算像素-物理比例系数
 - **历史界面**：保存最近 10 组测量数据，支持翻页查看
-
-![串口屏 UI 与测量现场](/images/projects/mono-vision-3.webp)
 
 与软件团队约定通信协议：
 
@@ -133,3 +127,11 @@ STM32 端解析串口屏触摸事件，切换页面并下发测量数据。
 - **电赛时间紧**：7 天内完成方案确定、PCB 绘制、焊接与调试，采用模块化验证策略，每完成一个子系统立即测试
 - **摄像头选型**：初期选用 OV7670 因无 FIFO 导致帧同步困难，后更换为带 FIFO 的模组，大幅降低 MCU 时序压力
 - **团队协作**：硬件提前 2 天完成并交付软件联调，为算法优化留出充足时间
+
+## 项目实拍
+
+![整体外观](/images/projects/mono-vision-1.webp)
+
+![PCB 与硬件调试](/images/projects/mono-vision-2.webp)
+
+![串口屏 UI 与测量现场](/images/projects/mono-vision-3.webp)
