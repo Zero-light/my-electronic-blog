@@ -9,6 +9,10 @@ on:
       - 'public/uart-images/**'
   workflow_dispatch:
 
+# KEY FIX: grant write permission to GITHUB_TOKEN
+permissions:
+  contents: write
+
 jobs:
   compress:
     runs-on: ubuntu-latest
@@ -61,10 +65,12 @@ jobs:
                 const saved = origSize - buf.length;
                 totalSaved += saved;
                 compressed++;
-                console.log('  ok ' + path.basename(filePath) + ' (-' + Math.round(saved/1024) + 'KB)');
+                console.log('  compressed: ' + path.basename(filePath) + ' -> ' + path.basename(outPath) + ' (-' + Math.round(saved/1024) + 'KB)');
+              } else {
+                console.log('  skipped (already small enough): ' + path.basename(filePath));
               }
             } catch (e) {
-              console.log('  XX ' + path.basename(filePath) + ': ' + e.message.split('\n')[0]);
+              console.log('  failed: ' + path.basename(filePath) + ': ' + e.message.split('\n')[0]);
             }
           }
           (async () => {
@@ -73,18 +79,19 @@ jobs:
             const bigFiles = allFiles.filter(f => fs.statSync(f).size >= threshold);
             console.log('Images > 200KB: ' + bigFiles.length);
             for (const f of bigFiles) await compress(f);
-            console.log('Compressed: ' + compressed + '/' + bigFiles.length + ', Saved: ' + (totalSaved/1024/1024).toFixed(1) + 'MB');
+            console.log('');
+            console.log('Summary: compressed ' + compressed + '/' + bigFiles.length + ' images, total saved: ' + (totalSaved/1024/1024).toFixed(1) + 'MB');
           })();
           "
 
-      - name: Commit compressed images
+      - name: Commit and push compressed images
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add public/images/ public/uart-images/
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A public/images/ public/uart-images/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "build: auto-compress images to WebP"
-            git push
+            git commit -m "ci: auto-compress images to WebP"
+            git push origin main
           fi
