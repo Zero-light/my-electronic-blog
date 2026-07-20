@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  
+  // 静态导出
+  output: 'export',
+
   // 静态导出时关闭图片优化（由托管平台或用户自行处理图片体积）
   images: {
     unoptimized: true,
