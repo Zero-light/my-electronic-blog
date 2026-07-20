@@ -1,0 +1,89 @@
+name: Compress Images
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'public/images/**'
+      - 'public/uart-images/**'
+
+jobs:
+  compress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install sharp
+        run: npm install sharp
+
+      - name: Compress images
+        run: |
+          node -e "
+          const sharp = require('sharp');
+          const fs = require('fs');
+          const path = require('path');
+          const dirs = ['public/images', 'public/uart-images'];
+          const threshold = 200 * 1024;
+          let compressed = 0, totalSaved = 0;
+          function getFiles(dir) {
+            if (!fs.existsSync(dir)) return [];
+            let files = [];
+            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+              const p = path.join(dir, entry.name);
+              if (entry.isDirectory()) files = files.concat(getFiles(p));
+              else if (/\.(jpe?g|png|webp)$/i.test(entry.name)) files.push(p);
+            }
+            return files;
+          }
+          async function compress(filePath) {
+            const origSize = fs.statSync(filePath).size;
+            if (origSize < threshold) return;
+            try {
+              let pipe = sharp(filePath);
+              const meta = await pipe.metadata();
+              if (meta.width > 1920) pipe = pipe.resize(1920, null, { withoutEnlargement: true });
+              const buf = await pipe.webp({ quality: 75, effort: 4 }).toBuffer();
+              if (buf.length < origSize) {
+                const outPath = filePath.replace(/\.(jpe?g|png|webp)$/i, '.webp');
+                const tmpPath = filePath + '.tmp';
+                fs.writeFileSync(tmpPath, buf);
+                if (outPath !== filePath) fs.unlinkSync(filePath);
+                fs.renameSync(tmpPath, outPath);
+                const saved = origSize - buf.length;
+                totalSaved += saved;
+                compressed++;
+                console.log('  ok ' + path.basename(filePath) + ' (-' + Math.round(saved/1024) + 'KB)');
+              }
+            } catch (e) {
+              console.log('  XX ' + path.basename(filePath) + ': ' + e.message.split('\n')[0]);
+            }
+          }
+          (async () => {
+            const allFiles = [];
+            for (const d of dirs) allFiles.push(...getFiles(d));
+            const bigFiles = allFiles.filter(f => fs.statSync(f).size >= threshold);
+            console.log('Images > 200KB: ' + bigFiles.length);
+            for (const f of bigFiles) await compress(f);
+            console.log('Compressed: ' + compressed + '/' + bigFiles.length + ', Saved: ' + (totalSaved/1024/1024).toFixed(1) + 'MB');
+          })();
+          "
+
+      - name: Commit compressed images
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add public/images/ public/uart-images/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "build: auto-compress images to WebP"
+            git push
+          fi
