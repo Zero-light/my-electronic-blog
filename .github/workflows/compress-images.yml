@@ -7,6 +7,7 @@ on:
     paths:
       - 'public/images/**'
       - 'public/uart-images/**'
+  workflow_dispatch:
 
 jobs:
   compress:
