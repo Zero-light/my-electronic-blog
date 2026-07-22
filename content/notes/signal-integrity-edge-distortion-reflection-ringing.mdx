@@ -27,7 +27,7 @@ cover: /images/signal-integrity/edge-distortion-ringing-1.jpg
 ### 1.3 传输线临界长度经验法则
 当走线长度 > 上升沿对应电长度的 1/10 时，导线必须视为传输线：
 
-$$L_{临界} \approx 0.1 \times v \times t_r$$
+    L_critical ≈ 0.1 × v × t_r
 
 - FR4 板材中信号传播速度约 **15 cm/ns**
 - **例**：1ns 上升沿 → 临界长度仅约 **1.5 cm**
@@ -85,7 +85,7 @@ $$L_{临界} \approx 0.1 \times v \times t_r$$
 - **物理原理**：驱动芯片输出级存在等效导通电阻，信号跳变本质是驱动源通过内阻对总负载电容充放电，形成天然 **RC 低通滤波器**
 - **估算公式**：10%~90%上升时间
 
-$$t_r \approx 2.2 \times R_{drive} \times C_{total}$$
+    t_r ≈ 2.2 × R_drive × C_total
 
 - **多负载特性**：容性负载并联累加，菊花链拓扑中首端边沿最陡，末端最缓
 - **波形表现**：边沿平滑圆润，无台阶、无过冲，仅整体斜率均匀降低
