@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { formatDate } from '@/lib/utils';
 import { NoteMeta } from '@/lib/mdx';
 import { Calendar, Tag, ArrowRight, Cpu, CircuitBoard, Code2 } from 'lucide-react';
@@ -52,12 +51,11 @@ export function NoteCard({ note, className }: NoteCardProps) {
           {/* 左侧：封面图 or 分类图标 */}
           {hasCover ? (
             <div className="relative h-20 w-full shrink-0 overflow-hidden rounded-lg sm:h-20 sm:w-28">
-              <Image
+              <img
                 src={note.cover!}
                 alt={note.title}
-                fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="(max-width: 640px) 100vw, 112px"
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           ) : (
