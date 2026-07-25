@@ -71,7 +71,7 @@ export function HomePage({ notes, projects }: HomePageProps) {
       <HeroGlow className="hero-pattern rounded-2xl border border-border/30 py-8 text-center md:py-10">
         <div className="mx-auto max-w-2xl space-y-4 px-4">
           <img
-            src="/images/avatar.jpg"
+            src="/images/avatar.webp"
             alt="任炳宇"
             className="hero-avatar mx-auto h-24 w-24 rounded-full object-cover"
           />

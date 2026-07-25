@@ -27,7 +27,7 @@ cover: /images/uploads/pcb-grounding/p175-skin-effect.webp
 
 > 交变电流会在导体内部感应出涡流，涡流会抵消导体中心的电流，迫使电流只走导体表层。频率越高，趋肤深度越小，有效导电面积越小，交流电阻越大。
 
-![趋肤效应与导线电阻 — P175](/images/uploads/pcb-grounding/p175-skin-effect.jpg)
+![趋肤效应与导线电阻 — P175](/images/uploads/pcb-grounding/p175-skin-effect.webp)
 
 ### 直流电阻
 
@@ -92,7 +92,7 @@ L = (μ0 * l) / (2π) * [ln(2l / (w + t)) + 0.5 + 0.2235 * (w + t) / l]   (单�
 - w：走线宽度
 - t：走线厚度
 
-![导体电感与导线电阻图表 — P176](/images/uploads/pcb-grounding/p176-conductor-inductance.jpg)
+![导体电感与导线电阻图表 — P176](/images/uploads/pcb-grounding/p176-conductor-inductance.webp)
 
 > 宽度 w 增大 → 电感减小；厚度 t 增大 → 电感也减小。
 > **但宽度增大比厚度增大产生的电感减小量要大得多**——PCB 设计中应优先加宽走线而非加厚铜箔来降低电感。
@@ -108,7 +108,7 @@ L_parallel = (L1 + M) / 2
 
 当两根导线相距较远时，互感 M 很小，总电感约为单根导线电感的一半。
 
-![接地导线阻抗与多根导线并联 — P176](/images/uploads/pcb-grounding/p176-parallel-ground.jpg)
+![接地导线阻抗与多根导线并联 — P176](/images/uploads/pcb-grounding/p176-parallel-ground.webp)
 
 > 设计原则：地线尽量加粗和缩短，降低公共阻抗。引线电感与长度成正比、与直径的平方根近似成正比（直径增大 4 倍，电感才减小一半）。
 
@@ -177,7 +177,7 @@ L_parallel = (L1 + M) / 2
 
 > 机箱、散热器、金属外壳等，主要作用是安全防护和屏蔽，需与安全地（PE）可靠连接。
 
-![信号接地分类 — P177](/images/uploads/pcb-grounding/p177-signal-grounding.jpg)
+![信号接地分类 — P177](/images/uploads/pcb-grounding/p177-signal-grounding.webp)
 
 ---
 

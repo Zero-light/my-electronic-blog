@@ -30,7 +30,7 @@ export default function ResumePage() {
         {/* 头部信息 */}
         <header className="flex items-start gap-5 border-b border-border pb-6 print:border-gray-300">
           <img
-            src="/images/avatar.jpg"
+            src="/images/avatar.webp"
             alt={profile.name}
             className="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-border print:hidden"
           />
