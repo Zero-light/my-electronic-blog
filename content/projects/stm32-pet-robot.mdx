@@ -1,0 +1,257 @@
+---
+title: 基于 STM32 的智能宠物机器人
+slug: stm32-pet-robot
+date: 2026-02-15
+tags: ['STM32', 'PWM', 'OLED', '蓝牙', '舵机', 'I2C', 'UART', '表情系统']
+category: 嵌入式
+description: 基于 STM32F103C8T6 的多姿态智能宠物机器人，通过蓝牙遥控实现 16 种动作，OLED 实时显示 7 种表情，舵机驱动四足 + 尾部实现坐、站、趴、前进、后退、转圈、跳跃、摇尾巴等复合动作。
+period: 2025.11 – 2026.02
+hardware:
+  - STM32F103C8T6 最小系统板（Blue Pill）
+  - SSD1306 0.96寸 OLED 显示屏（128×64，I2C）
+  - 5× SG90 舵机（四足 + 尾巴）
+  - HC-05 蓝牙模块（UART，9600bps）
+  - 离线语音识别模块（UART）
+  - 2× LED（PWM 呼吸灯效果）
+  - 3.7V 锂电池供电
+software:
+  - Keil MDK-ARM（μVision）
+  - STM32F10x 标准外设库
+  - PWM 多通道舵机控制
+  - I2C OLED 驱动 + 自定义字模
+  - 双串口蓝牙/语音遥控
+  - 非阻塞状态机动作调度
+cover: /images/projects/pet-robot/overview.webp
+---
+
+## 项目概述
+
+本项目为 **2025 校级科研项目** 作品，设计了一款基于 **STM32F103C8T6** 的多姿态智能宠物机器人。系统通过蓝牙遥控或语音指令，驱动 5 个舵机实现 16 种复合动作（坐、站、趴、前进、后退、转圈、跳跃、摇尾巴、伸懒腰等），同时在 OLED 屏幕上实时显示 7 种拟人化表情，配合呼吸灯效果，赋予机器人"生命感"。
+
+### 核心指标
+
+- 主控：STM32F103C8T6，主频 72 MHz
+- 舵机控制：5 路 PWM（4 足 + 1 尾），周期 20ms，脉宽 500~2500μs
+- OLED 显示：SSD1306 128×64，I2C 接口，7 种自定义表情
+- 蓝牙通信：USART3，9600bps，自定义指令集
+- 语音控制：USART1，支持离线语音指令
+- 灯光：2× LED，支持呼吸灯效果
+- 供电：3.7V 锂电池
+
+![整体外观](/images/projects/pet-robot/full-robot.webp)
+
+## 硬件架构
+
+### 引脚分配
+
+| 功能 | 引脚 | 说明 |
+|------|------|------|
+| 舵机1（左前腿） | TIM2_CH1 (PA0) | PWM 输出 |
+| 舵机2（右前腿） | TIM2_CH2 (PA1) | PWM 输出（反置） |
+| 舵机3（左后腿） | TIM2_CH3 (PA2) | PWM 输出 |
+| 舵机4（右后腿） | TIM2_CH4 (PA3) | PWM 输出（反置） |
+| 舵机5（尾巴） | TIM3_CH1 (PA6) | PWM 输出 |
+| LED1 | TIM3_CH3 (PB0) | 呼吸灯 PWM |
+| LED2 | TIM3_CH4 (PB1) | 呼吸灯 PWM |
+| OLED SCL | PB8 | I2C1 时钟线 |
+| OLED SDA | PB9 | I2C1 数据线 |
+| 蓝牙 TX | PB10 | USART3_TX |
+| 蓝牙 RX | PB11 | USART3_RX |
+| 语音 TX | PA9 | USART1_TX |
+| 语音 RX | PA10 | USART1_RX |
+
+### 系统时钟
+
+- HSE: 8 MHz 外部晶振
+- PLL: ×9 → SYSCLK = 72 MHz
+- APB1 = 36 MHz（定时器时钟 72 MHz）
+- APB2 = 72 MHz
+- PWM 频率：72MHz / 72 / 20000 = 50 Hz（舵机标准）
+
+![硬件实物](/images/projects/pet-robot/hardware.webp)
+
+## 动作控制系统
+
+### 16 种动作模式
+
+系统通过全局变量 `Action_Mode`（0~15）调度动作，每个动作对应一种步态或姿态：
+
+| 编号 | 动作 | 实现方式 |
+|------|------|----------|
+| 0 | 放松趴下 | 四肢伸展，尾巴归中 |
+| 1 | 坐下 | 前腿直立，后腿弯曲 |
+| 2 | 站立 | 四腿 90° 直立 |
+| 3 | 趴下 | 四肢收拢趴地 |
+| 4 | 前进 | 对角步态行走（8 步循环） |
+| 5 | 后退 | 反向步态（8 步循环） |
+| 6 | 左转 | 差速转向（4 步循环） |
+| 7 | 右转 | 差速转向（4 步循环） |
+| 8 | 摇摆 | 四腿同步左右摆动 |
+| 9 | 摇尾巴 | 尾部舵机 30°~150° 往复 |
+| 10 | 前跳 | 两段式前跳（交替蹬腿） |
+| 11 | 后跳 | 两段式后跳 |
+| 12 | 站立方式2 | 先立后腿再立前腿 |
+| 13 | 打招呼 | 单腿挥动（0°~45° 往复） |
+| 14 | 伸懒腰 | 前腿收拢→张开，后腿张开→收回 |
+| 15 | 后腿拉伸 | 左右后腿交替往复拉伸 |
+
+### 非阻塞状态机设计
+
+原代码中前进/后退等动作使用 `while(Action_Mode==N)` 阻塞主循环，导致无法实时响应新指令。重构后采用 **static 变量状态机**，每调用一次前进一步，主循环持续轮询，确保蓝牙指令实时响应：
+
+```c
+void Action_advance(void) {
+    static uint8_t step = 0;       // 当前步态步骤
+    static uint8_t repeat = 0;     // 重复次数计数
+    static uint16_t last_mode = 0xFFFF;  // 模式变化检测
+
+    if (last_mode != 4) { step = 0; repeat = 0; }  // 新模式重置
+    last_mode = Action_Mode;
+    if (Action_Mode != 4) return;  // 非当前模式则退出
+
+    switch (step) {
+        case 0: Servo_Angle2(45);  Servo_Angle3(45);  break;
+        case 1: Servo_Angle1(135); Servo_Angle4(135); break;
+        // ... 8 步一个循环
+    }
+    Delay_ms(SpeedDelay);
+    step++;
+    if (step >= 8) {
+        step = 0;
+        repeat++;
+        if (repeat >= CHONGFU_NUMBER && !Sustainedmove)
+            Action_Mode = 2;  // 完成后回到站立
+    }
+}
+```
+
+### 舵机控制
+
+5 个舵机通过 TIM2/TIM3 的 PWM 输出控制，角度转换为脉宽公式：
+
+```
+脉宽 = Angle / 180 × 2000 + 500  （单位：μs，对应 0°~180°）
+```
+
+右前腿和右后腿舵机机械安装反向，代码中通过 `(180-Angle)` 补偿：
+
+```c
+void Servo_Angle2(float Angle) {
+    PWM_SetCompare2((180-Angle) / 180 * 2000 + 500);
+}
+```
+
+## OLED 表情系统
+
+### 7 种自定义表情
+
+OLED 屏幕上实时显示与动作对应的拟人化表情，增强交互趣味性：
+
+| Face_Mode | 表情 | 触发场景 |
+|-----------|------|----------|
+| 0 | 😴 睡觉 | 放松趴下 |
+| 1 | 😳 瞪大眼 | 趴下、摇尾巴 |
+| 2 | 😊 快乐 | 前进/后退/转向/跳跃 |
+| 3 | 🤩 狂热 | 速度拉到最快 |
+| 4 | 😄 非常快乐 | 摇摆、速度循环 |
+| 5 | 👀 眼睛 | 站立 |
+| 6 | 👋 打招呼 | 打招呼、伸懒腰 |
+
+### 字模数据
+
+所有表情为 128×64 位图，使用自定义取模工具生成 C 数组，存储在 `OLED_Data.c` 中：
+
+```c
+const uint8_t Face_sleep[] = {
+    0x00, 0x00, 0x00, // ... 1024 字节（128×64 / 8）
+};
+```
+
+![OLED 表情显示](/images/projects/pet-robot/oled-face.webp)
+
+## 通信系统
+
+### 双串口架构
+
+系统使用两个 USART 实现不同控制方式：
+
+| 串口 | 接口 | 用途 | 特点 |
+|------|------|------|------|
+| USART1 | PA9/PA10 | 语音控制 | 单次指令，不持续 |
+| USART3 | PB10/PB11 | 蓝牙控制 | 按住持续运动 |
+
+### 指令协议
+
+通过串口发送十六进制指令（0x29 ~ 0x49）控制：
+
+| 指令 | 功能 | 指令 | 功能 |
+|------|------|------|------|
+| 0x29 | 放松趴下 | 0x40 | 摇尾巴（切换） |
+| 0x30 | 坐下 | 0x41 | 向前跳 |
+| 0x31 | 站立 | 0x42 | 向后跳 |
+| 0x32 | 趴下 | 0x43 | 打招呼 |
+| 0x33 | 前进 | 0x44 | 开启灯光 |
+| 0x34 | 后退 | 0x45 | 关闭灯光 |
+| 0x35 | 左转 | 0x46 | 开启呼吸灯 |
+| 0x36 | 右转 | 0x47 | 关闭呼吸灯 |
+| 0x37 | 摇摆 | 0x48 | 伸懒腰 |
+| 0x38 | 加速 | 0x49 | 后腿拉伸 |
+| 0x39 | 加速摇摆 | | |
+
+### 代码重构修复
+
+原代码存在 **USART_ReceiveData 重复读取 Bug**：在 if-else 链中连续调用 `USART_ReceiveData()`，每次调用都会读走 DR 寄存器数据，只有第一个 if 能匹配到正确值。
+
+**修复方案**：提取统一处理函数 `Process_Command()`，先读一次存入局部变量再判断：
+
+```c
+void USART3_IRQHandler(void) {
+    if (USART_GetITStatus(USART3, USART_IT_RXNE) == SET) {
+        uint16_t rxData = USART_ReceiveData(USART3);  // 只读一次！
+        Process_Command(rxData, 1);                    // 统一处理
+        USART_ClearITPendingBit(USART3, USART_IT_RXNE);
+    }
+}
+```
+
+同时消除了 USART1 和 USART3 中断函数的重复代码（原 300+ 行重复逻辑）。
+
+## 灯光系统
+
+### 呼吸灯效果
+
+TIM3 中断中实现呼吸灯，通过渐进式改变 PWM 占空比模拟呼吸效果：
+
+```c
+// 呼吸灯状态机
+if (PanDuan == 1) {  // 渐亮
+    HuXi += 100;
+    PWM_LED1(HuXi); PWM_LED2(HuXi);
+    if (HuXi >= 20000) PanDuan = 2;
+} else if (PanDuan == 2) {  // 渐暗
+    HuXi -= 100;
+    PWM_LED1(HuXi); PWM_LED2(HuXi);
+    if (HuXi == 0) PanDuan = 3;
+} else if (PanDuan == 3) {  // 暂停
+    Wait += 1000;
+    if (Wait >= 20000) { PanDuan = 1; Wait = 0; }
+}
+```
+
+支持开关控制和常亮/呼吸两种模式切换。
+
+## 项目成果
+
+- ✅ 16 种复合动作稳定运行（坐、站、趴、前进、后退、转圈、跳跃、摇尾巴、伸懒腰等）
+- ✅ OLED 实时显示 7 种拟人化表情
+- ✅ 蓝牙 + 语音双通道遥控
+- ✅ 呼吸灯效果
+- ✅ 非阻塞状态机架构，动作可实时中断切换
+- ✅ 代码重构：修复串口 Bug + 消除重复代码 + volatile 保护
+- 🏆 **获校级科研项目优秀奖**
+
+## 项目实拍
+
+![动作展示](/images/projects/pet-robot/action.webp)
+
+![硬件细节](/images/projects/pet-robot/hardware.webp)
