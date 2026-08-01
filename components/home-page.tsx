@@ -87,7 +87,7 @@ export function HomePage({ notes, projects }: HomePageProps) {
             </span>
           </h1>
           <p className="text-sm font-semibold tracking-wide" style={{ color: 'var(--primary)' }}>
-            电子信息工程 ｜ 嵌入式系统 &amp; 电源设计方向
+            电子信息工程 ｜ 嵌入式系统 &amp; 硬件设计方向
           </p>
           <ul className="mx-auto max-w-lg space-y-1 text-left text-[0.82rem] leading-relaxed text-slate-600 dark:text-[#8b949e]">
             <li className="flex items-start gap-2">
