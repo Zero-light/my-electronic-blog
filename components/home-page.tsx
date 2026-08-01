@@ -11,7 +11,7 @@ import { HeroGlow } from '@/components/hero-glow';
 import { ProjectCard } from '@/components/project-card';
 import { NoteCard } from '@/components/note-card';
 import { NoteMeta, ProjectMeta } from '@/lib/mdx';
-import { ArrowRight, BookOpen, FolderGit2, FileText } from 'lucide-react';
+import { ArrowRight, BookOpen, FolderGit2, FileText, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 
 interface HomePageProps {
@@ -112,6 +112,14 @@ export function HomePage({ notes, projects }: HomePageProps) {
               下载简历
               <ArrowRight className="h-4 w-4" />
             </Link>
+            <a
+              href="/downloads/zhishu-android.apk"
+              download="知书-知识检索App.apk"
+              className="btn-outline"
+            >
+              知书 App 下载
+              <Smartphone className="h-4 w-4" />
+            </a>
             <Link href="/projects/" className="btn-outline">
               查看全部项目
             </Link>
