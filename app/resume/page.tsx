@@ -134,15 +134,6 @@ export default function ResumePage() {
           </div>
         </section>
 
-        {/* 自我评价 */}
-        <section className="space-y-2">
-          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 print:text-black">
-            自我评价
-          </h2>
-          <p className="leading-relaxed text-slate-700 dark:text-slate-300 print:text-gray-800">
-            {profile.summary}
-          </p>
-        </section>
       </div>
     </div>
   );
