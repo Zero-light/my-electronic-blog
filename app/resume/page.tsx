@@ -13,7 +13,14 @@ export default function ResumePage() {
     description: edu.description,
   }));
 
-  const experienceItems = profile.experience.map((exp) => ({
+  const internshipItems = profile.internships.map((exp) => ({
+    date: exp.period,
+    title: exp.role,
+    subtitle: exp.company,
+    description: exp.description,
+  }));
+
+  const projectItems = profile.projects.map((exp) => ({
     date: exp.period,
     title: exp.role,
     subtitle: exp.company,
@@ -82,13 +89,22 @@ export default function ResumePage() {
           <Timeline items={educationItems} />
         </section>
 
+        {/* 实习经历 */}
+        <section className="space-y-3">
+          <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100 print:text-black">
+            <Briefcase className="h-4 w-4 text-primary" />
+            实习经历
+          </h2>
+          <Timeline items={internshipItems} />
+        </section>
+
         {/* 项目经历 */}
         <section className="space-y-3">
           <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-slate-100 print:text-black">
             <Briefcase className="h-4 w-4 text-primary" />
             项目经历
           </h2>
-          <Timeline items={experienceItems} />
+          <Timeline items={projectItems} />
         </section>
 
         {/* 技能 */}

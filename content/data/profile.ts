@@ -29,7 +29,8 @@ export interface Profile {
   github: string;
   location: string;
   education: Education[];
-  experience: Experience[];
+  internships: Experience[];
+  projects: Experience[];
   summary: string;
   objective: string;
   honors: string[];

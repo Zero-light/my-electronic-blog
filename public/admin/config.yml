@@ -58,8 +58,16 @@ collections:
               - { label: 学位, name: degree, widget: string }
               - { label: 时间段, name: period, widget: string }
               - { label: 描述, name: description, widget: text, required: false }
+          - label: 实习经历
+            name: internships
+            widget: list
+            fields:
+              - { label: 公司, name: company, widget: string }
+              - { label: 岗位, name: role, widget: string }
+              - { label: 时间段, name: period, widget: string }
+              - { label: 描述, name: description, widget: text }
           - label: 项目经历
-            name: experience
+            name: projects
             widget: list
             fields:
               - { label: 所属, name: company, widget: string }
