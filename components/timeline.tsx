@@ -10,7 +10,7 @@ export interface TimelineItem {
   title: string;
   /** 副标题/地点 */
   subtitle?: string;
-  /** 描述内容 */
+  /** 描述内容（支持 markdown 粗体分节） */
   description?: string;
 }
 
@@ -20,11 +20,93 @@ export interface TimelineProps {
 }
 
 /**
+ * 解析单行文本中的 markdown 粗体标记 **text**
+ * 返回分段数组，偶数索引为普通文本，奇数索引为粗体文本
+ */
+function parseBoldSegments(text: string): { bold: boolean; text: string }[] {
+  const segments: { bold: boolean; text: string }[] = [];
+  const regex = /\*\*(.+?)\*\*/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({ bold: false, text: text.slice(lastIndex, match.index) });
+    }
+    segments.push({ bold: true, text: match[1] });
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    segments.push({ bold: false, text: text.slice(lastIndex) });
+  }
+
+  return segments;
+}
+
+/**
+ * 渲染描述文本：
+ * - 含 **粗体** 标记的行 → 解析为分段渲染（粗体行作为分节标题）
+ * - 普通行 → 原样渲染（保留换行）
+ */
+function renderDescription(description: string) {
+  const lines = description.split('\n');
+
+  return lines.map((line, lineIdx) => {
+    const trimmed = line.trim();
+    if (!trimmed) return <br key={lineIdx} />;
+
+    // 判断是否为粗体分节标题（整行被 **...** 包裹）
+    const boldMatch = trimmed.match(/^\*\*(.+?)\*\*$/);
+    if (boldMatch) {
+      return (
+        <p
+          key={lineIdx}
+          className="mt-2 text-sm font-semibold text-slate-800 dark:text-slate-200"
+        >
+          {boldMatch[1]}
+        </p>
+      );
+    }
+
+    // 普通行：解析行内粗体 + 渲染列表项
+    const segments = parseBoldSegments(trimmed);
+    const isListItem = trimmed.startsWith('- ') || trimmed.startsWith('• ');
+    const content = isListItem ? trimmed.slice(2) : trimmed;
+    const listSegments = parseBoldSegments(content);
+
+    return (
+      <p
+        key={lineIdx}
+        className={cn(
+          'text-sm leading-relaxed text-slate-600 dark:text-slate-400',
+          isListItem && 'pl-3'
+        )}
+      >
+        {isListItem && (
+          <span className="mr-1.5 text-primary">•</span>
+        )}
+        {listSegments.map((seg, i) =>
+          seg.bold ? (
+            <span key={i} className="font-semibold text-slate-800 dark:text-slate-200">
+              {seg.text}
+            </span>
+          ) : (
+            <span key={i}>{seg.text}</span>
+          )
+        )}
+      </p>
+    );
+  });
+}
+
+/**
  * 时间线组件
  * - 左侧竖线 + 圆点标记
  * - 按时间倒序排列（最新的在最上）
  * - 适配明暗主题与移动端
  * - 滚动进入视口时逐项淡入（IntersectionObserver + stagger）
+ * - 支持描述中的 markdown 粗体分节标题
  */
 export function Timeline({ items, className }: TimelineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -104,9 +186,9 @@ export function Timeline({ items, className }: TimelineProps) {
                 <p className="text-sm text-text-muted">{item.subtitle}</p>
               )}
               {item.description && (
-                <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  {item.description}
-                </p>
+                <div className="mt-1 space-y-0.5">
+                  {renderDescription(item.description)}
+                </div>
               )}
             </div>
           </div>
