@@ -25,7 +25,7 @@ software:
   - 运放负反馈闭环控制
   - 二极管或门自动模式切换
   - 15 倍差分放大电流采样
-cover: /images/projects/digital-power-supply/overview.webp
+cover: /images/projects/digital-power-supply/pcb-assembled-full.jpg
 ---
 
 ## 项目概述
@@ -244,7 +244,27 @@ IRF540N 工作在 **可变电阻区（线性区）**，栅源电压决定漏源�
 
 ![负载设置界面](/images/projects/digital-power-supply/ui-electronic-load.webp)
 
-### 📄 设计文档
+### 🔧 PCB 焊接实拍（新版）
 
-- [📑 电源模块原理图（PDF）](/images/projects/digital-power-supply/SCH_PowerSupply_2026-07-28.pdf)
-- [📑 负载模块原理图（PDF）](/images/projects/digital-power-supply/SCH_ElectronicLoad_2026-07-28.pdf)
+![整机 PCB 全貌（数控电源 + 电子负载一体化板）](/images/projects/digital-power-supply/pcb-assembled-full.jpg)
+
+![功率模块局部（MOSFET 与周边器件）](/images/projects/digital-power-supply/pcb-power-module-top.jpg)
+
+![功率模块端口（VOUT/GND、5V/GND、3.3V/GND 三路输出）](/images/projects/digital-power-supply/pcb-power-module-ports.jpg)
+
+![PCB 背面（焊接面）](/images/projects/digital-power-supply/pcb-back-side.jpg)
+
+### 🛠️ PCB 设计布线截图
+
+![主板 PCB 布线（Altium Designer，含开源地址）](/images/projects/digital-power-supply/pcb-layout-main.png)
+
+![功率模块 PCB 布线（网络高亮）](/images/projects/digital-power-supply/pcb-layout-routing.png)
+
+![功率模块 PCB 布线（丝印层）](/images/projects/digital-power-supply/pcb-layout-silkscreen.png)
+
+### 📄 设计文档（PDF 原理图）
+
+- 📑 [电源模块原理图 SCH_Schematic1（PDF）](/images/projects/digital-power-supply/SCH_PowerSupply_2026-07-28.pdf)
+- 📑 [负载模块原理图 SCH_Schematic2（PDF）](/images/projects/digital-power-supply/SCH_ElectronicLoad_2026-07-28.pdf)
+
+> 开源地址：[github.com/Zero-light/Digital-Power-Supply](https://github.com/Zero-light/Digital-Power-Supply)
