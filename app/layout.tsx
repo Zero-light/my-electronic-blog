@@ -12,8 +12,8 @@ export const metadata: Metadata = {
   description:
     '面向电子信息/嵌入式工程师的个人网站，涵盖学习笔记、项目作品与在线简历。',
   keywords: ['嵌入式', '电子信息', '硬件设计', '作品集', '个人网站'],
-  authors: [{ name: '任炳宇' }],
-  creator: '任炳宇',
+  authors: [{ name: '任嘉庆' }],
+  creator: '任嘉庆',
   metadataBase: new URL('https://www.zerolight.fun'),
   openGraph: {
     type: 'website',

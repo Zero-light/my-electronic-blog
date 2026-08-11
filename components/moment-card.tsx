@@ -43,7 +43,7 @@ export function MomentCard({ moment }: MomentCardProps) {
         <div className="min-w-0 flex-1">
           {/* 昵称 */}
           <div className="text-sm font-semibold text-primary">
-            任炳宇
+            任嘉庆
           </div>
 
           {/* 时间 */}

@@ -72,7 +72,7 @@ export function HomePage({ notes, projects }: HomePageProps) {
         <div className="mx-auto max-w-2xl space-y-4 px-4">
           <img
             src="/images/avatar.webp"
-            alt="任炳宇"
+            alt="任嘉庆"
             className="hero-avatar mx-auto h-24 w-24 rounded-full object-cover"
           />
           <h1 className="text-[2.2rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
@@ -83,7 +83,7 @@ export function HomePage({ notes, projects }: HomePageProps) {
                 backgroundImage: 'linear-gradient(135deg, var(--primary), var(--accent))',
               }}
             >
-              任炳宇
+              任嘉庆
             </span>
           </h1>
           <p className="text-sm font-semibold tracking-wide" style={{ color: 'var(--primary)' }}>

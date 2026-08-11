@@ -1,11 +1,69 @@
-nohup: ignoring input
+# 个人网站开发日志
 
-> my-portfolio@0.1.0 dev
-> next dev
+---
 
-  ▲ Next.js 14.2.35
-  - Local:        http://localhost:3000
+## 2026-08-01 ~ 2026-08-02 会话记录
 
- ✓ Starting...
- ✓ Ready in 2.6s
-^C
+### 本次会话完成的工作
+
+#### 1. 数字电源项目嵌入个人网站
+- 读取《数控稳压电源与线性电子负载一体化项目完整技术手册》docx
+- 创建 `content/projects/digital-power-supply.mdx`，含完整 frontmatter 和 7 个章节
+- 处理图片：4 张照片 + 3 张 UI 截图 → 全部转 WebP
+- 添加 2 份 PDF 原理图作为附件
+- 推送后 Vercel 部署
+
+#### 2. 简历页面重构
+- **数据模型变更**：`content/data/profile.ts` 中 `experience` 拆分为 `internships` + `projects`
+- **实习经历**：新增矽联传感科技实习，描述改为结构化格式（**岗位内容 / 所得收获 / 项目成果**）
+- **项目经历**：删除第二个项目，只保留导航车和电赛；岗位内容改为「项目负责」
+- **页面分离**：`app/resume/page.tsx` 新增独立「实习经历」和「项目经历」区块
+- **删除自我评价**：移除自评 section
+- **技能特长压缩为 3-4 行整齐版本**
+- **Decap CMS 配置同步**：`public/admin/config.yml` 字段拆分为两个列表
+
+#### 3. 首页方向文案修改
+- `components/home-page.tsx`：方向从「嵌入式系统 & 电源设计方向」改为「嵌入式系统 & 硬件设计方向」
+
+#### 4. 知书 App Android 版构建与部署
+- **环境搭建**：
+  - 安装 cargo-tauri CLI
+  - 安装 Android SDK/NDK (command-line tools)
+  - 安装 Java 17 (Eclipse Adoptium Temurin)
+  - 配置 Rust 交叉编译目标 (aarch64/armv7/i686/x86_64)
+- **Tauri Android 初始化**：在 knowledge-graph 项目中初始化 Android 构建
+- **编译问题解决**：
+  - Windows 符号链接权限问题 → 手动复制 .so + 禁用 rustBuild 任务
+  - 路径非 ASCII 问题 → 复制项目到 `C:/projects/knowledge-graph`
+  - Gradle daemon 丢失 PATH → 修改 gradlew.bat 注入 CARGO_HOME
+  - Java 版本不兼容 → 切换到 Java 17
+- **产出**：29 MB 通用 APK (`public/downloads/zhishu-android.apk`)
+- **首页按钮**：新增「知书 App 下载」按钮，带 Smartphone 图标
+
+### Git 提交记录
+```
+bec75c1 feat(home): 首页新增「知书 App 下载」按钮
+3a69d2f fix(home): 首页方向改为「嵌入式系统 & 硬件设计」
+a441852 refactor(resume): 删除自我评价 section
+33ecbb7 refactor(resume): 实习经历与项目经历分离，精简项目列表
+6e35b05 refactor(resume): 实习经历改为结构化分节展示
+```
+
+### 当前状态
+- **分支**: main，与 origin/main 同步
+- **工作区**: 干净，无未提交更改
+- **最新提交**: bec75c1
+
+### 备份信息
+- 备份路径: `C:/Users/Zero/Desktop/项目文件/Projects/06-个人网站备份/`
+- 备份时间: 2026-08-02
+- 排除: node_modules, .git, .next
+
+### 后续可选方向
+- macOS 构建（需要 Mac 或 GitHub Actions macOS runner）
+- APK 代码签名（用于应用商店分发）
+- 验证线上下载功能
+
+---
+
+*日志自动生成于 2026-08-02*

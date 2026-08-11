@@ -80,7 +80,7 @@ export function Footer({ className }: FooterProps) {
         {/* 底部 */}
         <div className="mt-8 border-t border-border pt-5 text-center">
           <p className="text-xs text-text-muted">
-            © {new Date().getFullYear()} 任炳宇 · 本站所有内容仅供学习交流，转载请注明
+            © {new Date().getFullYear()} 任嘉庆 · 本站所有内容仅供学习交流，转载请注明
           </p>
         </div>
       </div>
