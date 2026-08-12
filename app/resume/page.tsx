@@ -39,6 +39,8 @@ export default function ResumePage() {
           <img
             src="/images/avatar.webp"
             alt={profile.name}
+            width={80}
+            height={80}
             className="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-border print:hidden"
           />
           <div className="space-y-3">

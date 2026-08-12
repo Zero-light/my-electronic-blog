@@ -1,9 +1,9 @@
 import { getAllNotes, getAllProjects, sortByDate } from '@/lib/mdx';
-import { HomePage } from '@/components/home-page';
+import { HomePageClient } from './home-page-client';
 
 export default function Page() {
   const notes = sortByDate(getAllNotes());
   const projects = sortByDate(getAllProjects());
 
-  return <HomePage notes={notes} projects={projects} />;
+  return <HomePageClient notes={notes} projects={projects} />;
 }

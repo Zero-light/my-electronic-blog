@@ -2,7 +2,7 @@ import { isValidElement, type ReactNode } from 'react';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import rehypePrismPlus from 'rehype-prism-plus';
 import { CodeBlock } from '@/components/ui/code-block';
-import { MdxImage } from './image-lightbox';
+import { MdxImage } from './mdx-image';
 import { cn } from '@/lib/utils';
 
 const slugify = (text: string) =>

@@ -46,6 +46,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
+      <head>
+        {/* 预加载 LCP 头像，加速首屏渲染 */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/avatar.webp"
+          fetchPriority="high"
+        />
+      </head>
       <body>
         <ReadingProgress />
         <Layout

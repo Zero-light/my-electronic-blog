@@ -1,5 +1,5 @@
 import { getAllProjects, sortByDate } from '@/lib/mdx';
-import { ProjectsList } from '@/components/projects-list';
+import { ProjectsListClient } from './projects-list-client';
 
 const CATEGORIES = ['嵌入式', '硬件', 'Vibe coding'];
 
@@ -13,7 +13,7 @@ export default function ProjectsPage() {
           项目作品
         </h1>
       </div>
-      <ProjectsList projects={projects} categories={CATEGORIES} />
+      <ProjectsListClient projects={projects} categories={CATEGORIES} />
     </div>
   );
 }

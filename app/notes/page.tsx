@@ -1,5 +1,5 @@
 import { getAllNotes, sortByDate } from '@/lib/mdx';
-import { NotesList } from '@/components/notes-list';
+import { NotesListClient } from './notes-list-client';
 
 export default function NotesPage() {
   const notes = sortByDate(getAllNotes());
@@ -14,7 +14,7 @@ export default function NotesPage() {
           嵌入式开发、电源设计、模电数电与工具教程的知识沉淀。
         </p>
       </div>
-      <NotesList notes={notes} />
+      <NotesListClient notes={notes} />
     </div>
   );
 }

@@ -13,6 +13,30 @@ const nextConfig = {
 
   // 支持 .mdx 作为页面扩展名
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+
+  // ===== 生产优化 =====
+
+  // 生产构建禁用 source map，大幅减小输出体积
+  productionBrowserSourceMaps: false,
+
+  // 移除 X-Powered-By 头
+  poweredByHeader: false,
+
+  // 生产构建移除 console.*（保留 error/warn）
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production'
+      ? { exclude: ['error', 'warn'] }
+      : false,
+  },
+
+  // 将大型依赖拆分为独立 chunk（减少首屏 JS 体积）
+  experimental: {
+    optimizePackageImports: [
+      'framer-motion',
+      'lucide-react',
+      'prismjs',
+    ],
+  },
 };
 
 module.exports = nextConfig;

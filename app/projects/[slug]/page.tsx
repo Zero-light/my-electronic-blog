@@ -71,6 +71,8 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             <img
               src={meta.cover}
               alt={meta.title}
+              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover"
             />
           </div>

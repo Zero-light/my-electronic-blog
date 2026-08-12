@@ -73,6 +73,9 @@ export function HomePage({ notes, projects }: HomePageProps) {
           <img
             src="/images/avatar.webp"
             alt="任嘉庆"
+            width={96}
+            height={96}
+            fetchPriority="high"
             className="hero-avatar mx-auto h-24 w-24 rounded-full object-cover"
           />
           <h1 className="text-[2.2rem] font-bold leading-tight tracking-tight text-slate-900 dark:text-slate-100">
